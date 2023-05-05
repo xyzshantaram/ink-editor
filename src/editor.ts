@@ -2,7 +2,7 @@ import { keymap, EditorView, placeholder } from "@codemirror/view";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { offsetToPos, posToOffset, queryUnsafe } from './utils';
+import { autosave, offsetToPos, posToOffset, queryUnsafe } from './utils';
 import { BIO_PLACEHOLDER } from "./bio";
 
 const theme = EditorView.theme({
@@ -26,20 +26,22 @@ export const insertWithNewline = (editor: EditorView, text: string) => {
     });
 }
 
+const editorExtensions = [
+    history(),
+    keymap.of([...defaultKeymap, ...historyKeymap]),
+    markdown({ base: markdownLanguage }),
+    syntaxHighlighting(defaultHighlightStyle),
+    placeholder(BIO_PLACEHOLDER),
+    EditorView.updateListener.of((e) => {
+        autosave(e.state.doc.toString());
+    }),
+    EditorView.lineWrapping,
+    theme
+];
+
 export const createEditor = () => {
     return new EditorView({
-        extensions: [
-            history(),
-            keymap.of([...defaultKeymap, ...historyKeymap]),
-            markdown({ base: markdownLanguage }),
-            syntaxHighlighting(defaultHighlightStyle),
-            placeholder(BIO_PLACEHOLDER),
-            EditorView.updateListener.of((e) => {
-                localStorage.setItem('bio-contents', e.state.doc.toString());
-            }),
-            EditorView.lineWrapping,
-            theme
-        ],
+        extensions: editorExtensions,
         parent: queryUnsafe('#writr-editor'),
     });
 }
