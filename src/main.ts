@@ -38,7 +38,11 @@ window.addEventListener('DOMContentLoaded', async () => {
     await setPrompts(editor);
 
     const ctrlBar = queryUnsafe('#writr-ctrl-buttons');
-    const ctrlBtns = ctrlBar.querySelectorAll(":not(#writr-ctrl-preview)");
+    const ctrlBtns = Array.from(ctrlBar.querySelectorAll(".icon.button")).filter(elt => {
+        if (elt.parentElement?.id === 'writr-exit-menu') return false;
+        return true;
+    });
+    console.log(ctrlBtns);
 
     const controls = {
         disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
