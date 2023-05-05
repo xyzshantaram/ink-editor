@@ -21,7 +21,7 @@
     margin-right: 0.5rem;
 }
 
-#writr-ctrl-cancel {
+#writr-exit-menu {
     margin-left: auto;
 }
 
@@ -98,4 +98,11 @@
 
 .writr-ctrl-dropdown {
     user-select: none;
+}
+
+@media screen and (max-aspect-ratio: 4/3) {
+    .writr-ctrl-dropdown-menu {
+        width: 90vw;
+        left: 5vw;
+    }
 }
