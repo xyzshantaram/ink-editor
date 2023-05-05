@@ -1,7 +1,7 @@
-import { keymap, EditorView, placeholder } from "@codemirror/view"
-import { defaultKeymap, history, historyKeymap } from "@codemirror/commands"
-import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language"
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
+import { keymap, EditorView, placeholder } from "@codemirror/view";
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { offsetToPos, posToOffset, queryUnsafe } from './utils';
 import { BIO_PLACEHOLDER } from "./bio";
 
