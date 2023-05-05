@@ -1,0 +1,21 @@
+{
+  "name": "writr-editor",
+  "version": "1.0.0",
+  "description": "Editor component for the Writr app",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xyzshantaram",
+  "license": "",
+  "dependencies": {
+    "@codemirror/commands": "^6.2.4",
+    "@codemirror/lang-markdown": "^6.1.1",
+    "@codemirror/view": "^6.11.0",
+    "esbuild": "^0.17.18",
+    "marked": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^4.3.0"
+  }
+}
