@@ -67,11 +67,29 @@
                 </div>
             </div>
 
-            <span class="writr-ctrl-separator"></span>
             <button class='icon button' id="writr-ctrl-prompt">󰍦</button>
-            <button class='icon button' id="writr-ctrl-cancel"></button>
-            <button class='icon button' id="writr-ctrl-preview">󰈈</button>
-            <button class='icon button' id="writr-ctrl-done"></button>
+
+            <div class="writr-ctrl-dropdown" id="writr-exit-menu">
+                <span class='icon button'></span>
+                <div class="writr-ctrl-dropdown-menu">
+                    <span class="writr-dropdown-label">Options</span>
+                    <ul>
+                        <li>
+                            <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default bio</button>
+                        </li>
+                        <li>
+                            <button class="button" id="writr-ctrl-cancel"><span class="icon"></span> Cancel</button>
+                        </li>
+                        <li>
+                            <button class="button" id="writr-ctrl-preview"><span class="icon">󰈈</span> Preview</button>
+                        </li>
+
+                        <li>
+                            <button class="button" id="writr-ctrl-done"><span class="icon"></span> Save</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             
         </div>
         <div id="writr-preview"></div>
