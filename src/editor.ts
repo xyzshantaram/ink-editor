@@ -3,6 +3,7 @@ import { defaultKeymap, history, historyKeymap } from "@codemirror/commands"
 import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language"
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 import { offsetToPos, posToOffset, queryUnsafe } from './utils';
+import { BIO_PLACEHOLDER } from "./bio";
 
 const theme = EditorView.theme({
     "&": {
@@ -32,7 +33,7 @@ export const createEditor = () => {
             keymap.of([...defaultKeymap, ...historyKeymap]),
             markdown({ base: markdownLanguage }),
             syntaxHighlighting(defaultHighlightStyle),
-            placeholder('Your Writr bio. Markdown is supported, and the sky\'s the limit!'),
+            placeholder(BIO_PLACEHOLDER),
             EditorView.updateListener.of((e) => {
                 localStorage.setItem('bio-contents', e.state.doc.toString());
             }),
