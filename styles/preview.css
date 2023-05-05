@@ -25,6 +25,10 @@ code {
     border-radius: 0.2rem;
 }
 
+pre>code {
+    padding: 0;
+}
+
 #writr-preview li.checkbox[checked=true]::marker {
     content: '󰱒 ';
     color: gray;
