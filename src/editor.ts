@@ -4,6 +4,16 @@ import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language"
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 import { offsetToPos, posToOffset, queryUnsafe } from './utils';
 
+const theme = EditorView.theme({
+    "&": {
+        fontSize: "1rem",
+        color: "black",
+    },
+    ".cm-content": {
+        fontFamily: "'CMU Typewriter Text', monospace",
+    }
+})
+
 export const insertWithNewline = (editor: EditorView, text: string) => {
     const doc = editor.state.doc;
     const cursor = editor.state.selection.main.head;
@@ -26,7 +36,8 @@ export const createEditor = () => {
             EditorView.updateListener.of((e) => {
                 localStorage.setItem('bio-contents', e.state.doc.toString());
             }),
-            EditorView.lineWrapping
+            EditorView.lineWrapping,
+            theme
         ],
         parent: queryUnsafe('#writr-editor'),
     });

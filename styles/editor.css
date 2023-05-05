@@ -9,9 +9,6 @@
 
 #writr-editor, .cm-editor {
     height: calc(100% - 1.8rem);
-    font-size: 1rem;
-    color: black;
-    font-family: 'CMU Typewriter Text', monospace;
     margin: 0.2rem;
     line-height: 1.4;
     z-index: 0;
