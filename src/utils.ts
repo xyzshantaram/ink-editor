@@ -33,7 +33,7 @@ export const download = (filename: string, text: string) => {
     document.body.removeChild(elt);
 }
 
-function debounce(func, delay: number | undefined) {
+export function debounce(func, delay: number | undefined) {
     let timerId: number;
     return function (...args: any[]) {
         clearTimeout(timerId);
@@ -43,6 +43,4 @@ function debounce(func, delay: number | undefined) {
     };
 }
 
-export const autosave = debounce((text: string) => {
-    localStorage.setItem('bio-contents', text);
-}, 1000);
+export type autosaveFn = (content: any) => void | Promise<void>;

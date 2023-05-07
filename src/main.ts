@@ -1,5 +1,4 @@
-import { DEFAULT_BIO } from './bio';
-import { download, queryUnsafe } from './utils';
+import { autosaveFn, debounce, download, queryUnsafe } from './utils';
 import { createCmEditor, generateInserters, insertWithNewline } from './editor';
 import { EditorView } from '@codemirror/view';
 import { parse } from './marked';
@@ -15,28 +14,26 @@ const showPrompts = () => {
     prompts.scrollTop = 0;
 }
 
-const setPrompts = (editor: EditorView) => fetch('./data/prompts.json')
-    .then((res: Response) => res.json())
-    .then((prompts: string[]) => {
-        const list = queryUnsafe('#writr-prompts-list>ul');
-        prompts.forEach((prompt: string) => {
-            if (!prompt) return;
-            const elt = document.createElement('li');
-            elt.innerHTML = prompt;
-            list.appendChild(elt);
-            elt.onclick = () => {
-                insertWithNewline(editor, `\n## ${prompt}\n`);
-                hidePrompts();
-            }
-        })
-    });
+const setPrompts = (editor: EditorView, prompts: string[]) => {
+    const list = queryUnsafe('#writr-prompts-list>ul');
+    prompts.forEach((prompt: string) => {
+        if (!prompt) return;
+        const elt = document.createElement('li');
+        elt.innerHTML = prompt;
+        list.appendChild(elt);
+        elt.onclick = () => {
+            insertWithNewline(editor, `\n## ${prompt}\n`);
+            hidePrompts();
+        }
+    })
+};
 
-const setup = async () => {
-    const editor = createCmEditor();
+const setup = async (defaultContent: string, prompts: string[], placeholder: string, autosave: autosaveFn, retrieve: () => string | Promise<string>) => {
+    const editor = createCmEditor(placeholder, autosave);
 
-    const saved = localStorage.getItem('bio-contents');
-    editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved || DEFAULT_BIO } });
-    await setPrompts(editor);
+    const saved = await retrieve();
+    editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved || defaultContent } });
+    setPrompts(editor, prompts);
 
     const ctrlBar = queryUnsafe('#writr-ctrl-buttons');
     const ctrlBtns = Array.from(ctrlBar.querySelectorAll(".icon.button")).filter(elt => {
@@ -117,9 +114,11 @@ const setup = async () => {
         const btn = queryUnsafe(`#writr-ctrl-${key}`);
         btn.onclick = val;
     }
+
+    return { editor };
 }
 
-export const init = async (root: string | HTMLElement) => {
+const init = async (root: string | HTMLElement, defaultContent = '', prompts: string[] = [], placeholder = '', autosave: autosaveFn) => {
     let rootDiv: HTMLElement;
     if (typeof root === 'string') {
         const tmp = document.querySelector(root) as HTMLElement;
@@ -134,5 +133,21 @@ export const init = async (root: string | HTMLElement) => {
     elt.id = 'writr-editor-root';
     elt.innerHTML = WRITR_DOM;
     rootDiv.appendChild(elt);
-    await setup();
+    const { editor } = await setup(defaultContent, prompts, placeholder, autosave, () => '');
+
+    const getVal = () => {
+        return editor.state.doc.toString();
+    }
+
+    const setVal = (text: string) => {
+        editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: text } })
+    }
+
+    return { editor, getVal, setVal };
+
+    /* fetch('./data/prompts.json')
+        .then((res: Response) => res.json())
+        .then((prompts: string[]) => */
 }
+
+export { debounce, init };

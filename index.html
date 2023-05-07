@@ -13,11 +13,24 @@
 </head>
 <body>
     <script type="module">
-        import { init } from './dist/bundle.js';
+        import { debounce, init } from "./dist/bundle.js";
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            await init(document.body);
-        })
+            const parent = document.body;
+            const defaultContent = "# Editor Demo\n";
+            const prompts = ["Prompts are insertable snippets."];
+            const placeholder = "This string shows when the editor is empty.";
+            const autosave = debounce((text) => {
+                localStorage.setItem("contents", text);
+            }, 1000);
+            const retrieveSaved = () => localStorage.getItem('contents');
+            const { editor, setVal, getVal } = init(
+                parent,
+                defaultContent,
+                prompts,
+                placeholder,
+                autosave,
+                retrieveSaved
+            );
     </script>
 </body>
 </html>
