@@ -14,6 +14,7 @@
     "@codemirror/commands": "^6.2.4",
     "@codemirror/lang-markdown": "^6.1.1",
     "@codemirror/view": "^6.11.0",
+    "cf-alert": "^0.4.0",
     "esbuild": "^0.17.18",
     "marked": "^5.0.0",
     "typescript": "^5.0.4"

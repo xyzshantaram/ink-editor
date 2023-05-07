@@ -20,19 +20,6 @@ export const queryUnsafe = (selector: string, elt: Document | Element = document
     return val;
 }
 
-export const download = (filename: string, text: string) => {
-    const elt = document.createElement('a');
-    elt.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    elt.setAttribute('download', filename);
-
-    elt.style.display = 'none';
-    document.body.appendChild(elt);
-
-    elt.click();
-
-    document.body.removeChild(elt);
-}
-
 export function debounce(func, delay: number | undefined) {
     let timerId: number;
     return function (...args: any[]) {

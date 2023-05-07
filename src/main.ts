@@ -1,8 +1,9 @@
-import { autosaveFn, debounce, download, queryUnsafe } from './utils';
+import { autosaveFn, debounce, queryUnsafe } from './utils';
 import { createCmEditor, generateInserters, insertWithNewline } from './editor';
 import { EditorView } from '@codemirror/view';
 import { parse } from './marked';
 import { WRITR_DOM } from './dom';
+import { confirm } from 'cf-alert';
 
 const hidePrompts = () => {
     queryUnsafe('#writr-prompts').style.display = 'none';
@@ -28,7 +29,13 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
     })
 };
 
-const setup = async (defaultContent: string, prompts: string[], placeholder: string, autosave: autosaveFn, retrieve: () => string | Promise<string>) => {
+const setup = async (
+    defaultContent: string,
+    prompts: string[],
+    placeholder: string,
+    autosave: autosaveFn,
+    retrieve: () => string | Promise<string>,
+    doneFn: (text: string) => string | Promise<string>) => {
     const editor = createCmEditor(placeholder, autosave);
 
     const saved = await retrieve();
@@ -96,8 +103,8 @@ const setup = async (defaultContent: string, prompts: string[], placeholder: str
         "a": () => insert.at("[Link text](Link url)"),
         "h1": () => insert.before('# ', 2),
         "h2": () => insert.before('## ', 3),
-        "done": () => {
-            download(`writr-bio-${new Date().toJSON()}.md`, editor.state.doc.toString())
+        "done": async () => {
+            await doneFn(editor.state.doc.toString());
         },
         "prompt": showPrompts,
         "cancel-prompt": hidePrompts,
@@ -107,6 +114,11 @@ const setup = async (defaultContent: string, prompts: string[], placeholder: str
             cmElem.style.display = previewing ? 'none' : 'block';
             preview.style.display = previewing ? 'block' : 'none';
             preview.innerHTML = parse(editor.state.doc.toString());
+        },
+        "reset": async () => {
+            if (await confirm('Are you sure you want to reset the editor contents?', {})) {
+                editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: defaultContent } })
+            }
         }
     }
 
@@ -118,7 +130,14 @@ const setup = async (defaultContent: string, prompts: string[], placeholder: str
     return { editor };
 }
 
-const init = async (root: string | HTMLElement, defaultContent = '', prompts: string[] = [], placeholder = '', autosave: autosaveFn) => {
+const init = async (
+    root: string | HTMLElement,
+    defaultContent = '',
+    prompts: string[] = [],
+    placeholder = '',
+    autosave: autosaveFn,
+    retrieve: () => string | Promise<string>,
+    doneFn: (text: string) => string | Promise<string>) => {
     let rootDiv: HTMLElement;
     if (typeof root === 'string') {
         const tmp = document.querySelector(root) as HTMLElement;
@@ -133,7 +152,7 @@ const init = async (root: string | HTMLElement, defaultContent = '', prompts: st
     elt.id = 'writr-editor-root';
     elt.innerHTML = WRITR_DOM;
     rootDiv.appendChild(elt);
-    const { editor } = await setup(defaultContent, prompts, placeholder, autosave, () => '');
+    const { editor } = await setup(defaultContent, prompts, placeholder, autosave, retrieve, doneFn);
 
     const getVal = () => {
         return editor.state.doc.toString();
@@ -144,10 +163,6 @@ const init = async (root: string | HTMLElement, defaultContent = '', prompts: st
     }
 
     return { editor, getVal, setVal };
-
-    /* fetch('./data/prompts.json')
-        .then((res: Response) => res.json())
-        .then((prompts: string[]) => */
 }
 
 export { debounce, init };
