@@ -5,7 +5,7 @@ await esbuild.build({
     bundle: true,
     outfile: './dist/writr-editor.js',
     platform: 'browser',
-    minify: false,
+    minify: true,
     format: 'esm',
     treeShaking: true
 }).then(result => {
