@@ -9,7 +9,7 @@
     "build-all": "deno run -A build.js styles --npm"
   },
   "author": "xyzshantaram",
-  "license": "",
+  "license": "MIT",
   "dependencies": {
     "@codemirror/commands": "^6.2.4",
     "@codemirror/lang-markdown": "^6.1.1",
