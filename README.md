@@ -12,18 +12,23 @@ const defaultContent = "# Editor Demo\n";
 const prompts = ["Prompts are insertable snippets."];
 const placeholder = "This string shows when the editor is empty.";
 const autosave = debounce((text) => {
+  console.log("saving...");
   localStorage.setItem("contents", text);
 }, 1000);
-const retrieveSaved = () => localStorage.getItem("contents");
+const retrieve = () => localStorage.getItem("contents");
 const done = (text) => console.log(`done clicked with content ${text}`);
-const { editor, setVal, getVal } = init(
+const exit = () => console.log("received exit request");
+const { editor, setVal, getVal } = await init(
   parent,
   defaultContent,
   prompts,
   placeholder,
-  autosave,
-  retrieveSaved,
-  done,
+  {
+    autosave,
+    retrieve,
+    done,
+    exit,
+  },
 );
 ```
 
