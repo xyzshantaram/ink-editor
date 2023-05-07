@@ -46,7 +46,7 @@ export const WRITR_DOM = `\
                         <button class="button" id="writr-ctrl-h1"><span class="icon">󰗴</span> Title</button>
                     </li>
                     <li>
-                        <button class="button" id="writr-ctrl-h2"><span class="icon">󰍦</span> Prompt</button>
+                        <button class="button" id="writr-ctrl-h2"><span class="icon">󰍦</span> Section</button>
                     </li>
                     </li>
                 </ul>
@@ -64,7 +64,7 @@ export const WRITR_DOM = `\
                         <button class="button" id="writr-ctrl-preview"><span class="icon">󰈈</span> Preview</button>
                     </li>
                     <li>
-                        <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default bio</button>
+                        <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default</button>
                     </li>
                     <li>
                         <button class="button" id="writr-ctrl-cancel"><span class="icon"></span> Exit</button>
