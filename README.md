@@ -5,7 +5,7 @@ The editor component for one of my upcoming projects.
 ## Usage
 
 ```ts
-import { debounce, init } from "./dist/bundle.js";
+import { debounce, init } from "./dist/writr-editor.js";
 
 const parent = document.body;
 const defaultContent = "# Editor Demo\n";

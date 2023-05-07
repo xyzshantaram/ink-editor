@@ -3,7 +3,7 @@ import esbuild from "esbuild"
 await esbuild.build({
     entryPoints: ['src/main.ts'],
     bundle: true,
-    outfile: './dist/bundle.js',
+    outfile: './dist/writr-editor.js',
     platform: 'browser',
     minify: false,
     format: 'esm',

@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'NerdFont';
-    src: url(../fonts/NerdFont-stripped.ttf);
+    src: url(/fonts/NerdFont-stripped.ttf);
 }
 
 .icon {
