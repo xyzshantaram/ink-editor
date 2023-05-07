@@ -10,7 +10,6 @@
 html, body {
     height: 100%;
     width: 100%;
-    font-family: 'CMU Typewriter Text', monospace;
     font-display: swap;
 }
 
@@ -49,4 +48,8 @@ a, a:link, a:visited {
 
 .button.icon {
     padding-left: 0;
+}
+
+#writr-editor-root {
+    font-family: 'CMU Typewriter Text', monospace;
 }

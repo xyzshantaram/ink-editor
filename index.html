@@ -5,12 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Writr Editor</title>
+    <link rel="stylesheet" href="./dist/styles/controls.css">
+    <link rel="stylesheet" href="./dist/styles/editor.css">
+    <link rel="stylesheet" href="./dist/styles/preview.css">
+    <link rel="stylesheet" href="./dist/styles/prompts.css">
+    <link rel="stylesheet" href="./dist/styles/style.css">
 </head>
 <body>
+    <div style="width: 80ch; height: 40ch" id="editor-testing"></div>
     <script type="module">
         import { debounce, init } from "./dist/writr-editor.js";
 
-        const parent = document.body;
+        const parent = document.querySelector('#editor-testing');
         const defaultContent = "# Editor Demo\n";
         const prompts = ["Prompts are insertable snippets."];
         const placeholder = "This string shows when the editor is empty.";
