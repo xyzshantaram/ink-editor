@@ -5,7 +5,8 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node esbuild.config.mjs"
+    "build": "node esbuild.config.mjs",
+    "build-all": "deno run -A build.js styles --npm"
   },
   "author": "xyzshantaram",
   "license": "",
@@ -14,9 +15,11 @@
     "@codemirror/lang-markdown": "^6.1.1",
     "@codemirror/view": "^6.11.0",
     "esbuild": "^0.17.18",
-    "marked": "^5.0.0"
+    "marked": "^5.0.0",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "@types/marked": "^4.3.0"
+    "@types/marked": "^4.3.0",
+    "@types/node": "^16.18.26"
   }
 }
