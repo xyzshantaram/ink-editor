@@ -1,8 +1,9 @@
 import { DEFAULT_BIO } from './bio';
 import { download, queryUnsafe } from './utils';
-import { createEditor, generateInserters, insertWithNewline } from './editor';
+import { createCmEditor, generateInserters, insertWithNewline } from './editor';
 import { EditorView } from '@codemirror/view';
 import { parse } from './marked';
+import { WRITR_DOM } from './dom';
 
 const hidePrompts = () => {
     queryUnsafe('#writr-prompts').style.display = 'none';
@@ -30,8 +31,8 @@ const setPrompts = (editor: EditorView) => fetch('./data/prompts.json')
         })
     });
 
-window.addEventListener('DOMContentLoaded', async () => {
-    const editor = createEditor();
+const setup = async () => {
+    const editor = createCmEditor();
 
     const saved = localStorage.getItem('bio-contents');
     editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved || DEFAULT_BIO } });
@@ -116,4 +117,22 @@ window.addEventListener('DOMContentLoaded', async () => {
         const btn = queryUnsafe(`#writr-ctrl-${key}`);
         btn.onclick = val;
     }
-});
+}
+
+export const init = async (root: string | HTMLElement) => {
+    let rootDiv: HTMLElement;
+    if (typeof root === 'string') {
+        const tmp = document.querySelector(root) as HTMLElement;
+        if (tmp === null) throw new Error('root div not found while initialising editor');
+        rootDiv = tmp;
+    }
+    else {
+        rootDiv = root;
+    }
+
+    const elt = document.createElement('div');
+    elt.id = 'writr-editor-root';
+    elt.innerHTML = WRITR_DOM;
+    rootDiv.appendChild(elt);
+    await setup();
+}

@@ -37,7 +37,7 @@ function debounce(func, delay: number | undefined) {
     let timerId: number;
     return function (...args: any[]) {
         clearTimeout(timerId);
-        timerId = setTimeout(() => {
+        timerId = window.setTimeout(() => {
             func.apply(this, args);
         }, delay);
     };

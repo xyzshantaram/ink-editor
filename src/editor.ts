@@ -39,7 +39,7 @@ const editorExtensions = [
     theme
 ];
 
-export const createEditor = () => {
+export const createCmEditor = () => {
     return new EditorView({
         extensions: editorExtensions,
         parent: queryUnsafe('#writr-editor'),
