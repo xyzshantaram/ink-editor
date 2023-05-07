@@ -24639,7 +24639,7 @@ var init = async (root, defaultContent = "", prompts = [], placeholder2 = "", ha
   const createLink = (name2) => {
     const elt3 = document.createElement("link");
     elt3.rel = "stylesheet";
-    elt3.href = `https://cdn.jsdelivr.net/npm/writr-editor@1.0.0/dist/styles/${name2}.css`;
+    elt3.href = `https://cdn.jsdelivr.net/npm/writr-editor@1.0.3/dist/styles/${name2}.css`;
     document.head.appendChild(elt3);
   };
   styleFiles.forEach((name2) => createLink(name2));

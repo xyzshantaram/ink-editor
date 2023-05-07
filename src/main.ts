@@ -167,7 +167,7 @@ const init = async (
     const createLink = (name) => {
         const elt = document.createElement('link');
         elt.rel = 'stylesheet';
-        elt.href = `https://cdn.jsdelivr.net/npm/writr-editor@1.0.2/dist/styles/${name}.css`;
+        elt.href = `https://cdn.jsdelivr.net/npm/writr-editor@1.0.3/dist/styles/${name}.css`;
         document.head.appendChild(elt);
     }
     styleFiles.forEach(name => createLink(name));
