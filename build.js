@@ -11,32 +11,33 @@ const die = (message, code = 1) => {
 
 const args = flags.parse(Deno.args);
 
-if (!args._.length) {
+if (args._.length < 2) {
     console.error("Error: No input css dir supplied");
     Deno.exit(1);
 }
+const input = args._[0];
+const outfile = args._[1];
 
-const indir = args._[0];
-const outdir = 'dist';
-
-const info = await Deno.stat(indir);
+const info = await Deno.stat(input);
 
 if (info.isFile) {
     die('Error: Input css argument was not a dir.');
 }
 
 console.log("Minifying css...");
-for await (const entry of fs.walk(indir)) {
-    const newPath = path.resolve(outdir, entry.path);
-    console.log(newPath);
-    if (entry.isDirectory) {
-        await Deno.mkdir(newPath, { recursive: true });
-    }
-    else {
-        const minified = minify(Language.CSS, await Deno.readTextFile(entry.path));
-        await Deno.writeTextFile(newPath, minified);
+const builtCss = [];
+if (info.isDirectory) {
+    for await (const entry of fs.walk(input)) {
+        if (entry.isFile && path.extname(entry.path) === '.css') {
+            const minified = minify(Language.CSS, await Deno.readTextFile(entry.path));
+            builtCss.push(minified);
+        }
     }
 }
+else if (info.isFile) {
+    builtCss.push(minify(Language.CSS, await Deno.readTextFile(input)));
+}
+await Deno.writeTextFile(outfile, builtCss.join('\n'));
 
 if (args.npm) {
     console.log("Running npm build step...");

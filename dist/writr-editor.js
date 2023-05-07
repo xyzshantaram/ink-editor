@@ -24292,97 +24292,95 @@ var parse = (raw) => {
 };
 
 // src/dom.ts
-var WRITR_DOM = `<div id="writr-editor-root">
-    <div id="writr-ctrl-buttons">
-        <div class="writr-ctrl-dropdown">
-            <span class='icon button'>\u{F0B34}</span>
-            <div class="writr-ctrl-dropdown-menu">
-                <span class="writr-dropdown-label">Formatting</span>
-                <ul>
-                    <li>
-                        <button class="button" id="writr-ctrl-bold"><span class="icon">\uF032</span> Bold</button>
-                    </li>
-                    <li>
-                        <button class="button" id="writr-ctrl-italic"><span class="icon">\uF033</span> Italic</button>
-                    </li>
-                    <li>
-                        <button class="button" id="writr-ctrl-st"><span class="icon">\uF0CC</span> Strikethrough</button>
-                    </li>
-                    <li>
-                        <button class='button' id="writr-ctrl-quote"><span class="icon">\uF10D</span> Quote</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="writr-ctrl-dropdown">
-            <span class='icon button'>\uF0C1</span>
-            <div class="writr-ctrl-dropdown-menu">
-                <span class="writr-dropdown-label">Insert link</span>
-                <ul>
-                    <li>
-                        <button class="button" id="writr-ctrl-a"><span class="icon">\uF0C1</span> Link</button>
-                    </li>
-                    <li>
-                        <button class="button" id="writr-ctrl-img"><span class="icon">\uF03E</span> Image</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="writr-ctrl-dropdown">
-            <span class='icon button'>\uF1DC</span>
-            <div class="writr-ctrl-dropdown-menu">
-                <span class="writr-dropdown-label">Insert heading</span>
-                <ul>
-                    <li>
-                        <button class="button" id="writr-ctrl-h1"><span class="icon">\u{F05F4}</span> Title</button>
-                    </li>
-                    <li>
-                        <button class="button" id="writr-ctrl-h2"><span class="icon">\u{F0366}</span> Section</button>
-                    </li>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <button class='icon button' id="writr-ctrl-prompt">\u{F0366}</button>
-
-        <div class="writr-ctrl-dropdown" id="writr-exit-menu">
-            <span class='icon button'>\uF054</span>
-            <div class="writr-ctrl-dropdown-menu">
-                <span class="writr-dropdown-label">Options</span>
-                <ul>
-                    <li>
-                        <button class="button" id="writr-ctrl-preview"><span class="icon">\u{F0208}</span> Preview</button>
-                    </li>
-                    <li>
-                        <button class="button" id="writr-ctrl-reset"><span class="icon">\u{F0453}</span> Load default</button>
-                    </li>
-                    <li>
-                        <button class="button" id="writr-ctrl-exit"><span class="icon">\uF00D</span> Exit</button>
-                    </li>
-
-                    <li>
-                        <button class="button" id="writr-ctrl-done"><span class="icon">\uF00C</span> Save</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-    </div>
-    <div id="writr-preview"></div>
-    <div id="writr-prompts">          
-        <div id="writr-prompt-heading">
-            <h3>Select a prompt</h3>
-            <button class="icon button" id="writr-ctrl-cancel-prompt">\uF00D</button>
-        </div>
-        <div id="writr-prompts-list">
-            <ul></ul>
+var WRITR_DOM = `<div id="writr-ctrl-buttons">
+    <div class="writr-ctrl-dropdown">
+        <span class='icon button'>\u{F0B34}</span>
+        <div class="writr-ctrl-dropdown-menu">
+            <span class="writr-dropdown-label">Formatting</span>
+            <ul>
+                <li>
+                    <button class="button" id="writr-ctrl-bold"><span class="icon">\uF032</span> Bold</button>
+                </li>
+                <li>
+                    <button class="button" id="writr-ctrl-italic"><span class="icon">\uF033</span> Italic</button>
+                </li>
+                <li>
+                    <button class="button" id="writr-ctrl-st"><span class="icon">\uF0CC</span> Strikethrough</button>
+                </li>
+                <li>
+                    <button class='button' id="writr-ctrl-quote"><span class="icon">\uF10D</span> Quote</button>
+                </li>
+            </ul>
         </div>
     </div>
-    <div id="writr-editor"></div>
+
+    <div class="writr-ctrl-dropdown">
+        <span class='icon button'>\uF0C1</span>
+        <div class="writr-ctrl-dropdown-menu">
+            <span class="writr-dropdown-label">Insert link</span>
+            <ul>
+                <li>
+                    <button class="button" id="writr-ctrl-a"><span class="icon">\uF0C1</span> Link</button>
+                </li>
+                <li>
+                    <button class="button" id="writr-ctrl-img"><span class="icon">\uF03E</span> Image</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="writr-ctrl-dropdown">
+        <span class='icon button'>\uF1DC</span>
+        <div class="writr-ctrl-dropdown-menu">
+            <span class="writr-dropdown-label">Insert heading</span>
+            <ul>
+                <li>
+                    <button class="button" id="writr-ctrl-h1"><span class="icon">\u{F05F4}</span> Title</button>
+                </li>
+                <li>
+                    <button class="button" id="writr-ctrl-h2"><span class="icon">\u{F0366}</span> Section</button>
+                </li>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <button class='icon button' id="writr-ctrl-prompt">\u{F0366}</button>
+
+    <div class="writr-ctrl-dropdown" id="writr-exit-menu">
+        <span class='icon button'>\uF054</span>
+        <div class="writr-ctrl-dropdown-menu">
+            <span class="writr-dropdown-label">Options</span>
+            <ul>
+                <li>
+                    <button class="button" id="writr-ctrl-preview"><span class="icon">\u{F0208}</span> Preview</button>
+                </li>
+                <li>
+                    <button class="button" id="writr-ctrl-reset"><span class="icon">\u{F0453}</span> Load default</button>
+                </li>
+                <li>
+                    <button class="button" id="writr-ctrl-exit"><span class="icon">\uF00D</span> Exit</button>
+                </li>
+
+                <li>
+                    <button class="button" id="writr-ctrl-done"><span class="icon">\uF00C</span> Save</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
 </div>
+<div id="writr-preview"></div>
+<div id="writr-prompts">          
+    <div id="writr-prompt-heading">
+        <h3>Select a prompt</h3>
+        <button class="icon button" id="writr-ctrl-cancel-prompt">\uF00D</button>
+    </div>
+    <div id="writr-prompts-list">
+        <ul></ul>
+    </div>
+</div>
+<div id="writr-editor"></div>
 `;
 
 // node_modules/cf-alert/dist/cf-alert.js
