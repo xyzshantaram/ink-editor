@@ -23,16 +23,20 @@
             console.log('saving...');
             localStorage.setItem("contents", text);
         }, 1000);
-        const retrieveSaved = () => localStorage.getItem('contents');
+        const retrieve = () => localStorage.getItem('contents');
         const done = (text) => console.log(`done clicked with content ${text}`);
+        const exit = () => console.log('received exit request');
         const { editor, setVal, getVal } = init(
             parent,
             defaultContent,
             prompts,
             placeholder,
-            autosave,
-            retrieveSaved,
-            done
+            {
+                autosave,
+                retrieve,
+                done,
+                exit
+            }
         );
     </script>
 </body>

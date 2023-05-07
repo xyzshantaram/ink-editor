@@ -67,7 +67,7 @@ export const WRITR_DOM = `\
                         <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default</button>
                     </li>
                     <li>
-                        <button class="button" id="writr-ctrl-cancel"><span class="icon"></span> Exit</button>
+                        <button class="button" id="writr-ctrl-exit"><span class="icon"></span> Exit</button>
                     </li>
 
                     <li>

@@ -35,7 +35,8 @@ const setup = async (
     placeholder: string,
     autosave: autosaveFn,
     retrieve: () => string | Promise<string>,
-    doneFn: (text: string) => string | Promise<string>) => {
+    doneFn: (text: string) => void | Promise<void>,
+    exit: (text: string) => void | Promise<void>) => {
     const editor = createCmEditor(placeholder, autosave);
 
     const saved = await retrieve();
@@ -106,6 +107,11 @@ const setup = async (
         "done": async () => {
             await doneFn(editor.state.doc.toString());
         },
+        "exit": async () => {
+            if (await confirm('Are you sure you want to exit?', {})) {
+                await exit(editor.state.doc.toString());
+            }
+        },
         "prompt": showPrompts,
         "cancel-prompt": hidePrompts,
         "preview": () => {
@@ -135,9 +141,12 @@ const init = async (
     defaultContent = '',
     prompts: string[] = [],
     placeholder = '',
-    autosave: autosaveFn,
-    retrieve: () => string | Promise<string>,
-    doneFn: (text: string) => string | Promise<string>) => {
+    handlers = {
+        autosave: (text) => { },
+        retrieve: () => '',
+        done: console.log,
+        exit: (text: string) => { },
+    }) => {
     let rootDiv: HTMLElement;
     if (typeof root === 'string') {
         const tmp = document.querySelector(root) as HTMLElement;
@@ -152,7 +161,7 @@ const init = async (
     elt.id = 'writr-editor-root';
     elt.innerHTML = WRITR_DOM;
     rootDiv.appendChild(elt);
-    const { editor } = await setup(defaultContent, prompts, placeholder, autosave, retrieve, doneFn);
+    const { editor } = await setup(defaultContent, prompts, placeholder, handlers.autosave, handlers.retrieve, handlers.done, handlers.exit);
 
     const getVal = () => {
         return editor.state.doc.toString();
