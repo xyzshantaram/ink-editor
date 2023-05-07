@@ -163,6 +163,15 @@ const init = async (
     rootDiv.appendChild(elt);
     const { editor } = await setup(defaultContent, prompts, placeholder, handlers.autosave, handlers.retrieve, handlers.done, handlers.exit);
 
+    const styleFiles = ['controls', 'editor', 'preview', 'prompts', 'style'];
+    const createLink = (name) => {
+        const elt = document.createElement('link');
+        elt.rel = 'stylesheet';
+        elt.href = `https://cdn.jsdelivr.net/npm/writr-editor@1.0.0/dist/styles/${name}.css`;
+        document.head.appendChild(elt);
+    }
+    styleFiles.forEach(name => createLink(name));
+
     const getVal = () => {
         return editor.state.doc.toString();
     }

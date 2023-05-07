@@ -24635,6 +24635,14 @@ var init = async (root, defaultContent = "", prompts = [], placeholder2 = "", ha
   elt2.innerHTML = WRITR_DOM;
   rootDiv.appendChild(elt2);
   const { editor } = await setup(defaultContent, prompts, placeholder2, handlers2.autosave, handlers2.retrieve, handlers2.done, handlers2.exit);
+  const styleFiles = ["controls", "editor", "preview", "prompts", "style"];
+  const createLink = (name2) => {
+    const elt3 = document.createElement("link");
+    elt3.rel = "stylesheet";
+    elt3.href = `https://cdn.jsdelivr.net/npm/writr-editor@1.0.0/dist/styles/${name2}.css`;
+    document.head.appendChild(elt3);
+  };
+  styleFiles.forEach((name2) => createLink(name2));
   const getVal = () => {
     return editor.state.doc.toString();
   };

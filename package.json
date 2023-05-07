@@ -1,6 +1,6 @@
 {
   "name": "writr-editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Editor component for the Writr app",
   "main": "src/main.ts",
   "scripts": {
