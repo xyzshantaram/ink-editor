@@ -6,6 +6,7 @@ await esbuild.build({
     outfile: './dist/bundle.js',
     platform: 'browser',
     minify: true,
+    format: 'esm',
     treeShaking: true
 }).then(result => {
     console.log('Build result:', result)

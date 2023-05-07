@@ -6,7 +6,8 @@ const context = await esbuild.context({
     outfile: './bundle.js',
     platform: 'browser',
     minify: true,
-    treeShaking: true
+    treeShaking: true,
+    format: 'esm'
 })
 
 // Manually do an incremental build
