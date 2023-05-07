@@ -13,3 +13,41 @@
     line-height: 1.4;
     z-index: 0;
 }
+
+#writr-editor-root {
+    font-family: 'CMU Typewriter Text', monospace;
+    border: 3px solid black;
+}
+
+@font-face {
+    font-family: 'NerdFont';
+    src: url(/fonts/NerdFont-stripped.ttf);
+}
+
+.icon {
+    font-family: 'NerdFont' !important;
+}
+
+.button {
+    text-align: center;
+    border: 2.5px solid grey;
+    border-radius: 0;
+    padding: 0.2rem;
+    background-color: white;
+    cursor: pointer;
+    min-width: 4ch;
+    font-family: 'CMU Typewriter Text', monospace;
+    font-weight: bold;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+@media screen and not (hover: none) {
+    .button:hover {
+        border-color: black;
+    }
+}
+
+.button.icon {
+    padding-left: 0;
+}
