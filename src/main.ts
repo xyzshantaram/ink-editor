@@ -40,7 +40,7 @@ const setup = async (
     const editor = createCmEditor(placeholder, autosave);
 
     const saved = await retrieve();
-    editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved || defaultContent } });
+    editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved !== null ? saved : defaultContent } });
     setPrompts(editor, prompts);
 
     const ctrlBar = queryUnsafe('#writr-ctrl-buttons');

@@ -24537,7 +24537,7 @@ var setPrompts = (editor, prompts) => {
 var setup = async (defaultContent, prompts, placeholder2, autosave, retrieve, doneFn, exit) => {
   const editor = createCmEditor(placeholder2, autosave);
   const saved = await retrieve();
-  editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved || defaultContent } });
+  editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved !== null ? saved : defaultContent } });
   setPrompts(editor, prompts);
   const ctrlBar = queryUnsafe("#writr-ctrl-buttons");
   const ctrlBtns = Array.from(ctrlBar.querySelectorAll(".icon.button")).filter((elt2) => {
