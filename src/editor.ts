@@ -31,8 +31,8 @@ const editorExtensions = (ph: string, autosave: autosaveFn) => [
     markdown({ base: markdownLanguage }),
     syntaxHighlighting(defaultHighlightStyle),
     placeholder(ph),
-    EditorView.updateListener.of((e) => {
-        autosave(e.state.doc.toString());
+    EditorView.updateListener.of(async (e: { state: { doc: { toString: () => any; }; }; }): Promise<void> => {
+        await autosave(e.state.doc.toString());
     }),
     EditorView.lineWrapping,
     theme
