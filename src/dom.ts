@@ -20,33 +20,35 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 export const WRITR_DOM = `\
-<div id="writr-ctrl-buttons">
-    <button class='icon button writr-ctrl-tab-button' data-tabname='editor-ctrl-formatting'>󰬴</button>
-    <button class='icon button writr-ctrl-tab-button' data-tabname='writr-ctrl-links'></button>
-    <button class='icon button writr-ctrl-tab-button' data-tabname='headings'></button>
-    <button class='icon button writr-ctrl-tab-button' data-tabname='editor-exit-menu'></button>
-    <button class='icon button' id="writr-ctrl-prompt">󰍦</button>
-</div>
-<div class='writr-ctrl-tab-content-wrapper'>
-    <div class='writr-ctrl-tab-content' data-tabname='editor-ctrl-formatting'>
-        <button class="button" id="writr-ctrl-bold"><span class="icon"></span> Bold</button>
-        <button class="button" id="writr-ctrl-italic"><span class="icon"></span> Italic</button>
-        <button class="button" id="writr-ctrl-st"><span class="icon"></span> Strikethrough</button>
-        <button class='button' id="writr-ctrl-quote"><span class="icon"></span> Quote</button>
+<div id="writr-controls">
+    <div id="writr-ctrl-buttons">
+        <button class='icon button writr-ctrl-tab-button' data-tabname='editor-ctrl-formatting'>󰬴</button>
+        <button class='icon button writr-ctrl-tab-button' data-tabname='writr-ctrl-links'></button>
+        <button class='icon button writr-ctrl-tab-button' data-tabname='headings'></button>
+        <button class='icon button writr-ctrl-tab-button' data-tabname='editor-exit-menu'></button>
+        <button class='icon button' id="writr-ctrl-prompt">󰍦</button>
     </div>
-    <div class='writr-ctrl-tab-content' data-tabname='writr-ctrl-links'>
-        <button class="button" id="writr-ctrl-a"><span class="icon"></span> Link</button>
-        <button class="button" id="writr-ctrl-img"><span class="icon"></span> Image</button>
-    </div>
-    <div class='writr-ctrl-tab-content' data-tabname='headings'>
-        <button class="button" id="writr-ctrl-h1"><span class="icon">󰗴</span> Title</button>
-        <button class="button" id="writr-ctrl-h2"><span class="icon">󰍦</span> Section</button>
-    </div>
-    <div class='writr-ctrl-tab-content' data-tabname='editor-exit-menu'>
-        <button class="button" id="writr-ctrl-preview"><span class="icon">󰈈</span> Preview</button>
-        <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default</button>
-        <button class="button" id="writr-ctrl-exit"><span class="icon"></span> Exit</button>
-        <button class="button" id="writr-ctrl-done"><span class="icon"></span> Save</button>
+    <div class='writr-ctrl-tab-content-wrapper'>
+        <div class='writr-ctrl-tab-content' data-tabname='editor-ctrl-formatting'>
+            <button class="button" id="writr-ctrl-bold"><span class="icon"></span> Bold</button>
+            <button class="button" id="writr-ctrl-italic"><span class="icon"></span> Italic</button>
+            <button class="button" id="writr-ctrl-st"><span class="icon"></span> Strikethrough</button>
+            <button class='button' id="writr-ctrl-quote"><span class="icon"></span> Quote</button>
+        </div>
+        <div class='writr-ctrl-tab-content' data-tabname='writr-ctrl-links'>
+            <button class="button" id="writr-ctrl-a"><span class="icon"></span> Link</button>
+            <button class="button" id="writr-ctrl-img"><span class="icon"></span> Image</button>
+        </div>
+        <div class='writr-ctrl-tab-content' data-tabname='headings'>
+            <button class="button" id="writr-ctrl-h1"><span class="icon">󰗴</span> Title</button>
+            <button class="button" id="writr-ctrl-h2"><span class="icon">󰍦</span> Section</button>
+        </div>
+        <div class='writr-ctrl-tab-content' data-tabname='editor-exit-menu'>
+            <button class="button" id="writr-ctrl-preview"><span class="icon">󰈈</span> Toggle preview</button>
+            <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default</button>
+            <button class="button" id="writr-ctrl-exit"><span class="icon"></span> Exit</button>
+            <button class="button" id="writr-ctrl-done"><span class="icon"></span> Save</button>
+        </div>
     </div>
 </div>
 

@@ -23,7 +23,7 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
         elt.innerHTML = prompt;
         list.appendChild(elt);
         elt.onclick = () => {
-            insertWithNewline(editor, `\n## ${prompt}\n`);
+            insertWithNewline(editor, `## ${prompt}`);
             hidePrompts();
         }
     })
