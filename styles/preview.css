@@ -15,17 +15,22 @@
 
 #writr-preview pre {
     overflow: auto;
+    border-left: 2px solid black;
+    padding: 1rem;    
 }
 
-pre,
-code {
+#writr-preview pre,
+#writr-preview code {
     font-family: inherit;
-    background-color: #f0f0f0;
-    padding: 0.2rem;
-    border-radius: 0.2rem;
 }
 
-pre>code {
+#writr-preview code {
+    border-radius: 0.2rem;
+    padding: 0.2rem;
+    color: rgb(24, 89, 24);
+}
+
+#writr-preview pre>code {
     padding: 0;
 }
 

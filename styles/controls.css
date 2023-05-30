@@ -33,12 +33,6 @@
     border: 2px solid black;
 }
 
-.writr-ctrl-tab-content-wrapper {
-    padding-left: 0.8rem;
-    padding-right: 0.8rem;
-    padding-bottom: 0.5rem;
-}
-
 .writr-ctrl-tab-button.selected {
     border: 2.5px solid black;
     transform: translate(0, 2.5px);
@@ -46,11 +40,14 @@
     color: white;
 }
 
-#writr-ctrl-buttons {
+#writr-controls {
     padding-left: 0.8rem;
     padding-right: 0.8rem;
     padding-top: 0.6rem;
     padding-bottom: 0.2rem;
+}
+
+#writr-ctrl-buttons {
     display: flex;
     gap: 0.4rem;
     align-items: center;

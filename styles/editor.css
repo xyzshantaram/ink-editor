@@ -7,11 +7,16 @@
     background-color: white;
 }
 
-#writr-editor, .cm-editor {
+#writr-editor {
     overflow: auto;
+    display: flex;
+    flex-grow: 1;
+}
+
+#writr-editor, .cm-editor {
+    width: calc(100% - 0.4rem);
     margin: 0.2rem;
     line-height: 1.4;
-    z-index: 0;
 }
 
 #writr-editor-root {
@@ -52,4 +57,18 @@
     padding-left: 0;
     font-size: 1.1rem;
     padding: 0.4rem;
+}
+
+::-webkit-scrollbar {
+    width: 0.35rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #555;
+    width: 0.35rem;
+    height: 4rem;
 }
