@@ -8,7 +8,7 @@
 }
 
 #writr-editor, .cm-editor {
-    height: calc(100% - 2.8rem);
+    overflow: auto;
     margin: 0.2rem;
     line-height: 1.4;
     z-index: 0;
@@ -50,4 +50,6 @@
 
 .button.icon {
     padding-left: 0;
+    font-size: 1.1rem;
+    padding: 0.4rem;
 }
