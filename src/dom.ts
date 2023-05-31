@@ -52,7 +52,7 @@ export const WRITR_DOM = `\
     </div>
 </div>
 
-<div id="writr-preview"></div>
+<div id="writr-bio"></div>
 
 <div id="writr-prompts">          
     <div id="writr-prompt-heading">

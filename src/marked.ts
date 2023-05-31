@@ -15,9 +15,9 @@ const renderer = {
         if (task) return `<li class=checkbox checked=${checked}>${text}</li>`;
         return `<li>${text}</li>`
     },
-    heading: (text: string, level: number, _) => {
-        const lv = `h${level == 1 ? 1 : 2}`
-        return `<${lv}>${text}</${lv}>`
+    heading: (text: string, level: number, _: any) => {
+        const lv = level == 1 ? 1 : 2;
+        return `<div class='writr-heading-${lv}'>${text}</div>`
     }
 };
 

@@ -93,7 +93,7 @@ const setup = async (
     */
 
     let previewing = false;
-    const preview = queryUnsafe('#writr-preview');
+    const preview = queryUnsafe('#writr-bio');
 
     const handlers = {
         "bold": () => insert.around("**"),
