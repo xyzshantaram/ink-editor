@@ -53,7 +53,22 @@ const setup = async (
     const controls = {
         disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
         enable: () => ctrlBtns.forEach(elt => elt.classList.remove('disabled'))
-    }
+    };
+
+    let slideTimeout: NodeJS.Timeout;
+    document.querySelector('#controls-toggle-button')?.addEventListener('click', () => {
+        const btns = document.querySelector('#writr-ctrl-buttons') as HTMLElement;
+        if (btns.classList.contains('mobile-hidden')) {
+            btns.classList.remove('mobile-hidden');
+            btns.style.animation = 'slide-in 0.5s forwards';
+        }
+        else {
+            btns.style.animation = 'slide-out 0.5s forwards';
+            if (slideTimeout) clearTimeout(slideTimeout);
+            slideTimeout = setTimeout(() => btns.classList.add('mobile-hidden'), 500);
+        }
+    })
+
 
     const cmElem = queryUnsafe('#writr-editor');
 
