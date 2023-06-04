@@ -9,7 +9,7 @@ export const WRITR_DOM = `\
     <button class="button" id="writr-ctrl-h1"><span class="icon">󰗴</span> Title</button>
     <button class="button" id="writr-ctrl-h2"><span class="icon">󰍦</span> Section</button>
     <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default</button>
-    <button class="button" id="writr-ctrl-preview"><span class="icon">󰈈</span> Toggle preview</button>
+    <button class="button" id="writr-ctrl-preview"><span class="icon">󰈈</span> Preview</button>
     <button class="button" id="writr-ctrl-exit"><span class="icon"></span> Exit</button>
     <button class="button" id="writr-ctrl-done"><span class="icon"></span> Save</button>
 </div>

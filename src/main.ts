@@ -125,11 +125,13 @@ const setup = async (
         "prompt": showPrompts,
         "cancel-prompt": hidePrompts,
         "preview": () => {
+            const createLabel = (icon, text) => `<span class="icon" >${icon}</span> ${text}`;
             previewing = !previewing;
             controls[previewing ? 'disable' : 'enable']();
             cmElem.style.display = previewing ? 'none' : 'block';
             preview.style.display = previewing ? 'block' : 'none';
             preview.innerHTML = parse(editor.state.doc.toString());
+            queryUnsafe('#writr-ctrl-preview').innerHTML = previewing ? createLabel('', 'Edit') : createLabel('󰈈', 'Preview')
         },
         "reset": async () => {
             if (await confirm('Are you sure you want to reset the editor contents?', {})) {
