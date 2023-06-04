@@ -30,7 +30,7 @@
     transition-duration: 0.2s;
 }
 
-#writr-ctrl-buttons>.button:last-child {
+#writr-ctrl-exit {
     margin-top: auto;
 }
 

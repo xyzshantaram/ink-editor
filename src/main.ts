@@ -44,11 +44,7 @@ const setup = async (
     setPrompts(editor, prompts);
 
     const ctrlBar = queryUnsafe('#writr-ctrl-buttons');
-    const ctrlBtns = Array.from(ctrlBar.querySelectorAll(".icon.button")).filter(elt => {
-        if (elt.parentElement?.id === 'writr-exit-menu') return false;
-        return true;
-    });
-    console.log(ctrlBtns);
+    const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=writr-ctrl-]:not(#writr-ctrl-preview)"));
 
     const controls = {
         disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
@@ -57,7 +53,7 @@ const setup = async (
 
     let slideTimeout: NodeJS.Timeout;
     document.querySelector('#controls-toggle-button')?.addEventListener('click', () => {
-        const btns = document.querySelector('#writr-ctrl-buttons') as HTMLElement;
+        const btns = queryUnsafe('#writr-ctrl-buttons');
         if (btns.classList.contains('mobile-hidden')) {
             btns.classList.remove('mobile-hidden');
             btns.style.animation = 'slide-in 0.5s forwards';
@@ -156,11 +152,13 @@ const init = async (
     defaultContent = '',
     prompts: string[] = [],
     placeholder = '',
-    handlers = {
+    options = {
         autosave: (text) => { },
         retrieve: () => '',
         done: console.log,
         exit: (text: string) => { },
+        width: '100%',
+        height: '100%'
     }) => {
     let rootDiv: HTMLElement;
     if (typeof root === 'string') {
@@ -176,7 +174,9 @@ const init = async (
     elt.id = 'writr-editor-root';
     elt.innerHTML = WRITR_DOM;
     rootDiv.appendChild(elt);
-    const { editor } = await setup(defaultContent, prompts, placeholder, handlers.autosave, handlers.retrieve, handlers.done, handlers.exit);
+    rootDiv.style.width = options.width;
+    rootDiv.style.height = options.height;
+    const { editor } = await setup(defaultContent, prompts, placeholder, options.autosave, options.retrieve, options.done, options.exit);
 
     const getVal = () => {
         return editor.state.doc.toString();
