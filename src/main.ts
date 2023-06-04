@@ -111,7 +111,6 @@ const setup = async (
         "italic": () => insert.around("_"),
         "st": () => insert.around("~~"),
         "quote": () => insert.before("> "),
-        "img": () => insert.at("![Image caption](image url)"),
         "a": () => insert.at("[Link text](Link url)"),
         "h1": () => insert.before('# ', 2),
         "h2": () => insert.before('## ', 3),

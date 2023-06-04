@@ -6,7 +6,6 @@ export const WRITR_DOM = `\
     <button class="button" id="writr-ctrl-st"><span class="icon"></span> Strikethrough</button>
     <button class='button' id="writr-ctrl-quote"><span class="icon"></span> Quote</button>
     <button class="button" id="writr-ctrl-a"><span class="icon"></span> Link</button>
-    <button class="button" id="writr-ctrl-img"><span class="icon"></span> Image</button>
     <button class="button" id="writr-ctrl-h1"><span class="icon">󰗴</span> Title</button>
     <button class="button" id="writr-ctrl-h2"><span class="icon">󰍦</span> Section</button>
     <button class="button" id="writr-ctrl-reset"><span class="icon">󰑓</span> Load default</button>
