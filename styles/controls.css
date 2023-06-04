@@ -86,7 +86,7 @@
 
 @media screen and (max-aspect-ratio: 1/1) {
     #writr-ctrl-buttons {
-        position: absolute;
+        position: fixed;
         left: 0;
         height: calc(100% - 0.8rem);
         top: 0;
