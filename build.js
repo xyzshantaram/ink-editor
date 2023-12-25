@@ -1,7 +1,7 @@
 import * as flags from "https://deno.land/std@0.185.0/flags/mod.ts";
 import * as fs from "https://deno.land/std@0.185.0/fs/mod.ts";
 import * as path from "https://deno.land/std@0.185.0/path/mod.ts";
-import { Language, minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts";
+import { minify } from 'npm:csso@5.0.5';
 
 const die = (message, code = 1) => {
     const log = code == 0 ? console.log : console.error;
@@ -29,13 +29,13 @@ const builtCss = [];
 if (info.isDirectory) {
     for await (const entry of fs.walk(input)) {
         if (entry.isFile && path.extname(entry.path) === '.css') {
-            const minified = minify(Language.CSS, await Deno.readTextFile(entry.path));
+            const minified = minify(await Deno.readTextFile(entry.path)).css;
             builtCss.push(minified);
         }
     }
 }
 else if (info.isFile) {
-    builtCss.push(minify(Language.CSS, await Deno.readTextFile(input)));
+    builtCss.push(minify(await Deno.readTextFile(input)).css);
 }
 await Deno.writeTextFile(outfile, builtCss.join('\n'));
 
