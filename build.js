@@ -42,7 +42,7 @@ await Deno.writeTextFile(outfile, builtCss.join('\n'));
 if (args.npm) {
     console.log("Running npm build step...");
     const cmd = new Deno.Command('npm', {
-        args: ['run', 'build']
+        args: ['run', 'build-js']
     });
     const op = await cmd.output();
     if (op.code === 0) console.log('npm build complete.');

@@ -5,8 +5,8 @@
   "main": "src/main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node esbuild.config.mjs",
-    "build-all": "deno run -A build.js styles dist/writr-editor.css --npm"
+    "build-js": "node esbuild.config.mjs",
+    "build": "deno run -A build.js styles dist/writr-editor.css --npm"
   },
   "author": "xyzshantaram",
   "license": "MIT",
