@@ -3,7 +3,7 @@ import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { autosaveFn, offsetToPos, posToOffset, queryUnsafe } from './utils';
-import { languages } from '@codemirror/language-data';
+// import { languages } from '@codemirror/language-data';
 import { tags } from "@lezer/highlight"
 import { HighlightStyle } from "@codemirror/language"
 
@@ -67,12 +67,12 @@ const headingStyles = HighlightStyle.define([
     },
 ]);
 
-const editorExtensions = (ph: string, autosave: autosaveFn, fontFamily: string) => [
+const editorExtensions = (ph: string, autosave: autosaveFn, fontFamily: string, disableLanguages: boolean) => [
     history(),
     keymap.of([...defaultKeymap, ...historyKeymap]),
     markdown({
         base: markdownLanguage,
-        codeLanguages: languages,
+        // codeLanguages: languages,
     }),
     syntaxHighlighting(defaultHighlightStyle),
     syntaxHighlighting(headingStyles),
@@ -84,16 +84,21 @@ const editorExtensions = (ph: string, autosave: autosaveFn, fontFamily: string) 
     theme(fontFamily)
 ];
 
-export const createCmEditor = ({ placeholder, autosave, fontFamily }: { placeholder: string, autosave: autosaveFn, fontFamily: string }): EditorView => {
+interface CmEditorOptions {
+    placeholder: string,
+    autosave: autosaveFn,
+    fontFamily: string,
+    disableLanguages: boolean
+};
+export const createCmEditor = ({ placeholder, autosave, fontFamily, disableLanguages = false }: CmEditorOptions):
+    EditorView => {
     return new EditorView({
-        extensions: editorExtensions(placeholder, autosave, fontFamily),
+        extensions: editorExtensions(placeholder, autosave, fontFamily, disableLanguages),
         parent: queryUnsafe('#writr-editor'),
     });
 }
 
 export const hasSelection = (editor: EditorView) => editor.state.selection.ranges.some(r => !r.empty);
-
-
 const getLineOffset = (editor: EditorView, offset: number) => {
     const p = offsetToPos(editor, offset);
     p.ch = 0;
