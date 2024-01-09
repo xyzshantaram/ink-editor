@@ -23,7 +23,7 @@
             localStorage.setItem("contents", text);
         }, 1000);
         const retrieve = () => localStorage.getItem('contents');
-        const done = (text) => console.log(`done clicked with content ${text}`);
+        const doneFn = (text) => console.log(`done clicked with content ${text}`);
         const exit = () => console.log('received exit request');
         const { editor, setVal, getVal } = await init(
             parent,
@@ -33,11 +33,12 @@
             {
                 autosave,
                 retrieve,
-                done,
+                doneFn,
                 exit,
                 width: '100%',
                 height: 'calc(100vh - 1rem)',
-                fontFamily: "'Roboto Mono', monospace"
+                fontFamily: "'Roboto Mono', monospace",
+                verticalMode: true
             }
         );
     </script>
