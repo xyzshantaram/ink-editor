@@ -4,6 +4,7 @@ import { EditorView } from '@codemirror/view';
 import { parse } from './marked';
 import { WRITR_DOM } from './dom';
 import { confirm } from 'cf-alert';
+import cf from "campfire.js";
 
 const hidePrompts = () => {
     queryUnsafe('#writr-prompts').style.display = 'none';
@@ -19,13 +20,16 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
     const list = queryUnsafe('#writr-prompts-list>ul');
     prompts.forEach((prompt: string) => {
         if (!prompt) return;
-        const elt = document.createElement('li');
-        elt.innerHTML = prompt;
-        list.appendChild(elt);
-        elt.onclick = () => {
-            insertWithNewline(editor, `## ${prompt}`);
-            hidePrompts();
-        }
+        list.appendChild(cf.nu('li', {
+            raw: true,
+            c: prompt,
+            on: {
+                click: () => {
+                    insertWithNewline(editor, `## ${prompt}`);
+                    hidePrompts();
+                }
+            }
+        })[0]);
     })
 };
 
@@ -33,14 +37,17 @@ const setup = async (
     defaultContent: string,
     prompts: string[],
     placeholder: string,
-    autosave: autosaveFn,
-    retrieve: () => string | Promise<string>,
-    doneFn: (text: string) => void | Promise<void>,
-    exit: (text: string) => void | Promise<void>,
-    fontFamily: string) => {
-    const editor = createCmEditor({ placeholder, autosave, fontFamily });
+    options: {
+        autosave: autosaveFn,
+        retrieve: () => string | Promise<string>,
+        doneFn: (text: string) => void | Promise<void>,
+        exit: (text: string) => void | Promise<void>,
+        fontFamily: string,
+        disableLanguages: boolean
+    }) => {
+    const editor = createCmEditor({ placeholder, autosave: options.autosave, fontFamily: options.fontFamily, disableLanguages: options.disableLanguages });
 
-    const saved = await retrieve();
+    const saved = await options.retrieve();
     editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved !== null ? saved : defaultContent } });
     setPrompts(editor, prompts);
 
@@ -67,7 +74,7 @@ const setup = async (
     })
 
     const cmElem = queryUnsafe('#writr-editor');
-    cmElem.style.fontFamily = fontFamily;
+    cmElem.style.fontFamily = options.fontFamily;
 
     Array.from(document.querySelectorAll('.writr-ctrl-dropdown')).forEach(elt => {
         const menu = queryUnsafe('.writr-ctrl-dropdown-menu', elt);
@@ -115,12 +122,12 @@ const setup = async (
         "a": () => insert.at("[Link text](Link url)"),
         "h1": () => insert.before('# ', 2),
         "h2": () => insert.before('## ', 3),
-        "done": async () => {
-            await doneFn(editor.state.doc.toString());
+        "doneFn": async () => {
+            await options.doneFn(editor.state.doc.toString());
         },
         "exit": async () => {
             if (await confirm('Are you sure you want to exit?', {})) {
-                await exit(editor.state.doc.toString());
+                await options.exit(editor.state.doc.toString());
             }
         },
         "prompt": showPrompts,
@@ -149,22 +156,25 @@ const setup = async (
     return { editor };
 }
 
+const DEFAULT_OPTIONS = {
+    autosave: () => { console.log('Autosaving...') },
+    retrieve: () => '',
+    doneFn: console.log,
+    exit: () => { console.warn('exit clicked') },
+    width: '100%',
+    height: '100%',
+    fontFamily: "monospace",
+    disableLanguages: false,
+    disablePrompts: false
+}
+
 const init = async (
     root: string | HTMLElement,
     defaultContent = '',
     prompts: string[] = [],
     placeholder = '',
-    options: Record<string, any>) => {
-
-    options = Object.assign({}, {
-        autosave: (_) => { console.log('Autosaving...') },
-        retrieve: () => '',
-        done: console.log,
-        exit: (_: string) => { console.warn('exit clicked') },
-        width: '100%',
-        height: '100%',
-        fontFamily: "monospace"
-    }, options);
+    options: Partial<Record<keyof typeof DEFAULT_OPTIONS, any>>) => {
+    const finalOptions = Object.assign({}, DEFAULT_OPTIONS, options);
 
     let rootDiv: HTMLElement;
     if (typeof root === 'string') {
@@ -176,21 +186,28 @@ const init = async (
         rootDiv = root;
     }
 
-    const elt = document.createElement('div');
-    elt.id = 'writr-editor-root';
-    elt.innerHTML = WRITR_DOM;
+    const [elt] = cf.nu('div#writr-editor-root', {
+        raw: true,
+        c: WRITR_DOM,
+        s: {
+            width: finalOptions.width,
+            height: finalOptions.height,
+            fontFamily: finalOptions.fontFamily
+        }
+    })
+
+    if (finalOptions.disablePrompts) {
+        prompts = [];
+        elt.classList.add('prompts-disabled');
+    }
+
     rootDiv.appendChild(elt);
-    rootDiv.style.width = options.width;
-    rootDiv.style.height = options.height;
-    rootDiv.style.fontFamily = options.fontFamily;
-    const { editor } = await setup(defaultContent,
+    const { editor } = await setup(
+        defaultContent,
         prompts,
         placeholder,
-        options.autosave,
-        options.retrieve,
-        options.done,
-        options.exit,
-        options.fontFamily);
+        finalOptions
+    );
 
     const getVal = () => {
         return editor.state.doc.toString();
