@@ -18,8 +18,12 @@
     margin-right: 0.5rem;
 }
 
-#writr-ctrl-prompt {
+#writr-editor-root:not(.vertical) #writr-ctrl-prompt {
     margin-left: auto;
+}
+
+#writr-editor-root.prompts-disabled #writr-ctrl-prompt {
+    display: none;
 }
 
 #writr-ctrl-buttons>.button {
@@ -28,6 +32,21 @@
     background: white;
     width: 100%;
     transition-duration: 0.2s;
+}
+
+#writr-ctrl-buttons.vertical>.button {
+    height: 3rem;
+    width: 3rem;
+}
+
+#writr-ctrl-buttons.vertical>.button.controls-toggle-button {
+    display: none;
+}
+
+#writr-ctrl-buttons.vertical {
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #writr-ctrl-exit {
@@ -85,7 +104,7 @@
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
-    #writr-ctrl-buttons {
+    #writr-editor-root:not(.vertical) #writr-ctrl-buttons {
         position: fixed;
         left: 0;
         height: calc(100% - 0.8rem);
@@ -93,11 +112,11 @@
         border-right: 2px solid black;
     }
 
-    #writr-ctrl-buttons.mobile-hidden {
+    #writr-editor-root:not(.vertical) #writr-ctrl-buttons.mobile-hidden {
         display: none;
     }
 
-    #controls-button-wrapper {
+    #writr-editor-root:not(.vertical) #controls-button-wrapper {
         display: block;
     }
 }
