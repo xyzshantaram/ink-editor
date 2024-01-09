@@ -6,7 +6,7 @@
       "DOM",
       "ESNext"
     ],
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ESNext",
     "declaration": true,
     "moduleResolution": "nodenext",

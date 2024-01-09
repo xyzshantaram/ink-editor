@@ -36,8 +36,9 @@ const setup = async (
     autosave: autosaveFn,
     retrieve: () => string | Promise<string>,
     doneFn: (text: string) => void | Promise<void>,
-    exit: (text: string) => void | Promise<void>) => {
-    const editor = createCmEditor(placeholder, autosave);
+    exit: (text: string) => void | Promise<void>,
+    fontFamily: string) => {
+    const editor = createCmEditor({ placeholder, autosave, fontFamily });
 
     const saved = await retrieve();
     editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved !== null ? saved : defaultContent } });
@@ -65,8 +66,8 @@ const setup = async (
         }
     })
 
-
     const cmElem = queryUnsafe('#writr-editor');
+    cmElem.style.fontFamily = fontFamily;
 
     Array.from(document.querySelectorAll('.writr-ctrl-dropdown')).forEach(elt => {
         const menu = queryUnsafe('.writr-ctrl-dropdown-menu', elt);
@@ -153,14 +154,18 @@ const init = async (
     defaultContent = '',
     prompts: string[] = [],
     placeholder = '',
-    options = {
-        autosave: (text) => { },
+    options: Record<string, any>) => {
+
+    options = Object.assign({}, {
+        autosave: (_) => { console.log('Autosaving...') },
         retrieve: () => '',
         done: console.log,
-        exit: (text: string) => { },
+        exit: (_: string) => { console.warn('exit clicked') },
         width: '100%',
-        height: '100%'
-    }) => {
+        height: '100%',
+        fontFamily: "monospace"
+    }, options);
+
     let rootDiv: HTMLElement;
     if (typeof root === 'string') {
         const tmp = document.querySelector(root) as HTMLElement;
@@ -177,7 +182,15 @@ const init = async (
     rootDiv.appendChild(elt);
     rootDiv.style.width = options.width;
     rootDiv.style.height = options.height;
-    const { editor } = await setup(defaultContent, prompts, placeholder, options.autosave, options.retrieve, options.done, options.exit);
+    rootDiv.style.fontFamily = options.fontFamily;
+    const { editor } = await setup(defaultContent,
+        prompts,
+        placeholder,
+        options.autosave,
+        options.retrieve,
+        options.done,
+        options.exit,
+        options.fontFamily);
 
     const getVal = () => {
         return editor.state.doc.toString();

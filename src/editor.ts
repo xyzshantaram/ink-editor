@@ -3,14 +3,17 @@ import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { autosaveFn, offsetToPos, posToOffset, queryUnsafe } from './utils';
+import { languages } from '@codemirror/language-data';
+import { tags } from "@lezer/highlight"
+import { HighlightStyle } from "@codemirror/language"
 
-const theme = EditorView.theme({
+const theme = (fontFamily: string) => EditorView.theme({
     "&": {
         fontSize: "1rem",
         color: "black",
     },
     ".cm-content": {
-        fontFamily: "'CMU Typewriter Text', monospace",
+        fontFamily: fontFamily,
     }
 })
 
@@ -25,22 +28,65 @@ export const insertWithNewline = (editor: EditorView, text: string) => {
     });
 }
 
-const editorExtensions = (ph: string, autosave: autosaveFn) => [
+const headingStyles = HighlightStyle.define([
+    {
+        tag: tags.heading1,
+        color: 'black',
+        fontSize: '1.75rem',
+        fontWeight: '700',
+    },
+    {
+        tag: tags.heading2,
+        color: 'black',
+        fontSize: '1.6rem',
+        fontWeight: '700',
+    },
+    {
+        tag: tags.heading3,
+        color: 'black',
+        fontSize: '1.5rem',
+        fontWeight: '700',
+    },
+    {
+        tag: tags.heading4,
+        color: 'black',
+        fontSize: '1.4rem',
+        fontWeight: '700',
+    },
+    {
+        tag: tags.heading5,
+        color: 'black',
+        fontSize: '1.2rem',
+        fontWeight: '700',
+    },
+    {
+        tag: tags.heading6,
+        color: 'black',
+        fontSize: '1.1rem',
+        fontWeight: '700',
+    },
+]);
+
+const editorExtensions = (ph: string, autosave: autosaveFn, fontFamily: string) => [
     history(),
     keymap.of([...defaultKeymap, ...historyKeymap]),
-    markdown({ base: markdownLanguage }),
+    markdown({
+        base: markdownLanguage,
+        codeLanguages: languages,
+    }),
     syntaxHighlighting(defaultHighlightStyle),
+    syntaxHighlighting(headingStyles),
     placeholder(ph),
     EditorView.updateListener.of(async (e: { state: { doc: { toString: () => any; }; }; }): Promise<void> => {
         await autosave(e.state.doc.toString());
     }),
     EditorView.lineWrapping,
-    theme
+    theme(fontFamily)
 ];
 
-export const createCmEditor = (ph: string, autosave: autosaveFn): EditorView => {
+export const createCmEditor = ({ placeholder, autosave, fontFamily }: { placeholder: string, autosave: autosaveFn, fontFamily: string }): EditorView => {
     return new EditorView({
-        extensions: editorExtensions(ph, autosave),
+        extensions: editorExtensions(placeholder, autosave, fontFamily),
         parent: queryUnsafe('#writr-editor'),
     });
 }
