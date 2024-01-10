@@ -67,11 +67,16 @@
     padding: 0.4rem;
 }
 
+#writr-editor-root.vertical #writr-editor-wrapper {
+    max-height: calc(100% - 2.5rem - 0.8rem);
+}
+
 #writr-editor-wrapper {
     display: flex;
     flex-direction: column;
     background-color: #ddd;
     align-items: flex-end;
+    overflow: hidden;
 }
 
 ::-webkit-scrollbar {
