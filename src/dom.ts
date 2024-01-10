@@ -4,51 +4,51 @@ const btns: Record<string, {
     icon: string,
     label: string
 }> = {
-    "writr-ctrl-prompt": {
+    "ink-ctrl-prompt": {
         icon: "󰍦",
         label: "Insert a prompt",
     },
-    "writr-ctrl-bold": {
+    "ink-ctrl-bold": {
         icon: "",
         label: "Bold"
     },
-    "writr-ctrl-italic": {
+    "ink-ctrl-italic": {
         icon: "",
         label: "Italic"
     },
-    "writr-ctrl-st": {
+    "ink-ctrl-st": {
         icon: "",
         label: "Strikethrough"
     },
-    "writr-ctrl-quote": {
+    "ink-ctrl-quote": {
         icon: "",
         label: "Quote"
     },
-    "writr-ctrl-a": {
+    "ink-ctrl-a": {
         icon: "",
         label: "Link"
     },
-    "writr-ctrl-h1": {
+    "ink-ctrl-h1": {
         icon: "󰗴",
         label: "Title"
     },
-    "writr-ctrl-h2": {
+    "ink-ctrl-h2": {
         icon: "󰍦",
         label: "Section"
     },
-    "writr-ctrl-reset": {
+    "ink-ctrl-reset": {
         icon: "󰑓",
         label: "Default"
     },
-    "writr-ctrl-preview": {
+    "ink-ctrl-preview": {
         icon: "󰈈",
         label: "Preview"
     },
-    "writr-ctrl-exit": {
+    "ink-ctrl-exit": {
         icon: "",
         label: "Exit"
     },
-    "writr-ctrl-done": {
+    "ink-ctrl-done": {
         icon: "",
         label: "Save"
     }
@@ -69,29 +69,29 @@ const genBtns = (labels: boolean) =>
             </button>`
         ).join('\n');
 
-export const WRITR_DOM = ({
+export const INK_DOM = ({
     buttonLabels,
     verticalMode
 }) => {
     return cf.html`\
-<div id="writr-ctrl-buttons" class='mobile-hidden${verticalMode ? ' vertical' : ''}'>
+<div id="ink-ctrl-buttons" class='mobile-hidden${verticalMode ? ' vertical' : ''}'>
     ${cf.r(genBtns(buttonLabels))}
     <button class="controls-toggle-button button"><span class=icon></span> Hide controls</button>
 </div>
 
-<div id="writr-preview"></div>
+<div id="ink-preview"></div>
 
-<div id="writr-prompts">          
-    <div id="writr-prompt-heading">
+<div id="ink-prompts">          
+    <div id="ink-prompt-heading">
         <h3>Select a prompt</h3>
-        <button class="icon button" id="writr-ctrl-cancel-prompt"></button>
+        <button class="icon button" id="ink-ctrl-cancel-prompt"></button>
     </div>
-    <div id="writr-prompts-list">
+    <div id="ink-prompts-list">
         <ul></ul>
     </div>
 </div>
-<div id=writr-editor-wrapper>
-    <div id="writr-editor"></div>
+<div id=ink-editor-wrapper>
+    <div id="ink-editor"></div>
     ${verticalMode ? '' : cf.r(cf.html`
     <div id='controls-button-wrapper'>
         <button class='controls-toggle-button button icon'></button>

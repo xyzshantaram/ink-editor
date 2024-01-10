@@ -5,17 +5,17 @@ import cf from "campfire.js";
 import { confirm } from 'cf-alert';
 
 const hidePrompts = () => {
-    queryUnsafe('#writr-prompts').style.display = 'none';
+    queryUnsafe('#ink-prompts').style.display = 'none';
 }
 
 const showPrompts = () => {
-    const prompts = queryUnsafe('#writr-prompts');
+    const prompts = queryUnsafe('#ink-prompts');
     prompts.style.display = 'flex';
     prompts.scrollTop = 0;
 }
 
 const setPrompts = (editor: EditorView, prompts: string[]) => {
-    const list = queryUnsafe('#writr-prompts-list>ul');
+    const list = queryUnsafe('#ink-prompts-list>ul');
     prompts.forEach((prompt: string) => {
         if (!prompt) return;
         list.append(...cf.nu('li', {
@@ -34,8 +34,8 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
 const createLabel = (icon: string, text: string, verticalMode = false) => cf.html`<span class="icon">${icon}</span>${verticalMode ? '' : text}`;
 
 const setupControls = () => {
-    const ctrlBar = queryUnsafe('#writr-ctrl-buttons');
-    const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=writr-ctrl-]:not(#writr-ctrl-preview)"));
+    const ctrlBar = queryUnsafe('#ink-ctrl-buttons');
+    const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=ink-ctrl-]:not(#ink-ctrl-preview)"));
 
     return {
         disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
@@ -46,7 +46,7 @@ const setupControls = () => {
 const setupToggles = () => {
     let timeout: NodeJS.Timeout;
     const handler = () => {
-        const btns = queryUnsafe('#writr-ctrl-buttons');
+        const btns = queryUnsafe('#ink-ctrl-buttons');
         if (btns.classList.contains('mobile-hidden')) {
             btns.classList.remove('mobile-hidden');
             btns.style.animation = 'slide-in 0.5s forwards';
@@ -62,8 +62,8 @@ const setupToggles = () => {
 };
 
 const setupDropdowns = () => {
-    Array.from(document.querySelectorAll('.writr-ctrl-dropdown')).forEach(elt => {
-        const menu = queryUnsafe('.writr-ctrl-dropdown-menu', elt);
+    Array.from(document.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
+        const menu = queryUnsafe('.ink-ctrl-dropdown-menu', elt);
         const btn = queryUnsafe('span.icon.button', elt);
 
         let open = false;
@@ -110,7 +110,7 @@ const handlePreview = (
     cmRoot.style.display = res ? 'none' : 'block';
     previewPane.style.display = res ? 'block' : 'none';
     previewPane.innerHTML = parse(editor.state.doc.toString());
-    queryUnsafe('#writr-ctrl-preview').innerHTML = res ?
+    queryUnsafe('#ink-ctrl-preview').innerHTML = res ?
         createLabel('', 'Edit', verticalMode) : createLabel('󰈈', 'Preview', verticalMode);
     return res;
 }
@@ -214,7 +214,7 @@ export const setup = async (
     });
 
     for (const [key, val] of Object.entries(handlers)) {
-        const btn = queryUnsafe(`#writr-ctrl-${key}`);
+        const btn = queryUnsafe(`#ink-ctrl-${key}`);
         if (btn) btn.onclick = val;
     }
 

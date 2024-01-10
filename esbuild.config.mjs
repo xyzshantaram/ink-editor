@@ -3,11 +3,12 @@ import esbuild from "esbuild"
 await esbuild.build({
     entryPoints: ['src/mod.ts'],
     bundle: true,
-    outfile: './dist/writr-editor.js',
+    outfile: './dist/ink-editor.js',
     platform: 'browser',
     minify: true,
     format: 'esm',
-    treeShaking: true
+    treeShaking: true,
+    sourcemap: true
 }).then(result => {
     console.log('Build result:', result)
 }).catch(error => {

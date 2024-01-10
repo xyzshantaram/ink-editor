@@ -1,11 +1,11 @@
-# writr-editor
+# ink-editor
 
 The editor component for one of my upcoming projects.
 
 ## Usage
 
 ```ts
-import { debounce, init } from "./dist/writr-editor.js";
+import { debounce, init } from "./dist/ink-editor.js";
 
 const parent = document.body;
 const defaultContent = "# Editor Demo\n";
@@ -32,8 +32,8 @@ const { editor, setVal, getVal } = await init(
 );
 ```
 
-You'll need the css files from `/styles` and the `NerdFont-stripped.ttf` file
-from `fonts/`.
+You'll need the `NerdFont-stripped.ttf` file from `fonts/` along with
+`dist/writr-editor.css`.
 
 Also, you'll need `alert.css` from the [cf-alert](https://npmjs.com/cf-alert)
 library.

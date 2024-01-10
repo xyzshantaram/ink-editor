@@ -1,4 +1,4 @@
-#writr-ctrl-buttons {
+#ink-ctrl-buttons {
     display: flex;
     gap: 0.4rem;
     align-items: center;
@@ -10,7 +10,7 @@
     z-index: 2;
 }
 
-.writr-ctrl-separator {
+.ink-ctrl-separator {
     height: 100%;
     width: 0.15rem;
     background-color: rgb(204, 204, 204);
@@ -18,15 +18,15 @@
     margin-right: 0.5rem;
 }
 
-#writr-editor-root:not(.vertical) #writr-ctrl-prompt {
+#ink-editor-root:not(.vertical) #ink-ctrl-prompt {
     margin-left: auto;
 }
 
-#writr-editor-root.prompts-disabled #writr-ctrl-prompt {
+#ink-editor-root.prompts-disabled #ink-ctrl-prompt {
     display: none;
 }
 
-#writr-ctrl-buttons>.button {
+#ink-ctrl-buttons>.button {
     max-height: 2.5rem;
     border: 2px solid transparent;
     background: white;
@@ -34,22 +34,22 @@
     transition-duration: 0.2s;
 }
 
-#writr-ctrl-buttons.vertical>.button {
+#ink-ctrl-buttons.vertical>.button {
     height: 3rem;
     width: 3rem;
 }
 
-#writr-ctrl-buttons.vertical>.button.controls-toggle-button {
+#ink-ctrl-buttons.vertical>.button.controls-toggle-button {
     display: none;
 }
 
-#writr-ctrl-buttons.vertical {
+#ink-ctrl-buttons.vertical {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
 }
 
-#writr-ctrl-exit {
+#ink-ctrl-exit {
     margin-top: auto;
 }
 
@@ -64,21 +64,21 @@
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
-    .writr-ctrl-separator {
+    .ink-ctrl-separator {
         display: none;
     }
 }
 
-.writr-ctrl-dropdown {
+.ink-ctrl-dropdown {
     overflow: visible;
 }
 
-#writr-ctrl-buttons .disabled {
+#ink-ctrl-buttons .disabled {
     pointer-events: none;
     filter: brightness(0.8);
 }
 
-.writr-dropdown-label {
+.ink-dropdown-label {
     text-align: center;
     width: 100%;
     display: inline-block;
@@ -89,12 +89,12 @@
     border-bottom: 2px solid white;
 }
 
-.writr-ctrl-dropdown {
+.ink-ctrl-dropdown {
     user-select: none;
 }
 
 @media (hover: hover) {
-    #writr-ctrl-buttons .button:hover {
+    #ink-ctrl-buttons .button:hover {
         border-color: black;
     }
 
@@ -108,7 +108,7 @@
 }
 
 @media screen and (max-aspect-ratio: 1/1) {
-    #writr-editor-root:not(.vertical) #writr-ctrl-buttons {
+    #ink-editor-root:not(.vertical) #ink-ctrl-buttons {
         position: fixed;
         left: 0;
         height: calc(100% - 0.8rem);
@@ -116,11 +116,11 @@
         border-right: 2px solid black;
     }
 
-    #writr-editor-root:not(.vertical) #writr-ctrl-buttons.mobile-hidden {
+    #ink-editor-root:not(.vertical) #ink-ctrl-buttons.mobile-hidden {
         display: none;
     }
 
-    #writr-editor-root:not(.vertical) #controls-button-wrapper {
+    #ink-editor-root:not(.vertical) #controls-button-wrapper {
         display: block;
     }
 

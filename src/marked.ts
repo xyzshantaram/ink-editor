@@ -17,7 +17,7 @@ const renderer = {
     },
     heading: (text: string, level: number, _: any) => {
         const lv = level == 1 ? 1 : 2;
-        return `<div class='writr-heading-${lv}'>${text}</div>`
+        return `<div class='ink-heading-${lv}'>${text}</div>`
     }
 };
 

@@ -12,7 +12,7 @@ interface CmEditorOptions {
 export const createCmEditor = ({ placeholder, autosave, fontFamily }: CmEditorOptions) => {
     const view = new EditorView({
         extensions: getExtensions(placeholder, autosave, fontFamily),
-        parent: queryUnsafe('#writr-editor'),
+        parent: queryUnsafe('#ink-editor'),
     });
 
     function injectExtension(extension) {

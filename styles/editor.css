@@ -1,4 +1,4 @@
-#writr-editor-root {
+#ink-editor-root {
     box-sizing: border-box;
     border: 3px solid black;
     display: flex;
@@ -7,14 +7,14 @@
     background-color: white;
 }
 
-#writr-editor {
+#ink-editor {
     overflow: auto;
     display: flex;
     background-color: white;
     flex-grow: 1;
 }
 
-#writr-editor {
+#ink-editor {
     width: calc(100% - 0.4rem);
 }
 
@@ -22,13 +22,13 @@
     width: 100%;
 }
 
-#writr-editor,
+#ink-editor,
 .cm-editor {
     margin: 0.2rem;
     line-height: 1.4;
 }
 
-#writr-editor-wrapper {
+#ink-editor-wrapper {
     flex-grow: 1;
 }
 
@@ -67,11 +67,11 @@
     padding: 0.4rem;
 }
 
-#writr-editor-root.vertical #writr-editor-wrapper {
+#ink-editor-root.vertical #ink-editor-wrapper {
     max-height: calc(100% - 2.5rem - 0.8rem);
 }
 
-#writr-editor-wrapper {
+#ink-editor-wrapper {
     display: flex;
     flex-direction: column;
     background-color: #ddd;

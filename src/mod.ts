@@ -1,5 +1,5 @@
 import { debounce } from './utils';
-import { WRITR_DOM } from './dom';
+import { INK_DOM } from './dom';
 import cf from "campfire.js";
 import { setup } from './setup';
 
@@ -27,9 +27,9 @@ const getRootElt = (root: string | HTMLElement): HTMLElement => {
 }
 
 const EditorRoot = (options: typeof DEFAULT_OPTIONS) =>
-    cf.nu('div#writr-editor-root' + (options.verticalMode ? '.vertical' : ''), {
+    cf.nu('div#ink-editor-root' + (options.verticalMode ? '.vertical' : ''), {
         raw: true,
-        c: WRITR_DOM({
+        c: INK_DOM({
             buttonLabels: !options.verticalMode,
             verticalMode: options.verticalMode
         }),
@@ -39,7 +39,7 @@ const EditorRoot = (options: typeof DEFAULT_OPTIONS) =>
             fontFamily: options.fontFamily,
             flexDirection: options.verticalMode ? 'column' : 'row'
         },
-        gimme: ['#writr-editor', '#writr-preview']
+        gimme: ['#ink-editor', '#ink-preview']
     })
 
 const init = async (
