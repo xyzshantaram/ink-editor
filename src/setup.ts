@@ -1,6 +1,5 @@
 import { EditorView } from "@codemirror/view";
-import { insertWithNewline, createCmEditor, generateInserters } from "./editor";
-import { parse } from "./marked";
+import { insertWithNewline, createCmEditor, generateInserters } from "./editor/editor";
 import { queryUnsafe, autosaveFn } from "./utils";
 import cf from "campfire.js";
 import { confirm } from 'cf-alert';
@@ -19,7 +18,7 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
     const list = queryUnsafe('#writr-prompts-list>ul');
     prompts.forEach((prompt: string) => {
         if (!prompt) return;
-        list.appendChild(cf.nu('li', {
+        list.append(...cf.nu('li', {
             raw: true,
             c: prompt,
             on: {
@@ -28,39 +27,25 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
                     hidePrompts();
                 }
             }
-        })[0]);
+        }));
     })
 };
 
-export const setup = async (
-    defaultContent: string,
-    prompts: string[],
-    placeholder: string,
-    options: {
-        autosave: autosaveFn,
-        retrieve: () => string | Promise<string>,
-        doneFn: (text: string) => void | Promise<void>,
-        exit: (text: string) => void | Promise<void>,
-        fontFamily: string,
-        disableLanguages: boolean,
-        verticalMode: boolean
-    }) => {
-    const editor = createCmEditor({ placeholder, autosave: options.autosave, fontFamily: options.fontFamily, disableLanguages: options.disableLanguages });
+const createLabel = (icon: string, text: string, verticalMode = false) => cf.html`<span class="icon">${icon}</span>${verticalMode ? '' : text}`;
 
-    const saved = await options.retrieve();
-    editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: saved !== null ? saved : defaultContent } });
-    setPrompts(editor, prompts);
-
+const setupControls = () => {
     const ctrlBar = queryUnsafe('#writr-ctrl-buttons');
     const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=writr-ctrl-]:not(#writr-ctrl-preview)"));
 
-    const controls = {
+    return {
         disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
         enable: () => ctrlBtns.forEach(elt => elt.classList.remove('disabled'))
     };
+}
 
-    let slideTimeout: NodeJS.Timeout;
-    document.querySelectorAll('.controls-toggle-button').forEach(btn => btn.addEventListener('click', () => {
+const setupToggles = () => {
+    let timeout: NodeJS.Timeout;
+    const handler = () => {
         const btns = queryUnsafe('#writr-ctrl-buttons');
         if (btns.classList.contains('mobile-hidden')) {
             btns.classList.remove('mobile-hidden');
@@ -68,14 +53,15 @@ export const setup = async (
         }
         else {
             btns.style.animation = 'slide-out 0.5s forwards';
-            if (slideTimeout) clearTimeout(slideTimeout);
-            slideTimeout = setTimeout(() => btns.classList.add('mobile-hidden'), 500);
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => btns.classList.add('mobile-hidden'), 500);
         }
-    }));
+    }
+    document.querySelectorAll('.controls-toggle-button').forEach(btn =>
+        btn.addEventListener('click', handler));
+};
 
-    const cmElem = queryUnsafe('#writr-editor');
-    cmElem.style.fontFamily = options.fontFamily;
-
+const setupDropdowns = () => {
     Array.from(document.querySelectorAll('.writr-ctrl-dropdown')).forEach(elt => {
         const menu = queryUnsafe('.writr-ctrl-dropdown-menu', elt);
         const btn = queryUnsafe('span.icon.button', elt);
@@ -92,29 +78,63 @@ export const setup = async (
             menu.style.display = 'block';
         }
 
-        const toggle = () => {
-            open ? hide() : show();
-        }
+        const toggle = () => open ? hide() : show();
 
-        window.addEventListener('click', (e) => {
-            if (e.target !== btn) hide();
-        });
-
+        window.addEventListener('click', (e) => e.target !== btn ? hide() : undefined);
         btn.addEventListener('click', toggle);
     })
+}
 
-    const insert = generateInserters(editor);
+interface HandlerSetup {
+    cmRoot: HTMLElement,
+    previewPane: HTMLElement,
+    insert: ReturnType<typeof generateInserters>,
+    editor: EditorView,
+    doneFn: (text: string) => void | Promise<void>,
+    exitFn: (contents: string) => void | Promise<void>;
+    controls: ReturnType<typeof setupControls>;
+    verticalMode: boolean;
+    defaultContent: string;
+    parse: (src: string) => string;
+}
+
+const handlePreview = (
+    previewing: boolean,
+    parse: (src: string) => string,
+    { cmRoot, previewPane, controls, editor, verticalMode }:
+        Omit<HandlerSetup, "insert" | "doneFn" | "exitFn" | "defaultContent" | "parse">
+) => {
+    const res = !previewing;
+    controls[res ? 'disable' : 'enable']();
+    console.log(cmRoot, previewPane);
+    cmRoot.style.display = res ? 'none' : 'block';
+    previewPane.style.display = res ? 'block' : 'none';
+    previewPane.innerHTML = parse(editor.state.doc.toString());
+    queryUnsafe('#writr-ctrl-preview').innerHTML = res ?
+        createLabel('', 'Edit', verticalMode) : createLabel('󰈈', 'Preview', verticalMode);
+    return res;
+}
+
+const setupHandlers = ({
+    parse,
+    cmRoot,
+    previewPane,
+    insert,
+    doneFn,
+    editor,
+    exitFn,
+    controls,
+    verticalMode,
+    defaultContent
+}: HandlerSetup) => {
+    let previewing = false;
     /*
         TODO: improve heading insertion. Existing headings should 
               be converted to the requested heading. Heading request
               in the middle of a line should make heading show up at
               the start of the line.
     */
-
-    let previewing = false;
-    const preview = queryUnsafe('#writr-bio');
-
-    const handlers = {
+    return {
         "bold": () => insert.around("**"),
         "italic": () => insert.around("_"),
         "st": () => insert.around("~~"),
@@ -123,23 +143,14 @@ export const setup = async (
         "h1": () => insert.before('# ', 2),
         "h2": () => insert.before('## ', 3),
         "done": async () => {
-            await options.doneFn(editor.state.doc.toString());
+            await doneFn(editor.state.doc.toString());
         },
-        "exit": async () => {
-            if (await confirm('Are you sure you want to exit?', {})) {
-                await options.exit(editor.state.doc.toString());
-            }
-        },
+        "exit": async () => await confirm('Are you sure you want to exit?', {})
+            && await exitFn(editor.state.doc.toString()),
         "prompt": showPrompts,
         "cancel-prompt": hidePrompts,
         "preview": () => {
-            const createLabel = (icon, text) => `<span class="icon">${icon}</span>${options.verticalMode ? '' : text}`;
-            previewing = !previewing;
-            controls[previewing ? 'disable' : 'enable']();
-            cmElem.style.display = previewing ? 'none' : 'block';
-            preview.style.display = previewing ? 'block' : 'none';
-            preview.innerHTML = parse(editor.state.doc.toString());
-            queryUnsafe('#writr-ctrl-preview').innerHTML = previewing ? createLabel('', 'Edit') : createLabel('󰈈', 'Preview')
+            previewing = handlePreview(previewing, parse, { cmRoot, previewPane, controls, editor, verticalMode });
         },
         "reset": async () => {
             if (await confirm('Are you sure you want to reset the editor contents?', {})) {
@@ -147,11 +158,65 @@ export const setup = async (
             }
         }
     }
+}
+
+interface SetupOptions {
+    autosave: autosaveFn,
+    retrieve: () => string | Promise<string>,
+    doneFn: (text: string) => void | Promise<void>,
+    exit: (text: string) => void | Promise<void>,
+    fontFamily: string,
+    verticalMode: boolean,
+    parse: (src: string) => string
+}
+
+export const setup = async (
+    cmRoot: HTMLElement,
+    previewPane: HTMLElement,
+    defaultContent: string,
+    prompts: string[],
+    placeholder: string,
+    options: SetupOptions) => {
+
+    cmRoot.style.fontFamily = options.fontFamily;
+    const [editor, injectExtension] = createCmEditor({
+        placeholder,
+        autosave: options.autosave,
+        fontFamily: options.fontFamily
+    }) as [EditorView, (extn) => void];
+
+    const saved = await options.retrieve();
+    editor.dispatch({
+        changes: {
+            from: 0,
+            to: editor.state.doc.length,
+            insert: saved !== null ? saved : defaultContent
+        }
+    });
+
+    if (prompts?.length >= 1) setPrompts(editor, prompts);
+    const controls = setupControls();
+    setupToggles();
+    setupDropdowns();
+
+    const insert = generateInserters(editor);
+    const handlers = setupHandlers({
+        cmRoot,
+        controls,
+        editor,
+        insert,
+        previewPane,
+        defaultContent,
+        doneFn: options.doneFn,
+        exitFn: options.exit,
+        verticalMode: options.verticalMode,
+        parse: options.parse
+    });
 
     for (const [key, val] of Object.entries(handlers)) {
         const btn = queryUnsafe(`#writr-ctrl-${key}`);
         if (btn) btn.onclick = val;
     }
 
-    return { editor };
+    return { editor, injectExtension };
 }
