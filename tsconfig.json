@@ -4,14 +4,16 @@
     "strictNullChecks": true,
     "lib": [
       "DOM",
-      "ESNext"
+      "ESNext",
+      "ESNext.Array"
     ],
-    "module": "NodeNext",
+    "module": "ESNext",
     "target": "ESNext",
     "declaration": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "./ts-output"
   },
   "include": [
     "./src/**/*"
