@@ -79,7 +79,7 @@ export const WRITR_DOM = ({
     <button class="controls-toggle-button button"><span class=icon></span> Hide controls</button>
 </div>
 
-<div id="writr-bio"></div>
+<div id="writr-preview"></div>
 
 <div id="writr-prompts">          
     <div id="writr-prompt-heading">
