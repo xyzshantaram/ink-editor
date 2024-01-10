@@ -1,4 +1,4 @@
-#writr-bio {
+#writr-preview {
     margin: 0.2rem;
     line-height: 1.4;
     padding: 1rem;
@@ -6,51 +6,51 @@
     overflow-y: scroll;
 }
 
-#writr-bio blockquote {
+#writr-preview blockquote {
     border-left: 2px solid gray;
     margin-inline-start: 1rem;
     padding-left: 1rem;
     padding-right: 0.5rem;
 }
 
-#writr-bio pre {
+#writr-preview pre {
     overflow: auto;
     border-left: 2px solid black;
     padding: 1rem;
 }
 
-#writr-bio pre,
-#writr-bio code {
+#writr-preview pre,
+#writr-preview code {
     font-family: inherit;
 }
 
-#writr-bio code {
+#writr-preview code {
     border-radius: 0.2rem;
     padding: 0.2rem;
     color: rgb(24, 89, 24);
 }
 
-#writr-bio pre>code {
+#writr-preview pre>code {
     padding: 0;
 }
 
-#writr-bio li.checkbox[checked=true]::marker {
+#writr-preview li.checkbox[checked=true]::marker {
     content: '󰱒 ';
     color: gray;
     font-family: 'NerdFont';
 }
 
-#writr-bio li.checkbox[checked=false]::marker {
+#writr-preview li.checkbox[checked=false]::marker {
     color: gray;
     content: '󰄱 ';
     font-family: 'NerdFont';
 }
 
-#writr-bio .img-wrapper {
+#writr-preview .img-wrapper {
     display: flex;
 }
 
-#writr-bio .img-wrapper>a {
+#writr-preview .img-wrapper>a {
     border: 2px solid black;
     padding: 1rem;
     margin: 1rem;
@@ -59,14 +59,14 @@
     flex-grow: 0;
 }
 
-#writr-bio h1 {
+#writr-preview h1 {
     font-size: 1.6rem;
 }
 
-#writr-bio h2,
-#writr-bio h3,
-#writr-bio h4,
-#writr-bio h5,
-#writr-bio h6 {
+#writr-preview h2,
+#writr-preview h3,
+#writr-preview h4,
+#writr-preview h5,
+#writr-preview h6 {
     font-size: 1.2rem;
 }
