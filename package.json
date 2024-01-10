@@ -2,10 +2,10 @@
   "name": "ink-editor",
   "version": "1.1.0",
   "description": "Editor component for the Writr app",
-  "main": "src/mod.ts",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-js": "node esbuild.config.mjs",
+    "build-js": "npx tsc && node esbuild.config.mjs",
     "build": "deno run -A build.js styles dist/ink-editor.css --npm"
   },
   "author": "xyzshantaram",
@@ -19,12 +19,12 @@
     "campfire.js": "^4.0.0-alpha2",
     "cf-alert": "^0.4.0",
     "esbuild": "^0.17.18",
-    "marked": "^5.0.0",
-    "typescript": "^5.0.4"
+    "marked": "^5.0.0"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.15",
     "@types/marked": "^4.3.0",
-    "@types/node": "^16.18.26"
+    "@types/node": "^16.18.26",
+    "typescript": "^5.3.3"
   }
 }
