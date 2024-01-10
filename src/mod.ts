@@ -12,9 +12,9 @@ const DEFAULT_OPTIONS = {
     width: '100%',
     height: '100%',
     fontFamily: "monospace",
-    disableLanguages: false,
     disablePrompts: false,
-    verticalMode: false
+    verticalMode: false,
+    parse: (str: string) => str
 }
 
 const getRootElt = (root: string | HTMLElement): HTMLElement => {
@@ -26,15 +26,8 @@ const getRootElt = (root: string | HTMLElement): HTMLElement => {
     return root;
 }
 
-const init = async (
-    root: string | HTMLElement,
-    defaultContent = '',
-    prompts: string[] = [],
-    placeholder = '',
-    userOptions: Partial<Record<keyof typeof DEFAULT_OPTIONS, any>>
-) => {
-    const options = Object.assign({}, DEFAULT_OPTIONS, userOptions);
-    const [elt] = cf.nu('div#writr-editor-root' + (options.verticalMode ? '.vertical' : ''), {
+const EditorRoot = (options: typeof DEFAULT_OPTIONS) =>
+    cf.nu('div#writr-editor-root' + (options.verticalMode ? '.vertical' : ''), {
         raw: true,
         c: WRITR_DOM({
             buttonLabels: !options.verticalMode,
@@ -45,8 +38,19 @@ const init = async (
             height: options.height,
             fontFamily: options.fontFamily,
             flexDirection: options.verticalMode ? 'column' : 'row'
-        }
+        },
+        gimme: ['#writr-editor', '#writr-preview']
     })
+
+const init = async (
+    root: string | HTMLElement,
+    defaultContent = '',
+    prompts: string[] = [],
+    placeholder = '',
+    userOptions: Partial<Record<keyof typeof DEFAULT_OPTIONS, any>>
+) => {
+    const options = Object.assign({}, DEFAULT_OPTIONS, userOptions);
+    const [elt, cmRoot, previewPane] = EditorRoot(options);
 
     if (options.disablePrompts) {
         prompts = [];
@@ -55,19 +59,18 @@ const init = async (
 
     getRootElt(root).appendChild(elt);
     const { editor } = await setup(
+        cmRoot,
+        previewPane,
         defaultContent,
         prompts,
         placeholder,
         options
     );
 
-    const getVal = () => {
-        return editor.state.doc.toString();
-    }
+    const getVal = () => editor.state.doc.toString();
 
-    const setVal = (text: string) => {
-        editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: text } })
-    }
+    const setVal = (text: string) =>
+        editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: text } });
 
     return { editor, getVal, setVal };
 }
