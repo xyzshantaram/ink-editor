@@ -103,6 +103,10 @@
     }
 }
 
+.button.controls-toggle-button {
+    display: none;
+}
+
 @media screen and (max-aspect-ratio: 1/1) {
     #writr-editor-root:not(.vertical) #writr-ctrl-buttons {
         position: fixed;
@@ -117,6 +121,10 @@
     }
 
     #writr-editor-root:not(.vertical) #controls-button-wrapper {
+        display: block;
+    }
+
+    .button.controls-toggle-button {
         display: block;
     }
 }
