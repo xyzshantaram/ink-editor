@@ -85,3 +85,7 @@
         width: 90%;
     }
 }
+
+#alert-mask {
+    z-index: 3;
+}
