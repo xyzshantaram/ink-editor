@@ -92,3 +92,15 @@
     width: 0.35rem;
     height: 4rem;
 }
+
+#ink-preview {
+    padding: 1rem;
+    display: none;
+    overflow-y: scroll;
+}
+
+#ink-preview img {
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+}
