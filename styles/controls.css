@@ -6,8 +6,15 @@
     flex-direction: column;
     padding: 0.4rem;
     overflow: auto;
-    min-width: 20ch;
     z-index: 2;
+}
+
+#ink-ctrl-buttons:not(.vertical) {
+    min-width: 20ch;
+}
+
+#ink-ctrl-buttons.vertical {
+    min-height: 6ch;
 }
 
 .ink-ctrl-separator {
@@ -49,8 +56,12 @@
     justify-content: center;
 }
 
-#ink-ctrl-exit {
+#ink-ctrl-buttons:not(.vertical) #ink-ctrl-exit {
     margin-top: auto;
+}
+
+#ink-ctrl-buttons.vertical #ink-ctrl-exit {
+    margin-left: auto;
 }
 
 #controls-button-wrapper {
