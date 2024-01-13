@@ -31,7 +31,7 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
     })
 };
 
-const createLabel = (icon: string, text: string, verticalMode = false) => cf.html`<span class="icon">${icon}</span>${verticalMode ? '' : text}`;
+const createLabel = (icon: string, text: string, verticalMode = false) => cf.html`<span class="icon">${icon}</span> ${verticalMode ? '' : text}`;
 
 const setupControls = () => {
     const ctrlBar = queryUnsafe('#ink-ctrl-buttons');

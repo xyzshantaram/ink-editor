@@ -27,7 +27,7 @@ const setPrompts = (editor, prompts) => {
         }));
     });
 };
-const createLabel = (icon, text, verticalMode = false) => cf.html `<span class="icon">${icon}</span>${verticalMode ? '' : text}`;
+const createLabel = (icon, text, verticalMode = false) => cf.html `<span class="icon">${icon}</span> ${verticalMode ? '' : text}`;
 const setupControls = () => {
     const ctrlBar = queryUnsafe('#ink-ctrl-buttons');
     const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=ink-ctrl-]:not(#ink-ctrl-preview)"));
