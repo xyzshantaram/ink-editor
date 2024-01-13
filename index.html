@@ -1,44 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ink Editor</title>
-    <link rel="stylesheet" href="./dist/ink-editor.css">
+    <title>Ink Demo</title>
+    <link rel=stylesheet href="./dist/ink-editor.css">
 </head>
 
 <body>
-    <div id="editor-testing"></div>
-    <script type="module">
-        import { debounce, init } from "./dist/ink-editor.js";
 
-        const parent = document.querySelector('#editor-testing');
-        const defaultContent = "# Editor Demo\n";
+    <script type="module">
+        import { debounce, init } from "https://esm.sh/ink-editor/dist/ink-editor.min.js";
         const prompts = ["Prompts are insertable snippets."];
-        const placeholder = "This string shows when the editor is empty.";
-        const autosave = debounce((text) => {
-            console.log('saving...');
-            localStorage.setItem("contents", text);
-        }, 1000);
-        const retrieve = () => localStorage.getItem('contents');
-        const doneFn = (text) => console.log(`done clicked with content ${text}`);
-        const exit = () => console.log('received exit request');
+        // pass `disablePrompts: true` to disable
+
         const { editor, setVal, getVal } = await init(
-            parent,
-            defaultContent,
+            document.body, // parent element to append to
+            "# Editor Demo", // default markdown content
             prompts,
-            placeholder,
+            "This string shows when the editor is empty.", // placeholder to use
             {
-                autosave,
-                retrieve,
-                doneFn,
-                exit,
-                width: '100%',
-                height: 'calc(100vh - 1rem)',
-                fontFamily: "'Roboto Mono', monospace",
-                verticalMode: true
+                autosave: debounce((text) => localStorage.setItem("contents", text), 1000),
+                retrieve: () => localStorage.getItem('contents'),
+                done: (text) => console.log(`done clicked with content ${text}`),
+                exit: (_) => console.log("received exit request"),
             }
         );
     </script>

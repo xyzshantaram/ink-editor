@@ -1,48 +1,115 @@
 # ink-editor
 
-The editor component for one of my upcoming projects.
+A markdown-based WYSIWYG editor based on CodeMirror 6. Built with
+[campfire.js](https://campfire.js.org).
+
+## Screenshots
+
+![Vertical (compact) mode](./img/2024-01-10_13-47.png)
+
+![Horizontal mode](./img/2024-01-13_18-29.png)
 
 ## Usage
 
-```ts
-import { debounce, init } from "./dist/ink-editor.js";
+```html
+<html>
 
-const parent = document.body;
-const defaultContent = "# Editor Demo\n";
-const prompts = ["Prompts are insertable snippets."];
-const placeholder = "This string shows when the editor is empty.";
-const autosave = debounce((text) => {
-  console.log("saving...");
-  localStorage.setItem("contents", text);
-}, 1000);
-const retrieve = () => localStorage.getItem("contents");
-const done = (text) => console.log(`done clicked with content ${text}`);
-const exit = () => console.log("received exit request");
-const { editor, setVal, getVal } = await init(
-  parent,
-  defaultContent,
-  prompts,
-  placeholder,
-  {
-    autosave,
-    retrieve,
-    done,
-    exit,
-  },
-);
+<head>
+    <title>Ink Demo</title>
+    <link rel=stylesheet href="./dist/ink-editor.css">
+</head>
+
+<body>
+  <script type="module">
+    import { debounce, init } from "https://esm.sh/ink-editor/dist/ink-editor.min.js";
+    const prompts = ["Prompts are insertable snippets."];
+    // pass `disablePrompts: true` to disable
+
+    const { editor, setVal, getVal } = await init(
+      document.body, // parent element to append to
+      "# Editor Demo", // default markdown content
+      prompts,
+      "This string shows when the editor is empty.", // placeholder to use
+      {
+        autosave: debounce(
+          (text) => localStorage.setItem("contents", text), 
+        1000),
+        retrieve: () => localStorage.getItem('contents'),
+        done: (text) => console.log(`done clicked with content ${text}`),
+        exit: (_) => console.log("received exit request"),
+      }, // other options described below
+    );
+  </script>
+</body>
+
+</html>
 ```
 
-You'll need the `NerdFont-stripped.ttf` file from `fonts/` along with
-`dist/writr-editor.css`.
+If you intend on self-hosting, you'll need the `NerdFont-stripped.ttf` and
+'writr-editor.css' to be placed in the same dir and inserted in your HTML
+document.
 
 Also, you'll need `alert.css` from the [cf-alert](https://npmjs.com/cf-alert)
 library.
 
+### Full list of editor options (`interface EditorOptions`)
+
+<details>
+<summary>
+Click to expand
+</summary>
+
+#### `autosave: (contents: string) => void | Promise<void>`
+
+The function to use for autosaving the document.
+
+#### `retrieve: () => string | Promise<string>`
+
+A function the editor calls to get autosaved content if it is nonempty. Should
+return the autosaved content.
+
+#### `doneFn: (text: string) => void | Promise<void>`
+
+Function called when Done is clicked in the editor.
+
+#### `exit: () => void | Promise<void>`
+
+A function called when Exit is clicked in the editor.
+
+#### `width: string` and `height: string`
+
+Width and height of the editor in CSS units.
+
+#### `fontFamily: string`
+
+CSS font family to be used in the editor. Identical to setting font-family via
+CSS.
+
+#### `disablePrompts: boolean`
+
+Whether to disable the Prompts feature.
+
+#### `verticalMode: boolean`
+
+Whether to lay out the editor vertically (with controls in a horizontal top bar)
+or horizontally (controls go in a sidebar and are hidden on mobile).
+
+#### `parse: (str: string) => string;`
+
+A parsing function, used for the preview feature. Should take in a markdown
+string and return an HTML string.
+
+</details>
+
 ## Building
 
 ```bash
+git clone https://github.com/xyzshantaram/ink-editor # clone repo however you like
+cd ink-editor
+cd fonts # building the icon font
+./strip-fonts.sh # needs uni2ascii and pyftsubset
 npm install # install deps
-npm run build-all # minifies css (will need deno installed) and runs npm build
+npm run build # runs tsc, esbuild, minifies css, copies fonts into the dist/ directory
 ```
 
 ## LICENSE
