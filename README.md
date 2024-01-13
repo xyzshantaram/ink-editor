@@ -19,7 +19,7 @@ and build information.
 
 <head>
     <title>Ink Demo</title>
-    <link rel=stylesheet href="./dist/ink-editor.css">
+    <link rel=stylesheet href="https://esm.sh/ink-editor/dist/ink-editor.css">
 </head>
 
 <body>
