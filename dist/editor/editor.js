@@ -61,21 +61,25 @@ export const insertWithNewline = (editor, text) => {
     });
 };
 export const generateInserters = (editor) => {
-    const { cursor } = getDocAndCursor(editor);
     return {
         before: (insertion, cursorOffset = insertion.length) => {
+            const { cursor } = getDocAndCursor(editor);
             insertBefore(editor, cursor, insertion, cursorOffset);
         },
         around: (start, end = start) => {
+            const { cursor } = getDocAndCursor(editor);
             insertAround(editor, cursor, start, end);
         },
-        at: (str) => editor.dispatch({
-            changes: {
-                from: cursor,
-                to: cursor,
-                insert: str
-            }
-        }),
+        at: (str) => {
+            const { cursor } = getDocAndCursor(editor);
+            editor.dispatch({
+                changes: {
+                    from: cursor,
+                    to: cursor,
+                    insert: str
+                }
+            });
+        },
         withNewline: (text) => insertWithNewline(editor, text)
     };
 };

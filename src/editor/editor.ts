@@ -71,8 +71,8 @@ const insertAround = (editor: EditorView, cursor: number, start: string, end = s
 
 export const insertWithNewline = (editor: EditorView, text: string) => {
     const { doc, cursor } = getDocAndCursor(editor);
-    const pos = offsetToPos(editor, cursor);
-    pos.ch = doc.lineAt(cursor).length;
+    const pos = offsetToPos(editor, cursor!);
+    pos.ch = doc.lineAt(cursor!).length;
     const newPos = posToOffset(editor, pos);
     editor.dispatch({
         changes: { from: newPos, to: newPos, insert: `\n${text}` }
@@ -80,22 +80,26 @@ export const insertWithNewline = (editor: EditorView, text: string) => {
 }
 
 export const generateInserters = (editor: EditorView) => {
-    const { cursor } = getDocAndCursor(editor);
 
     return {
         before: (insertion: string, cursorOffset = insertion.length) => {
-            insertBefore(editor, cursor, insertion, cursorOffset);
+            const { cursor } = getDocAndCursor(editor);
+            insertBefore(editor, cursor!, insertion, cursorOffset);
         },
         around: (start: string, end = start) => {
-            insertAround(editor, cursor, start, end);
+            const { cursor } = getDocAndCursor(editor);
+            insertAround(editor, cursor!, start, end);
         },
-        at: (str: string) => editor.dispatch({
-            changes: {
-                from: cursor,
-                to: cursor,
-                insert: str
-            }
-        }),
+        at: (str: string) => {
+            const { cursor } = getDocAndCursor(editor);
+            editor.dispatch({
+                changes: {
+                    from: cursor!,
+                    to: cursor!,
+                    insert: str
+                }
+            })
+        },
         withNewline: (text: string) => insertWithNewline(editor, text)
     }
 }
