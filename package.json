@@ -1,7 +1,8 @@
 {
   "name": "ink-editor",
   "version": "1.2.0",
-  "description": "Editor component for the Writr app",
+  "description": "Markdown-based WYSIWYG editor component.",
+  "keywords": ["rich-text", "markdown", "editor", "component", "wysiwyg"],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
