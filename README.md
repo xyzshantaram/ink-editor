@@ -49,9 +49,6 @@ If you intend on self-hosting, you'll need the `NerdFont-stripped.ttf` and
 'writr-editor.css' to be placed in the same dir and inserted in your HTML
 document.
 
-Also, you'll need `alert.css` from the [cf-alert](https://npmjs.com/cf-alert)
-library.
-
 ### Full list of editor options (`interface EditorOptions`)
 
 <details>

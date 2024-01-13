@@ -9,19 +9,30 @@
 
     <script type="module">
         import { debounce, init } from "https://esm.sh/ink-editor/dist/ink-editor.min.js";
-        const prompts = ["Prompts are insertable snippets."];
-        // pass `disablePrompts: true` to disable
+        import { marked } from "https://esm.sh/marked";
+        import { confirm } from "https://esm.sh/cf-alert";
+
+        const verticalMode = await confirm('Do you want to try vertical mode or sidebar mode?', {
+            yes: "Vertical mode",
+            no: "Sidebar mode"
+        })
+
+        const DEFAULT_CONTENT = await fetch('https://raw.githubusercontent.com/xyzshantaram/ink-editor/master/README.md')
+            .then(res => res.ok ? res.text() : '# Editor Demo');
 
         const { editor, setVal, getVal } = await init(
             document.body, // parent element to append to
-            "# Editor Demo", // default markdown content
-            prompts,
+            DEFAULT_CONTENT, // default markdown content
+            [],
             "This string shows when the editor is empty.", // placeholder to use
             {
                 autosave: debounce((text) => localStorage.setItem("contents", text), 1000),
                 retrieve: () => localStorage.getItem('contents'),
                 done: (text) => console.log(`done clicked with content ${text}`),
                 exit: (_) => console.log("received exit request"),
+                parse: marked.parse,
+                disablePrompts: true,
+                verticalMode
             }
         );
     </script>
