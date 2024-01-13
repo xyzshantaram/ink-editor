@@ -1,8 +1,14 @@
 {
   "name": "ink-editor",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Markdown-based WYSIWYG editor component.",
-  "keywords": ["rich-text", "markdown", "editor", "component", "wysiwyg"],
+  "keywords": [
+    "rich-text",
+    "markdown",
+    "editor",
+    "component",
+    "wysiwyg"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
