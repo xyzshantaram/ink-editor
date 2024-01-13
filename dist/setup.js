@@ -74,7 +74,6 @@ const setupDropdowns = () => {
 const handlePreview = (previewing, parse, { cmRoot, previewPane, controls, editor, verticalMode }) => {
     const res = !previewing;
     controls[res ? 'disable' : 'enable']();
-    console.log(cmRoot, previewPane);
     cmRoot.style.display = res ? 'none' : 'block';
     previewPane.style.display = res ? 'block' : 'none';
     previewPane.innerHTML = parse(editor.state.doc.toString());
