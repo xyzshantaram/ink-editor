@@ -106,7 +106,6 @@ const handlePreview = (
 ) => {
     const res = !previewing;
     controls[res ? 'disable' : 'enable']();
-    console.log(cmRoot, previewPane);
     cmRoot.style.display = res ? 'none' : 'block';
     previewPane.style.display = res ? 'block' : 'none';
     previewPane.innerHTML = parse(editor.state.doc.toString());
