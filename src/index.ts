@@ -117,6 +117,7 @@ const init = async (
 
     getRootElt(root).appendChild(elt);
     const { editor } = await setup(
+        elt,
         cmRoot,
         previewPane,
         defaultContent,

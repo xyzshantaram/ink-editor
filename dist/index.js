@@ -47,7 +47,7 @@ const init = async (root, defaultContent = '', prompts = [], placeholder = '', u
         elt.classList.add('prompts-disabled');
     }
     getRootElt(root).appendChild(elt);
-    const { editor } = await setup(cmRoot, previewPane, defaultContent, prompts, placeholder, options);
+    const { editor } = await setup(elt, cmRoot, previewPane, defaultContent, prompts, placeholder, options);
     const getVal = () => editor.state.doc.toString();
     const setVal = (text) => editor.dispatch({ changes: { from: 0, to: editor.state.doc.length, insert: text } });
     return { editor, getVal, setVal };

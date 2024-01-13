@@ -33,8 +33,8 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
 
 const createLabel = (icon: string, text: string, verticalMode = false) => cf.html`<span class="icon">${icon}</span> ${verticalMode ? '' : text}`;
 
-const setupControls = () => {
-    const ctrlBar = queryUnsafe('#ink-ctrl-buttons');
+const setupControls = (parent: HTMLElement) => {
+    const ctrlBar = parent.querySelector('#ink-ctrl-buttons') as HTMLElement;
     const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=ink-ctrl-]:not(#ink-ctrl-preview)"));
 
     return {
@@ -43,7 +43,7 @@ const setupControls = () => {
     };
 }
 
-const setupToggles = () => {
+const setupToggles = (parent: HTMLElement) => {
     let timeout: NodeJS.Timeout;
     const handler = () => {
         const btns = queryUnsafe('#ink-ctrl-buttons');
@@ -57,12 +57,12 @@ const setupToggles = () => {
             timeout = setTimeout(() => btns.classList.add('mobile-hidden'), 500);
         }
     }
-    document.querySelectorAll('.controls-toggle-button').forEach(btn =>
+    parent.querySelectorAll('.controls-toggle-button').forEach(btn =>
         btn.addEventListener('click', handler));
 };
 
-const setupDropdowns = () => {
-    Array.from(document.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
+const setupDropdowns = (parent: HTMLElement) => {
+    Array.from(parent.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
         const menu = queryUnsafe('.ink-ctrl-dropdown-menu', elt);
         const btn = queryUnsafe('span.icon.button', elt);
 
@@ -170,6 +170,7 @@ interface SetupOptions {
 }
 
 export const setup = async (
+    parent: HTMLElement,
     cmRoot: HTMLElement,
     previewPane: HTMLElement,
     defaultContent: string,
@@ -194,9 +195,9 @@ export const setup = async (
     });
 
     if (prompts?.length >= 1) setPrompts(editor, prompts);
-    const controls = setupControls();
-    setupToggles();
-    setupDropdowns();
+    const controls = setupControls(parent);
+    setupToggles(parent);
+    setupDropdowns(parent);
 
     const insert = generateInserters(editor);
     const handlers = setupHandlers({

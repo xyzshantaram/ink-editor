@@ -28,15 +28,15 @@ const setPrompts = (editor, prompts) => {
     });
 };
 const createLabel = (icon, text, verticalMode = false) => cf.html `<span class="icon">${icon}</span> ${verticalMode ? '' : text}`;
-const setupControls = () => {
-    const ctrlBar = queryUnsafe('#ink-ctrl-buttons');
+const setupControls = (parent) => {
+    const ctrlBar = parent.querySelector('#ink-ctrl-buttons');
     const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=ink-ctrl-]:not(#ink-ctrl-preview)"));
     return {
         disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
         enable: () => ctrlBtns.forEach(elt => elt.classList.remove('disabled'))
     };
 };
-const setupToggles = () => {
+const setupToggles = (parent) => {
     let timeout;
     const handler = () => {
         const btns = queryUnsafe('#ink-ctrl-buttons');
@@ -51,10 +51,10 @@ const setupToggles = () => {
             timeout = setTimeout(() => btns.classList.add('mobile-hidden'), 500);
         }
     };
-    document.querySelectorAll('.controls-toggle-button').forEach(btn => btn.addEventListener('click', handler));
+    parent.querySelectorAll('.controls-toggle-button').forEach(btn => btn.addEventListener('click', handler));
 };
-const setupDropdowns = () => {
-    Array.from(document.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
+const setupDropdowns = (parent) => {
+    Array.from(parent.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
         const menu = queryUnsafe('.ink-ctrl-dropdown-menu', elt);
         const btn = queryUnsafe('span.icon.button', elt);
         let open = false;
@@ -114,7 +114,7 @@ const setupHandlers = ({ parse, cmRoot, previewPane, insert, doneFn, editor, exi
         }
     };
 };
-export const setup = async (cmRoot, previewPane, defaultContent, prompts, placeholder, options) => {
+export const setup = async (parent, cmRoot, previewPane, defaultContent, prompts, placeholder, options) => {
     cmRoot.style.fontFamily = options.fontFamily;
     const [editor, injectExtension] = createCmEditor({
         placeholder,
@@ -131,9 +131,9 @@ export const setup = async (cmRoot, previewPane, defaultContent, prompts, placeh
     });
     if (prompts?.length >= 1)
         setPrompts(editor, prompts);
-    const controls = setupControls();
-    setupToggles();
-    setupDropdowns();
+    const controls = setupControls(parent);
+    setupToggles(parent);
+    setupDropdowns(parent);
     const insert = generateInserters(editor);
     const handlers = setupHandlers({
         cmRoot,

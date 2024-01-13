@@ -9,7 +9,7 @@ interface SetupOptions {
     verticalMode: boolean;
     parse: (src: string) => string;
 }
-export declare const setup: (cmRoot: HTMLElement, previewPane: HTMLElement, defaultContent: string, prompts: string[], placeholder: string, options: SetupOptions) => Promise<{
+export declare const setup: (parent: HTMLElement, cmRoot: HTMLElement, previewPane: HTMLElement, defaultContent: string, prompts: string[], placeholder: string, options: SetupOptions) => Promise<{
     editor: EditorView;
     injectExtension: (extn: any) => void;
 }>;
