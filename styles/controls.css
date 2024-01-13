@@ -51,7 +51,8 @@
 }
 
 #ink-ctrl-buttons.vertical {
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    overflow-y: auto;
     flex-direction: row;
     justify-content: space-between;
 }
