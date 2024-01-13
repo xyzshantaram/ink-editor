@@ -3,6 +3,9 @@
 A markdown-based WYSIWYG editor based on CodeMirror 6. Built with
 [campfire.js](https://campfire.js.org).
 
+Try the [demo](https://xyzshantaram.github.io/ink-editor/), or read on for usage
+and build information.
+
 ## Screenshots
 
 ![Vertical (compact) mode](./img/2024-01-10_13-47.png)
