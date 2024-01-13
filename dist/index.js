@@ -3,16 +3,18 @@ import { INK_DOM } from './dom';
 import cf from "campfire.js";
 import { setup } from './setup';
 const DEFAULT_OPTIONS = {
-    autosave: () => { console.log('Autosaving...'); },
+    autosave: () => {
+        console.log('Autosaving...');
+    },
     retrieve: () => '',
     doneFn: console.log,
-    exit: () => { console.warn('exit clicked'); },
+    exit: () => console.warn('exit clicked'),
     width: '100%',
     height: '100%',
     fontFamily: "monospace",
     disablePrompts: false,
     verticalMode: false,
-    parse: (str) => str
+    parse: (str) => str,
 };
 const getRootElt = (root) => {
     if (typeof root === 'string') {

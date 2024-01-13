@@ -4,18 +4,76 @@ import cf from "campfire.js";
 import { setup } from './setup';
 
 
-const DEFAULT_OPTIONS = {
-    autosave: () => { console.log('Autosaving...') },
+interface EditorOptions {
+    /**
+     * The function to use for autosaving the document.
+     */
+    autosave: (contents: string) => void | Promise<void>;
+
+    /**
+     * A function the editor calls to get autosaved content if it is nonempty.
+     * @returns The autosaved content.
+     */
+    retrieve: () => string | Promise<string>;
+
+    /**
+     * Function called when Done is clicked in the editor.
+     */
+    doneFn: (text: string) => void | Promise<void>;
+
+    /**
+     * A function called when Exit is clicked in the editor.
+     */
+    exit: () => void | Promise<void>;
+
+    /**
+     * Width of the editor in CSS units.
+     */
+    width: string;
+
+    /**
+     * Height of the editor in CSS units.
+     */
+    height: string;
+
+    /**
+     * Font family to use in the editor.
+     */
+    fontFamily: string;
+
+    /**
+     * Whether to disable the Prompts feature.
+     */
+    disablePrompts: boolean;
+
+    /**
+     * Whether to lay out the editor vertically (with controls in a horizontal top bar)
+     * or horizontally (controls go in a sidebar and are hidden on mobile).
+     */
+    verticalMode: boolean;
+
+    /**
+     * A parsing function. By default, this is the identity function.
+     * @param str The markdown string to parse.
+     * @returns The parsed markdown.
+     */
+    parse: (str: string) => string;
+}
+
+const DEFAULT_OPTIONS: EditorOptions = {
+    autosave: () => {
+        console.log('Autosaving...');
+    },
     retrieve: () => '',
     doneFn: console.log,
-    exit: () => { console.warn('exit clicked') },
+    exit: () => console.warn('exit clicked'),
     width: '100%',
     height: '100%',
     fontFamily: "monospace",
     disablePrompts: false,
     verticalMode: false,
-    parse: (str: string) => str
-}
+    parse: (str: string) => str,
+};
 
 const getRootElt = (root: string | HTMLElement): HTMLElement => {
     if (typeof root === 'string') {
@@ -26,7 +84,7 @@ const getRootElt = (root: string | HTMLElement): HTMLElement => {
     return root;
 }
 
-const EditorRoot = (options: typeof DEFAULT_OPTIONS) =>
+const EditorRoot = (options: EditorOptions) =>
     cf.nu('div#ink-editor-root' + (options.verticalMode ? '.vertical' : ''), {
         raw: true,
         c: INK_DOM({
@@ -47,7 +105,7 @@ const init = async (
     defaultContent = '',
     prompts: string[] = [],
     placeholder = '',
-    userOptions: Partial<Record<keyof typeof DEFAULT_OPTIONS, any>>
+    userOptions: Partial<EditorOptions>
 ) => {
     const options = Object.assign({}, DEFAULT_OPTIONS, userOptions);
     const [elt, cmRoot, previewPane] = EditorRoot(options);
