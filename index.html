@@ -18,7 +18,7 @@
         const verticalMode = await confirm('Do you want to try vertical (compact) mode or sidebar mode?', {
             yes: "Vertical mode",
             no: "Sidebar mode"
-        })
+        }, "Demo mode selection")
 
         const DEFAULT_CONTENT = await fetch('https://raw.githubusercontent.com/xyzshantaram/ink-editor/master/README.md')
             .then(res => res.ok ? res.text() : '# Editor Demo');
