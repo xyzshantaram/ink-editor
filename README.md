@@ -8,9 +8,9 @@ and build information.
 
 ## Screenshots
 
-![Vertical (compact) mode](./img/2024-01-10_13-47.png)
+![Vertical (compact) mode](https://raw.githubusercontent.com/xyzshantaram/ink-editor/master/img/vertical.png)
 
-![Horizontal mode](./img/2024-01-13_18-29.png)
+![Horizontal mode](https://raw.githubusercontent.com/xyzshantaram/ink-editor/master/img/horizontal.png)
 
 ## Usage
 
