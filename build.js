@@ -55,6 +55,9 @@ if (import.meta.main) {
     const builtCss = info.isDirectory ? await buildCss(input) : await processCssFile(input);
     await Deno.writeTextFile(outfile, builtCss.join('\n'));
 
+    console.log("Copying font...");
+    await Deno.copyFile('./fonts/NerdFont-stripped.ttf', 'dist/NerdFont-stripped.ttf');
+
     const run = async (exe, ...args) => {
         const cmd = new Deno.Command(exe, { args });
         const output = await cmd.output();
@@ -77,18 +80,15 @@ if (import.meta.main) {
             die(`npm build failed with code ${code}: ${stderr}`);
         }
 
-        const paths = [];
         for await (const entry of fs.expandGlob('./ts-output/**')) {
             if (entry.name === 'ts-output') continue;
             const replaced = entry.path.replace('ts-output', 'dist');
             if (entry.isDirectory) {
-                await Deno.mkdir(replaced);
+                await Deno.mkdir(replaced, { recursive: true });
             }
             else {
                 await Deno.rename(entry.path, replaced);
             }
         }
-        console.log(paths);
-        //const { code, stderr } = await run('mv', , 'build-js');
     }
 }
