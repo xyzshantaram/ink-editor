@@ -62,7 +62,7 @@ const genBtns = (labels: boolean) =>
                 id="${k}"
                 title="${v.label}"
                 aria-label="${v.label}"
-                class="button"
+                class="ink-button"
             >
                 <span class=icon>${v.icon}</span> 
                 ${labels ? v.label : ''}
@@ -76,7 +76,7 @@ export const INK_DOM = ({
     return cf.html`\
 <div id="ink-ctrl-buttons" class='mobile-hidden${verticalMode ? ' vertical' : ''}'>
     ${cf.r(genBtns(buttonLabels))}
-    <button class="controls-toggle-button button"><span class=icon></span> Hide controls</button>
+    <button class="controls-toggle-button ink-button"><span class=icon></span> Hide controls</button>
 </div>
 
 <div id="ink-preview"></div>
@@ -84,7 +84,7 @@ export const INK_DOM = ({
 <div id="ink-prompts">          
     <div id="ink-prompt-heading">
         <h3>Select a prompt</h3>
-        <button class="icon button" id="ink-ctrl-cancel-prompt"></button>
+        <button class="icon ink-button" id="ink-ctrl-cancel-prompt"></button>
     </div>
     <div id="ink-prompts-list">
         <ul></ul>
@@ -94,7 +94,7 @@ export const INK_DOM = ({
     <div id="ink-editor"></div>
     ${verticalMode ? '' : cf.r(cf.html`
     <div id='controls-button-wrapper'>
-        <button class='controls-toggle-button button icon'></button>
+        <button class='controls-toggle-button ink-button icon'></button>
     </div>
     `)}
 </div>

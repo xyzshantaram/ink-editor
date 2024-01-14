@@ -66,7 +66,7 @@ const setupToggles = (parent: HTMLElement) => {
 const setupDropdowns = (parent: HTMLElement) => {
     Array.from(parent.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
         const menu = elt.querySelector('.ink-ctrl-dropdown-menu') as HTMLElement;
-        const btn = elt.querySelector('span.icon.button') as HTMLElement;
+        const btn = elt.querySelector('span.icon.ink-button') as HTMLElement;
 
         let open = false;
 

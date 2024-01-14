@@ -33,7 +33,7 @@
     display: none;
 }
 
-#ink-ctrl-buttons>.button {
+#ink-ctrl-buttons>.ink-button {
     max-height: 2.5rem;
     border: 2px solid transparent;
     background: white;
@@ -41,12 +41,12 @@
     transition-duration: 0.2s;
 }
 
-#ink-ctrl-buttons.vertical>.button {
+#ink-ctrl-buttons.vertical>.ink-button {
     height: 3rem;
     width: 3rem;
 }
 
-#ink-ctrl-buttons.vertical>.button.controls-toggle-button {
+#ink-ctrl-buttons.vertical>.ink-button.controls-toggle-button {
     display: none;
 }
 
@@ -69,7 +69,7 @@
     display: none;
 }
 
-#controls-button-wrapper .button {
+#controls-button-wrapper .ink-button {
     margin: 0.2rem;
     transition-duration: 0.2s;
     border: 2px solid transparent;
@@ -106,16 +106,16 @@
 }
 
 @media (hover: hover) {
-    #ink-ctrl-buttons .button:hover {
+    #ink-ctrl-buttons .ink-button:hover {
         border-color: black;
     }
 
-    #controls-button-wrapper .button:hover {
+    #controls-button-wrapper .ink-button:hover {
         border-color: black;
     }
 }
 
-.button.controls-toggle-button {
+.ink-button.controls-toggle-button {
     display: none;
 }
 
@@ -136,7 +136,7 @@
         display: block;
     }
 
-    .button.controls-toggle-button {
+    .ink-button.controls-toggle-button {
         display: block;
     }
 }

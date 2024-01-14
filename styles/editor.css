@@ -41,7 +41,7 @@
     font-family: 'NerdFont' !important;
 }
 
-.button {
+.ink-button {
     text-align: center;
     border: 2.5px solid grey;
     border-radius: 0;
@@ -56,12 +56,12 @@
 }
 
 @media screen and not (hover: none) {
-    .button:hover {
+    .ink-button:hover {
         border-color: black;
     }
 }
 
-.button.icon {
+.ink-button.icon {
     padding-left: 0;
     font-size: 1.1rem;
     padding: 0.4rem;

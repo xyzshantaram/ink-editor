@@ -57,7 +57,7 @@ const setupToggles = (parent) => {
 const setupDropdowns = (parent) => {
     Array.from(parent.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
         const menu = elt.querySelector('.ink-ctrl-dropdown-menu');
-        const btn = elt.querySelector('span.icon.button');
+        const btn = elt.querySelector('span.icon.ink-button');
         let open = false;
         const hide = () => {
             open = false;
