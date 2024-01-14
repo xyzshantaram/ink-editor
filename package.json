@@ -1,6 +1,6 @@
 {
   "name": "ink-editor",
-  "version": "1.3.11",
+  "version": "1.3.12",
   "description": "Markdown-based WYSIWYG editor component.",
   "keywords": [
     "rich-text",
