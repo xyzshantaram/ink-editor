@@ -11,15 +11,6 @@ export const offsetToPos = (e: EditorView, offset: number) => {
     return { line: line.number - 1, ch: offset - line.from }
 }
 
-
-export const queryUnsafe = (selector: string, elt: Document | Element = document) => {
-    const val = elt.querySelector(selector)!;
-    if (val instanceof Element) {
-        return val as HTMLElement;
-    }
-    return val;
-}
-
 export function debounce(func, delay: number | undefined) {
     let timerId: number;
     return function (...args: any[]) {

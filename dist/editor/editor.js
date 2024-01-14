@@ -1,12 +1,12 @@
 import { EditorView } from "@codemirror/view";
-import { offsetToPos, posToOffset, queryUnsafe } from '../utils';
+import { offsetToPos, posToOffset } from '../utils';
 import { StateEffect } from "@codemirror/state";
 import { getExtensions, getDocAndCursor, getLineOffset } from "./utils";
 ;
-export const createCmEditor = ({ placeholder, autosave, fontFamily }) => {
+export const createCmEditor = ({ placeholder, autosave, fontFamily, parent }) => {
     const view = new EditorView({
         extensions: getExtensions(placeholder, autosave, fontFamily),
-        parent: queryUnsafe('#ink-editor'),
+        parent
     });
     function injectExtension(extension) {
         view.dispatch({

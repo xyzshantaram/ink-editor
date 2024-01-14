@@ -7,13 +7,6 @@ export const offsetToPos = (e, offset) => {
     let line = doc.lineAt(offset);
     return { line: line.number - 1, ch: offset - line.from };
 };
-export const queryUnsafe = (selector, elt = document) => {
-    const val = elt.querySelector(selector);
-    if (val instanceof Element) {
-        return val;
-    }
-    return val;
-};
 export function debounce(func, delay) {
     let timerId;
     return function (...args) {

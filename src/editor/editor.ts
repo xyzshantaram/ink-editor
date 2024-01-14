@@ -1,18 +1,19 @@
 import { EditorView } from "@codemirror/view";
-import { autosaveFn, offsetToPos, posToOffset, queryUnsafe } from '../utils';
+import { autosaveFn, offsetToPos, posToOffset } from '../utils';
 import { StateEffect } from "@codemirror/state";
 import { getExtensions, getDocAndCursor, getLineOffset } from "./utils";
 
 interface CmEditorOptions {
     placeholder: string,
     autosave: autosaveFn,
-    fontFamily: string
+    fontFamily: string,
+    parent: HTMLElement
 };
 
-export const createCmEditor = ({ placeholder, autosave, fontFamily }: CmEditorOptions) => {
+export const createCmEditor = ({ placeholder, autosave, fontFamily, parent }: CmEditorOptions) => {
     const view = new EditorView({
         extensions: getExtensions(placeholder, autosave, fontFamily),
-        parent: queryUnsafe('#ink-editor'),
+        parent
     });
 
     function injectExtension(extension) {

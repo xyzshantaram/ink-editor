@@ -1,21 +1,21 @@
 import { EditorView } from "@codemirror/view";
 import { insertWithNewline, createCmEditor, generateInserters } from "./editor/editor";
-import { queryUnsafe, autosaveFn } from "./utils";
+import { autosaveFn } from "./utils";
 import cf from "campfire.js";
 import { confirm } from 'cf-alert';
 
-const hidePrompts = () => {
-    queryUnsafe('#ink-prompts').style.display = 'none';
+const hidePrompts = (parent: HTMLElement) => {
+    (parent.querySelector('#ink-prompts') as HTMLElement).style.display = 'none';
 }
 
-const showPrompts = () => {
-    const prompts = queryUnsafe('#ink-prompts');
+const showPrompts = (parent: HTMLElement) => {
+    const prompts = parent.querySelector('#ink-prompts') as HTMLElement;
     prompts.style.display = 'flex';
     prompts.scrollTop = 0;
 }
 
-const setPrompts = (editor: EditorView, prompts: string[]) => {
-    const list = queryUnsafe('#ink-prompts-list>ul');
+const setPrompts = (editor: EditorView, prompts: string[], parent: HTMLElement) => {
+    const list = parent.querySelector('#ink-prompts-list>ul') as HTMLUListElement;
     prompts.forEach((prompt: string) => {
         if (!prompt) return;
         list.append(...cf.nu('li', {
@@ -24,7 +24,7 @@ const setPrompts = (editor: EditorView, prompts: string[]) => {
             on: {
                 click: () => {
                     insertWithNewline(editor, `## ${prompt}`);
-                    hidePrompts();
+                    hidePrompts(parent);
                 }
             }
         }));
@@ -35,18 +35,20 @@ const createLabel = (icon: string, text: string, verticalMode = false) => cf.htm
 
 const setupControls = (parent: HTMLElement) => {
     const ctrlBar = parent.querySelector('#ink-ctrl-buttons') as HTMLElement;
-    const ctrlBtns = Array.from(ctrlBar.querySelectorAll("[id^=ink-ctrl-]:not(#ink-ctrl-preview)"));
+    const ctrlBtns = ctrlBar.querySelectorAll("button");
+    const toToggle = Array.from(ctrlBar.querySelectorAll("[id^=ink-ctrl-]:not(#ink-ctrl-preview)"));
 
     return {
-        disable: () => ctrlBtns.forEach(elt => elt.classList.add('disabled')),
-        enable: () => ctrlBtns.forEach(elt => elt.classList.remove('disabled'))
+        disable: () => toToggle.forEach(elt => elt.classList.add('disabled')),
+        enable: () => toToggle.forEach(elt => elt.classList.remove('disabled')),
+        buttons: ctrlBtns
     };
 }
 
 const setupToggles = (parent: HTMLElement) => {
     let timeout: NodeJS.Timeout;
     const handler = () => {
-        const btns = queryUnsafe('#ink-ctrl-buttons');
+        const btns = parent.querySelector('#ink-ctrl-buttons') as HTMLElement;
         if (btns.classList.contains('mobile-hidden')) {
             btns.classList.remove('mobile-hidden');
             btns.style.animation = 'slide-in 0.5s forwards';
@@ -63,8 +65,8 @@ const setupToggles = (parent: HTMLElement) => {
 
 const setupDropdowns = (parent: HTMLElement) => {
     Array.from(parent.querySelectorAll('.ink-ctrl-dropdown')).forEach(elt => {
-        const menu = queryUnsafe('.ink-ctrl-dropdown-menu', elt);
-        const btn = queryUnsafe('span.icon.button', elt);
+        const menu = elt.querySelector('.ink-ctrl-dropdown-menu') as HTMLElement;
+        const btn = elt.querySelector('span.icon.button') as HTMLElement;
 
         let open = false;
 
@@ -96,12 +98,13 @@ interface HandlerSetup {
     verticalMode: boolean;
     defaultContent: string;
     parse: (src: string) => string;
+    parent: HTMLElement;
 }
 
 const handlePreview = (
     previewing: boolean,
     parse: (src: string) => string,
-    { cmRoot, previewPane, controls, editor, verticalMode }:
+    { cmRoot, previewPane, controls, editor, verticalMode, parent }:
         Omit<HandlerSetup, "insert" | "doneFn" | "exitFn" | "defaultContent" | "parse">
 ) => {
     const res = !previewing;
@@ -109,7 +112,7 @@ const handlePreview = (
     cmRoot.style.display = res ? 'none' : 'block';
     previewPane.style.display = res ? 'block' : 'none';
     previewPane.innerHTML = parse(editor.state.doc.toString());
-    queryUnsafe('#ink-ctrl-preview').innerHTML = res ?
+    parent.querySelector('#ink-ctrl-preview')!.innerHTML = res ?
         createLabel('', 'Edit', verticalMode) : createLabel('󰈈', 'Preview', verticalMode);
     return res;
 }
@@ -124,7 +127,8 @@ const setupHandlers = ({
     exitFn,
     controls,
     verticalMode,
-    defaultContent
+    defaultContent,
+    parent
 }: HandlerSetup) => {
     let previewing = false;
     /*
@@ -149,7 +153,7 @@ const setupHandlers = ({
         "prompt": showPrompts,
         "cancel-prompt": hidePrompts,
         "preview": () => {
-            previewing = handlePreview(previewing, parse, { cmRoot, previewPane, controls, editor, verticalMode });
+            previewing = handlePreview(previewing, parse, { cmRoot, previewPane, controls, editor, verticalMode, parent });
         },
         "reset": async () => {
             if (await confirm('Are you sure you want to reset the editor contents?', {})) {
@@ -182,7 +186,8 @@ export const setup = async (
     const [editor, injectExtension] = createCmEditor({
         placeholder,
         autosave: options.autosave,
-        fontFamily: options.fontFamily
+        fontFamily: options.fontFamily,
+        parent: cmRoot
     }) as [EditorView, (extn) => void];
 
     const saved = await options.retrieve();
@@ -194,7 +199,7 @@ export const setup = async (
         }
     });
 
-    if (prompts?.length >= 1) setPrompts(editor, prompts);
+    if (prompts?.length >= 1) setPrompts(editor, prompts, parent);
     const controls = setupControls(parent);
     setupToggles(parent);
     setupDropdowns(parent);
@@ -210,11 +215,12 @@ export const setup = async (
         doneFn: options.doneFn,
         exitFn: options.exit,
         verticalMode: options.verticalMode,
-        parse: options.parse
+        parse: options.parse,
+        parent
     });
 
     for (const [key, val] of Object.entries(handlers)) {
-        const btn = queryUnsafe(`#ink-ctrl-${key}`);
+        const btn = parent.querySelector(`#ink-ctrl-${key}`) as any;
         if (btn) btn.onclick = val;
     }
 

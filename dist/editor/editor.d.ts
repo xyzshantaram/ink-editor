@@ -4,8 +4,9 @@ interface CmEditorOptions {
     placeholder: string;
     autosave: autosaveFn;
     fontFamily: string;
+    parent: HTMLElement;
 }
-export declare const createCmEditor: ({ placeholder, autosave, fontFamily }: CmEditorOptions) => (EditorView | ((extension: any) => void))[];
+export declare const createCmEditor: ({ placeholder, autosave, fontFamily, parent }: CmEditorOptions) => (EditorView | ((extension: any) => void))[];
 export declare const hasSelection: (editor: EditorView) => boolean;
 export declare const insertWithNewline: (editor: EditorView, text: string) => void;
 export declare const generateInserters: (editor: EditorView) => {
