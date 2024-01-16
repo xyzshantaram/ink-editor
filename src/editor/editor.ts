@@ -81,7 +81,6 @@ export const insertWithNewline = (editor: EditorView, text: string) => {
 }
 
 export const generateInserters = (editor: EditorView) => {
-
     return {
         before: (insertion: string, cursorOffset = insertion.length) => {
             const { cursor } = getDocAndCursor(editor);
