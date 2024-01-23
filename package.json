@@ -9,31 +9,36 @@
     "component",
     "wysiwyg"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/mod.js",
+  "types": "dist/mod.d.ts",
   "files": [
     "/dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-js": "npx tsc && node esbuild.config.mjs",
-    "build": "deno run -A build.js styles dist/ink-editor.css --npm"
+    "build": "deno run -A build.js styles dist/ink-editor.css --npm",
+    "dev": "node esbuild.dev.mjs",
+    "build-css": "deno run -A build.js styles dist/ink-editor.css"
   },
   "author": "xyzshantaram",
   "license": "MIT",
   "dependencies": {
     "@codemirror/commands": "^6.2.4",
-    "@codemirror/lang-markdown": "^6.1.1",
+    "@codemirror/lang-markdown": "^6.2.4",
     "@codemirror/language-data": "^6.3.1",
+    "@codemirror/state": "^6.4.0",
     "@codemirror/view": "^6.11.0",
     "@lezer/markdown": "^1.2.0",
     "campfire.js": "^4.0.0-alpha2",
     "cf-alert": "^0.4.0",
     "esbuild": "^0.17.18",
+    "lucide": "^0.311.0",
     "marked": "^5.0.0"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.15",
+    "@types/feather-icons": "^4.29.4",
     "@types/marked": "^4.3.0",
     "@types/node": "^16.18.26",
     "typescript": "^5.3.3"

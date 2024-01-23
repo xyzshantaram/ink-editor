@@ -55,9 +55,6 @@ if (import.meta.main) {
     const builtCss = info.isDirectory ? await buildCss(input) : await processCssFile(input);
     await Deno.writeTextFile(outfile, builtCss.join('\n'));
 
-    console.log("Copying font...");
-    await Deno.copyFile('./fonts/NerdFont-stripped.ttf', 'dist/NerdFont-stripped.ttf');
-
     const run = async (exe, ...args) => {
         const cmd = new Deno.Command(exe, { args });
         const output = await cmd.output();

@@ -25,13 +25,13 @@ and build information.
 <body>
   <script type="module">
     import { debounce, init } from "https://esm.sh/ink-editor/dist/ink-editor.min.js";
-    const prompts = ["Prompts are insertable snippets."];
-    // pass `disablePrompts: true` to disable
+    const snippets = ["snippets are insertable snippets."];
+    // pass `disablesnippets: true` to disable
 
     const { editor, setVal, getVal } = await init(
       document.body, // parent element to append to
       "# Editor Demo", // default markdown content
-      prompts,
+      snippets,
       "This string shows when the editor is empty.", // placeholder to use
       {
         autosave: debounce(
@@ -85,9 +85,9 @@ Width and height of the editor in CSS units.
 CSS font family to be used in the editor. Identical to setting font-family via
 CSS.
 
-#### `disablePrompts: boolean`
+#### `disablesnippets: boolean`
 
-Whether to disable the Prompts feature.
+Whether to disable the snippets feature.
 
 #### `verticalMode: boolean`
 
