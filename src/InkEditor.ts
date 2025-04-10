@@ -359,10 +359,7 @@ export class InkEditor {
     disableButtonsExcept(target: number) {
         this.#toolbar?.value.forEach((btn, idx) => {
             if (idx === target) return;
-            this.#toolbar?.setAt(idx, {
-                ...btn,
-                disabled: true
-            });
+            this.#toolbar?.set(idx, { ...btn, disabled: true });
         })
     }
 
@@ -371,10 +368,7 @@ export class InkEditor {
      */
     enableButtons() {
         this.#toolbar?.value.forEach((btn, idx) => {
-            this.#toolbar?.setAt(idx, {
-                ...btn,
-                disabled: false
-            })
+            this.#toolbar?.set(idx, { ...btn, disabled: false })
         })
     }
 }

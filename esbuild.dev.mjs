@@ -8,7 +8,7 @@ const ctx = await esbuild.context({
     format: 'esm',
     treeShaking: true,
     sourcemap: true,
-    minify: false
+    minify: true
 });
 
 await ctx.watch();

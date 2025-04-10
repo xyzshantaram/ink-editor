@@ -1,13 +1,20 @@
-import { Store, html, r } from "campfire.js";
+import cf from "campfire.js";
 
 export const PreviewController = (root: HTMLElement, parse: (contents: string) => string | Promise<string>) => {
-    const contents = new Store<string>('');
-    const visibility = new Store<boolean>(false);
+    const contents = cf.store({ value: '' });
+    const visibility = cf.store({ value: false });
 
-    visibility.on('update', val => root.classList.toggle('hidden', !val), true);
-    contents.on('update', async val => root.innerHTML = html`
-    <div class='ink-preview-wrapper'>${r(await parse(val))}</div>
-    `);
+    visibility.on("change", (event) => {
+        root.classList.toggle('hidden', !event.value);
+    });
+
+    contents.on("change", async (event) => {
+        const parsed = await parse(event.value);
+        cf.extend(root, {
+            contents: cf.html`<div class='ink-preview-wrapper'>${cf.r(parsed)}</div>`,
+            raw: true
+        });
+    });
 
     return { contents, visibility };
 }

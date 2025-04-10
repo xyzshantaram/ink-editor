@@ -1,7 +1,7 @@
 import esbuild from "esbuild"
 
 await esbuild.build({
-    entryPoints: ['ts-output/index.js'],
+    entryPoints: ['ts-output/mod.js'],
     bundle: true,
     outfile: './dist/ink-editor.min.js',
     platform: 'browser',
