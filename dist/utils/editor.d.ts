@@ -23,7 +23,7 @@ interface CmEditorOptions {
     fontFamily: string;
     parent: HTMLElement;
 }
-export declare const getExtensions: (ph: string, autosave: InkOptions['onAutosave'], fontFamily: string) => import("@codemirror/state").Extension[];
+export declare const getExtensions: (ph: string, autosave: InkOptions["onAutosave"], fontFamily: string) => import("@codemirror/state").Extension[];
 export declare const createCmEditor: ({ placeholder, onAutosave, fontFamily, parent }: CmEditorOptions) => {
     view: EditorView;
     setReadOnly: (state: boolean) => void;

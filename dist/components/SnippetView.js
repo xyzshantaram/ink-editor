@@ -1,19 +1,23 @@
-import { Store, extend, html, r } from "campfire.js";
+import cf from "campfire.js";
 import { icon } from "../utils/misc";
 export const SnippetView = (parent, editor, snippets) => {
-    const visibility = new Store(false);
-    visibility.on('update', (val) => parent.classList.toggle('hidden', !val), true);
+    const visibility = cf.store({ value: false });
+    visibility.on('update', (event) => {
+        console.log(event);
+        parent.classList.toggle('hidden', !event.value);
+    });
     const handleInteraction = (target) => {
-        console.log(target.closest('snippets-close'));
+        console.log(target.closest('.snippets-close'));
         if (target.classList.contains('snippet-item'))
             editor.insert.withNewline(target.innerHTML);
         else if (target.closest('.snippets-close')) {
             visibility.update(false);
         }
     };
-    extend(parent, {
+    const snippetList = snippets.map(snippet => cf.html `<div class="snippet-item" tabindex="0">${snippet}</div>`).join('');
+    cf.extend(parent, {
         raw: true,
-        c: html `
+        contents: cf.html `
         <div class='snippets-content'>
             <div class='snippets-header'>
                 <div class='snippets-title'><strong>Snippets</strong></div>
@@ -21,16 +25,15 @@ export const SnippetView = (parent, editor, snippets) => {
             </div>
             <div class='snippets-body'>
                 <div class='snippets-list'>
-                ${r(snippets.map(snippet => html `<div class=snippet-item tabindex="0">${snippet}</div>`).join(''))}
+                    ${cf.r(snippetList)}
                 </div>
             </div>
         </div>`,
         on: {
             click: (e) => handleInteraction(e.target),
             keyup: (e) => {
-                if (e.key !== 'Enter')
-                    return;
-                handleInteraction(e.target);
+                if (e.key === 'Enter')
+                    handleInteraction(e.target);
             }
         }
     });
