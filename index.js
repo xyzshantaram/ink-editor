@@ -1,4 +1,4 @@
-import { InkEditor } from "./dist/ink-editor.min.js";
+import { InkEditor } from "./dist/mod.js";
 import { marked } from "https://esm.sh/marked";
 
 const DEFAULT_CONTENT = await fetch('https://raw.githubusercontent.com/xyzshantaram/ink-editor/master/README.md')

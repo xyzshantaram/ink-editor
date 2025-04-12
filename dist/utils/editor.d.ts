@@ -1,5 +1,5 @@
 import { EditorView } from "@codemirror/view";
-import { InkOptions } from "../InkEditor";
+import type { InkOptions } from "../InkEditor.ts";
 export declare const getDocAndCursor: (editor: EditorView) => {
     doc: import("@codemirror/state").Text;
     cursor: number;

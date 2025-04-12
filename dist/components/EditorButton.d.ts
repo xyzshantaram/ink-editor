@@ -1,5 +1,5 @@
-import { InkEditor } from '../mod';
-import { Icons } from '../utils/icons';
+import { InkEditor } from '../mod.ts';
+import { Icons } from '../utils/icons.ts';
 export interface ButtonArgs {
     editor: InkEditor;
     iconName: keyof typeof Icons;

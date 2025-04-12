@@ -1,7 +1,8 @@
 import esbuild from "esbuild"
+import { nodeExternalsPlugin } from 'esbuild-node-externals'
 
 await esbuild.build({
-    entryPoints: ['ts-output/mod.js'],
+    entryPoints: ['src/mod.ts'],
     bundle: true,
     outfile: './dist/ink-editor.min.js',
     platform: 'browser',
@@ -9,6 +10,23 @@ await esbuild.build({
     format: 'esm',
     treeShaking: true,
     sourcemap: true
+}).then(result => {
+    console.log('Build result:', result)
+}).catch(error => {
+    console.log('Build error:', error)
+})
+
+await esbuild.build({
+    entryPoints: ['src/mod.ts'],
+    outdir: './dist/',
+    bundle: true,
+    minify: false,
+    platform: 'node',
+    sourcemap: true,
+    target: ['es2020'],
+    format: 'esm',
+    plugins: [nodeExternalsPlugin()],
+    outExtension: { '.js': '.js' }
 }).then(result => {
     console.log('Build result:', result)
 }).catch(error => {

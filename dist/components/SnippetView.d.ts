@@ -1,2 +1,2 @@
-import { InkEditor } from "../InkEditor";
-export declare const SnippetView: (parent: HTMLElement, editor: InkEditor, snippets: string[]) => import("campfire.js").Store<boolean>;
+import { InkEditor } from "../InkEditor.ts";
+export declare const SnippetView: (parent: HTMLElement, editor: InkEditor, snippets: string[]) => import("campfire.js", { with: { "resolution-mode": "import" } }).Store<boolean>;

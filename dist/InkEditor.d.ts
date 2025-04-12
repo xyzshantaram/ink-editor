@@ -4,7 +4,7 @@
  */
 import { EditorView } from '@codemirror/view';
 import { Store } from 'campfire.js';
-import { ButtonArgs } from './components/EditorButton';
+import type { ButtonArgs } from './components/EditorButton.ts';
 /**
  * Configuration options for the InkEditor instance
  * @interface InkOptions

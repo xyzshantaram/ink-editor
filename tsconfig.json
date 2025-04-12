@@ -1,21 +1,25 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "strictNullChecks": true,
-    "lib": [
-      "DOM",
-      "ESNext",
-      "ESNext.Array"
-    ],
-    "module": "ESNext",
-    "target": "ESNext",
-    "declaration": true,
-    "moduleResolution": "Bundler",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "outDir": "./ts-output"
-  },
-  "include": [
-    "./src/**/*"
-  ]
+    "compilerOptions": {
+        "outDir": "./dist",
+        "allowJs": true,
+        "target": "es6",
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "lib": [
+            "ESNext",
+            "ESNext.Array",
+            "DOM"
+        ],
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "allowImportingTsExtensions": true,
+        "preserveSymlinks": true,
+        "types": [],
+        "skipLibCheck": true
+    },
+    "include": [
+        "./src/**/*"
+    ]
 }
