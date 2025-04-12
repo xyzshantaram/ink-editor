@@ -6,17 +6,17 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "lib": [
+            "DOM",
             "ESNext",
             "ESNext.Array",
-            "DOM"
         ],
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "declaration": true,
-        "emitDeclarationOnly": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
         "allowImportingTsExtensions": true,
-        "preserveSymlinks": true,
-        "types": [],
+        "emitDeclarationOnly": true,
         "skipLibCheck": true
     },
     "include": [

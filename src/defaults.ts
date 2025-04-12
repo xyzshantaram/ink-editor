@@ -1,5 +1,5 @@
 import type { EditorAction, InkOptions } from "./InkEditor.ts";
-import type { ButtonArgs, ButtonSpec } from "./components/EditorButton.ts";
+import type { ButtonSpec } from "./components/EditorButton.ts";
 
 export const DEFAULT_ARGS: InkOptions = {
     toolbar: true,

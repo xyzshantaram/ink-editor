@@ -76,16 +76,5 @@ if (import.meta.main) {
         } else {
             die(`npm build failed with code ${code}: ${stderr}`);
         }
-
-        for await (const entry of fs.expandGlob('./ts-output/**')) {
-            if (entry.name === 'ts-output') continue;
-            const replaced = entry.path.replace('ts-output', 'dist');
-            if (entry.isDirectory) {
-                await Deno.mkdir(replaced, { recursive: true });
-            }
-            else {
-                await Deno.rename(entry.path, replaced);
-            }
-        }
     }
 }
