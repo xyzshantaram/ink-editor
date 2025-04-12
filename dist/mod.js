@@ -494,10 +494,10 @@ var InkEditor = class {
     /** Root element for CodeMirror editor */
     __privateAdd(this, _cmRoot, void 0);
     this.options = Object.assign({}, DEFAULT_ARGS, userOptions);
-    const parent = getRootElt(root);
-    parent.classList.add("ink-root");
-    this.isCompact = parent.classList.contains("compact");
-    const [_, snippets, ctrls, preview, cmRoot, editorWrapper] = cf5.extend(parent, {
+    this.parent = getRootElt(root);
+    this.parent.classList.add("ink-root");
+    this.isCompact = this.parent.classList.contains("compact");
+    const [_, snippets, ctrls, preview, cmRoot, editorWrapper] = cf5.extend(this.parent, {
       raw: true,
       gimme: [".ink-snippets", ".ink-ctrl-btns", ".ink-preview", ".ink-editor", ".ink-editor-wrapper"],
       contents: cf5.html`
