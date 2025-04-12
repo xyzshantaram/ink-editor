@@ -1,5 +1,4 @@
-import cf from "campfire.js";
-import { Icons } from "./icons";
+import { Icons } from "./icons.ts";
 
 /**
  * Gets a DOM element from a string selector or returns the passed element

@@ -2,7 +2,7 @@ import { EditorView, keymap, placeholder } from "@codemirror/view";
 import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
 import { EditorState, Compartment } from "@codemirror/state"
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { InkOptions } from "../InkEditor";
+import type { InkOptions } from "../InkEditor.ts";
 import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import { tags } from "@lezer/highlight";
 import { HighlightStyle } from "@codemirror/language";

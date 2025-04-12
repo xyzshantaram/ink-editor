@@ -1,8 +1,8 @@
 import cf from "campfire.js";
-import { EDITOR_DEFAULT_BUTTONS } from "../defaults";
-import { InkOptions } from "../InkEditor";
-import { InkEditor } from "../mod";
-import { ButtonSpec, EditorButton } from "./EditorButton";
+import { EDITOR_DEFAULT_BUTTONS } from "../defaults.ts";
+import { InkOptions } from "../InkEditor.ts";
+import { InkEditor } from "../mod.ts";
+import { ButtonSpec, EditorButton } from "./EditorButton.ts";
 
 export const ToolbarButtons = (container: HTMLElement, editor: InkEditor, settings: InkOptions['toolbar']) => {
     const store = cf.store<ButtonSpec>({ type: "list" });

@@ -1,6 +1,6 @@
 import cf from "campfire.js";
-import { icon } from "../utils/misc";
-import { InkEditor } from "../InkEditor";
+import { icon } from "../utils/misc.ts";
+import { InkEditor } from "../InkEditor.ts";
 
 export const SnippetView = (parent: HTMLElement, editor: InkEditor, snippets: string[]) => {
     const visibility = cf.store({ value: false });

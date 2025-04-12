@@ -1,7 +1,7 @@
 import cf from 'campfire.js';
-import { InkEditor } from '../mod';
-import { icon } from '../utils/misc';
-import { Icons } from '../utils/icons';
+import { InkEditor } from '../mod.ts';
+import { icon } from '../utils/misc.ts';
+import { Icons } from '../utils/icons.ts';
 
 export interface ButtonArgs {
     editor: InkEditor,

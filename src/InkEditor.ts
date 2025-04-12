@@ -4,14 +4,14 @@
  */
 
 import { EditorView } from '@codemirror/view';
-import { debounce, getRootElt } from './utils/misc';
+import { debounce, getRootElt } from './utils/misc.ts';
 import cf, { ListStore, Store } from 'campfire.js';
-import { createCmEditor, getDocAndCursor, insertAround, insertBefore, insertWithNewline } from './utils/editor';
-import { ButtonArgs, ButtonSpec } from './components/EditorButton';
-import { DEFAULT_ARGS, EDITOR_DEFAULT_ACTIONS } from './defaults';
-import { SnippetView } from './components/SnippetView';
-import { ToolbarButtons } from './components/Toolbar';
-import { PreviewController } from './components/PreviewController';
+import { createCmEditor, getDocAndCursor, insertAround, insertBefore, insertWithNewline } from './utils/editor.ts';
+import type { ButtonArgs, ButtonSpec } from './components/EditorButton.ts';
+import { DEFAULT_ARGS, EDITOR_DEFAULT_ACTIONS } from './defaults.ts';
+import { SnippetView } from './components/SnippetView.ts';
+import { ToolbarButtons } from './components/Toolbar.ts';
+import { PreviewController } from './components/PreviewController.ts';
 
 /**
  * Configuration options for the InkEditor instance
