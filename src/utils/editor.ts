@@ -49,7 +49,7 @@ export const insertBefore = (
 
             if (i == 0) {
                 const selection = {
-                    anchor: posToOffset(editor, { line: pos[0], ch: cursorOffset || 0 })
+                    anchor: posToOffset(editor, { line: pos, ch: cursorOffset || 0 })
                 }
                 editor.dispatch({ selection });
             }
