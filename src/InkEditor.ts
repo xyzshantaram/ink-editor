@@ -3,28 +3,34 @@
  * This module provides a rich-text markdown editor built on top of CodeMirror.
  */
 
-import { EditorView } from '@codemirror/view';
-import { debounce, getRootElt } from './utils/misc.ts';
-import cf, { ListStore, Store } from 'campfire.js';
-import { createCmEditor, getDocAndCursor, insertAround, insertBefore, insertWithNewline } from './utils/editor.ts';
-import type { ButtonArgs, ButtonSpec } from './components/EditorButton.ts';
-import { DEFAULT_ARGS, EDITOR_DEFAULT_ACTIONS } from './defaults.ts';
-import { SnippetView } from './components/SnippetView.ts';
-import { ToolbarButtons } from './components/Toolbar.ts';
-import { PreviewController } from './components/PreviewController.ts';
+import { EditorView } from "@codemirror/view";
+import { debounce, getRootElt } from "./utils/misc.ts";
+import cf, { ListStore, Store } from "campfire.js";
+import {
+    createCmEditor,
+    getDocAndCursor,
+    insertAround,
+    insertBefore,
+    insertWithNewline,
+} from "./utils/editor.ts";
+import type { ButtonArgs, ButtonSpec } from "./components/EditorButton.ts";
+import { DEFAULT_ARGS, EDITOR_DEFAULT_ACTIONS } from "./defaults.ts";
+import { SnippetView } from "./components/SnippetView.ts";
+import { ToolbarButtons } from "./components/Toolbar.ts";
+import { PreviewController } from "./components/PreviewController.ts";
 
 /**
  * Configuration options for the InkEditor instance
  * @interface InkOptions
  */
 export interface InkOptions {
-    /** 
+    /**
      * Controls toolbar visibility and configuration
      * @type {boolean | {enable: boolean, defaults: boolean}}
      */
     toolbar: boolean | {
-        enable: boolean,
-        defaults: boolean
+        enable: boolean;
+        defaults: boolean;
     };
 
     /**
@@ -122,7 +128,7 @@ export interface InkOptions {
  */
 export interface EditorActionArgs {
     /** Reference to the InkEditor instance */
-    editor: InkEditor
+    editor: InkEditor;
 }
 
 /**
@@ -167,7 +173,7 @@ export class InkEditor {
         contents: Store<string>;
         /** Store controlling preview visibility */
         visibility: Store<boolean>;
-    }
+    };
 
     /** Function to toggle read-only state */
     setReadOnly: (state: boolean) => void;
@@ -181,23 +187,26 @@ export class InkEditor {
         this.options = Object.assign({}, DEFAULT_ARGS, userOptions);
         this.parent = getRootElt(root);
 
-        this.parent.classList.add('ink-root');
-        this.isCompact = this.parent.classList.contains('compact');
-        const [_, snippets, ctrls, preview, cmRoot, editorWrapper] = cf.extend(this.parent, {
-            raw: true,
-            gimme: ['.ink-snippets', '.ink-ctrl-btns', '.ink-preview', '.ink-editor', '.ink-editor-wrapper'],
-            contents: cf.html`
+        this.parent.classList.add("ink-root");
+        this.isCompact = this.parent.classList.contains("compact");
+        const [_, snippets, ctrls, preview, cmRoot] = cf.nu(this.parent)
+            .gimme(
+                ".ink-snippets",
+                ".ink-ctrl-btns",
+                ".ink-preview",
+                ".ink-editor",
+            )
+            .html`
             <div class=ink-editor-wrapper>
                 <div class="ink-ctrl-btns"></div>
                 <div class="ink-preview"></div>
                 <div class="ink-snippets"></div>
                 <div class="ink-editor"></div>
-            </div>`,
-            style: {
-                width: this.options.width,
-                height: this.options.height
-            }
-        });
+            </div>
+            `
+            .style("width", this.options.width)
+            .style("height", this.options.height)
+            .done();
         this.#cmRoot = cmRoot;
 
         this.preview = PreviewController(preview, this.options.makePreview);
@@ -207,16 +216,26 @@ export class InkEditor {
         else this.#toolbar = ToolbarButtons(ctrls, this, this.options.toolbar);
 
         if (!this.options.enableSnippets) snippets.remove();
-        else this.snippetsOpen = SnippetView(snippets, this, this.options.snippets);
+        else {this.snippetsOpen = SnippetView(
+                snippets,
+                this,
+                this.options.snippets,
+            );}
 
-        if (this.options.enableDefaultActions) Object.entries(EDITOR_DEFAULT_ACTIONS).forEach(
-            ([k, v]) => this.registerAction(k, v));
+        if (this.options.enableDefaultActions) {
+            Object.entries(EDITOR_DEFAULT_ACTIONS).forEach(
+                ([k, v]) => this.registerAction(k, v),
+            );
+        }
 
         const { view, setReadOnly } = createCmEditor({
             placeholder: this.options.placeholder,
-            onAutosave: debounce(this.options.onAutosave, this.options.autosaveDelayMs),
+            onAutosave: debounce(
+                this.options.onAutosave,
+                this.options.autosaveDelayMs,
+            ),
             parent: cmRoot,
-            fontFamily: this.options.fontFamily
+            fontFamily: this.options.fontFamily,
         });
 
         this.editor = view;
@@ -233,8 +252,7 @@ export class InkEditor {
         const saved = await this.options.retrieveSaved();
         if (saved) {
             this.setContents(saved);
-        }
-        else {
+        } else {
             this.setContents(this.options.defaultContents);
         }
     }
@@ -246,7 +264,7 @@ export class InkEditor {
     action(name: string) {
         const action = this.#actions.get(name);
         if (!action) {
-            console.warn('Action', name, 'called, but no such action exists.');
+            console.warn("Action", name, "called, but no such action exists.");
             return;
         }
 
@@ -313,17 +331,17 @@ export class InkEditor {
                     changes: {
                         from: cursor!,
                         to: cursor!,
-                        insert: str
-                    }
-                })
+                        insert: str,
+                    },
+                });
             },
 
             /**
              * Inserts text with proper newline handling
              * @param {string} text - Text to insert
              */
-            withNewline: (text: string) => insertWithNewline(this.editor, text)
-        }
+            withNewline: (text: string) => insertWithNewline(this.editor, text),
+        };
     }
 
     /**
@@ -340,7 +358,11 @@ export class InkEditor {
      */
     setContents(contents: string) {
         this.editor.dispatch({
-            changes: { from: 0, to: this.editor.state.doc.length, insert: contents }
+            changes: {
+                from: 0,
+                to: this.editor.state.doc.length,
+                insert: contents,
+            },
         });
     }
 
@@ -349,7 +371,7 @@ export class InkEditor {
      * @param {boolean} state - Whether editor should be visible
      */
     setEditorVisibility(state: boolean) {
-        this.#cmRoot.classList.toggle('hidden', !state);
+        this.#cmRoot.classList.toggle("hidden", !state);
     }
 
     /**
@@ -357,18 +379,18 @@ export class InkEditor {
      * @param {number} target - Index of button to keep enabled
      */
     disableButtonsExcept(target: number) {
-        this.#toolbar?.value.forEach((btn, idx) => {
+        this.#toolbar?.forEach((btn, idx) => {
             if (idx === target) return;
             this.#toolbar?.set(idx, { ...btn, disabled: true });
-        })
+        });
     }
 
     /**
      * Enables all toolbar buttons
      */
     enableButtons() {
-        this.#toolbar?.value.forEach((btn, idx) => {
-            this.#toolbar?.set(idx, { ...btn, disabled: false })
-        })
+        this.#toolbar?.forEach((btn, idx) => {
+            this.#toolbar?.set(idx, { ...btn, disabled: false });
+        });
     }
 }
