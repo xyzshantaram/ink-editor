@@ -1,20 +1,33 @@
 import cf from "campfire.js";
+import { message } from "cf-alert";
 
-export const PreviewController = (root: HTMLElement, parse: (contents: string) => string | Promise<string>) => {
-    const contents = cf.store({ value: '' });
+export const PreviewController = (
+    root: HTMLElement,
+    parse: (contents: string) => string | Promise<string>,
+) => {
+    const contents = cf.store({ value: "" });
     const visibility = cf.store({ value: false });
 
     visibility.on("change", (event) => {
-        root.classList.toggle('hidden', !event.value);
+        root.classList.toggle("hidden", !event.value);
     });
 
-    contents.on("change", async (event) => {
-        const parsed = await parse(event.value);
-        cf.extend(root, {
-            contents: cf.html`<div class='ink-preview-wrapper'>${cf.r(parsed)}</div>`,
-            raw: true
+    const onEditorChange = (str: string) =>
+        cf.callbackify(() => {
+            const parsed = parse(str);
+            return typeof parsed === "string"
+                ? Promise.resolve(parsed)
+                : parsed;
+        });
+
+    contents.on("change", (event) => {
+        onEditorChange(event.value)((err, res) => {
+            if (err) return message(`Error loading preview: ${err}`);
+            return cf.nu(root)
+                .html`<div class='ink-preview-wrapper'>${cf.r(res)}</div>`
+                .done();
         });
     });
 
     return { contents, visibility };
-}
+};
