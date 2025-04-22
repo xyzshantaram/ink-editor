@@ -83,10 +83,18 @@ import cf5 from "campfire.js";
 
 // src/utils/editor.ts
 import { EditorView, keymap, placeholder } from "@codemirror/view";
-import { syntaxHighlighting, defaultHighlightStyle } from "@codemirror/language";
-import { EditorState, Compartment } from "@codemirror/state";
+import {
+  defaultHighlightStyle,
+  syntaxHighlighting
+} from "@codemirror/language";
+import { Compartment, EditorState } from "@codemirror/state";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  indentWithTab
+} from "@codemirror/commands";
 import { tags } from "@lezer/highlight";
 import { HighlightStyle } from "@codemirror/language";
 var getDocAndCursor = (editor) => ({
@@ -112,17 +120,26 @@ var hasSelection = (editor) => editor.state.selection.ranges.some((r) => !r.empt
 var insertBefore = (editor, cursor, insertion, cursorOffset = insertion.length) => {
   if (!hasSelection(editor)) {
     const offset = getLineOffset(editor, cursor);
-    editor.dispatch({ changes: { from: offset, to: offset, insert: insertion } });
-    editor.dispatch({ selection: { anchor: offset + (cursorOffset || 0) } });
+    editor.dispatch({
+      changes: { from: offset, to: offset, insert: insertion }
+    });
+    editor.dispatch({
+      selection: { anchor: offset + (cursorOffset || 0) }
+    });
     return;
   }
   editor.state.selection.ranges.forEach((selection) => {
     [selection.head, selection.anchor].toSorted().forEach((pos, i) => {
       const offset = getLineOffset(editor, i);
-      editor.dispatch({ changes: { from: offset, to: offset, insert: insertion } });
+      editor.dispatch({
+        changes: { from: offset, to: offset, insert: insertion }
+      });
       if (i == 0) {
         const selection2 = {
-          anchor: posToOffset(editor, { line: pos, ch: cursorOffset || 0 })
+          anchor: posToOffset(editor, {
+            line: pos,
+            ch: cursorOffset || 0
+          })
         };
         editor.dispatch({ selection: selection2 });
       }
@@ -144,7 +161,11 @@ var insertAround = (editor, cursor, start, end = start) => {
         insert: start + end
       }
     });
-    editor.dispatch({ selection: { anchor: editor.state.selection.main.head + start.length } });
+    editor.dispatch({
+      selection: {
+        anchor: editor.state.selection.main.head + start.length
+      }
+    });
   }
   editor.focus();
 };
@@ -175,7 +196,8 @@ var headingStyles = HighlightStyle.define([
     tag: tags.heading1,
     color: "black",
     fontSize: "1.75rem",
-    fontWeight: "700"
+    fontWeight: "700",
+    textDecoration: "none"
   },
   {
     tag: tags.heading2,
@@ -219,7 +241,9 @@ var getExtensions = (ph, autosave, fontFamily) => [
   syntaxHighlighting(defaultHighlightStyle),
   syntaxHighlighting(headingStyles),
   placeholder(ph),
-  EditorView.updateListener.of(async (u) => await autosave(u.state.doc.toString())),
+  EditorView.updateListener.of(
+    async (u) => await autosave(u.state.doc.toString())
+  ),
   EditorView.lineWrapping,
   theme(fontFamily)
 ];
@@ -229,7 +253,9 @@ var createCmEditor = ({ placeholder: placeholder2, onAutosave, fontFamily, paren
   };
   const setReadOnly = (state) => {
     view.dispatch({
-      effects: compartments.readOnly.reconfigure(EditorState.readOnly.of(state))
+      effects: compartments.readOnly.reconfigure(
+        EditorState.readOnly.of(state)
+      )
     });
   };
   const view = new EditorView({
@@ -277,15 +303,14 @@ var EDITOR_DEFAULT_ACTIONS = {
   "h4": ({ editor }) => editor.insert.before("#### ", 5),
   "h5": ({ editor }) => editor.insert.before("##### ", 6),
   "h6": ({ editor }) => editor.insert.before("###### ", 7),
-  "snippetmenu": ({ editor }) => editor.snippetsOpen?.update(true),
+  "snippetmenu": ({ editor }) => Promise.resolve(editor.snippetsOpen?.update(true)),
   "done": ({ editor }) => editor.options.onDone(editor.getContents()),
   "exit": ({ editor }) => editor.options.onExit(editor.getContents()),
   "toggle_preview": ({ editor }) => {
-    const visibility = editor.preview.visibility.value;
-    editor.preview.visibility.update(!visibility);
-    if (!visibility)
+    const vis = editor.preview.visibility.update((n) => !n);
+    if (!vis)
       editor.preview.contents.update(editor.getContents());
-    editor.setEditorVisibility(visibility);
+    editor.setEditorVisibility(!!vis);
   },
   "reset": ({ editor }) => {
     editor.setContents(editor.options.defaultContents);
@@ -378,19 +403,16 @@ var SnippetView = (parent, editor, snippets) => {
   });
   const handleInteraction = (target) => {
     console.log(target.closest(".snippets-close"));
-    if (target.classList.contains("snippet-item"))
+    if (target.classList.contains("snippet-item")) {
       editor.insert.withNewline(target.innerHTML);
-    else if (target.closest(".snippets-close")) {
+    } else if (target.closest(".snippets-close")) {
       visibility.update(false);
     }
   };
   const snippetList = snippets.map(
     (snippet) => cf.html`<div class="snippet-item" tabindex="0">${snippet}</div>`
   ).join("");
-  cf.extend(parent, {
-    raw: true,
-    contents: cf.html`
-        <div class='snippets-content'>
+  cf.nu(parent).html`<div class='snippets-content'>
             <div class='snippets-header'>
                 <div class='snippets-title'><strong>Snippets</strong></div>
                 <div class='snippets-close' tabindex="0">${icon("X")}</div>
@@ -400,15 +422,11 @@ var SnippetView = (parent, editor, snippets) => {
                     ${cf.r(snippetList)}
                 </div>
             </div>
-        </div>`,
-    on: {
-      click: (e) => handleInteraction(e.target),
-      keyup: (e) => {
-        if (e.key === "Enter")
-          handleInteraction(e.target);
-      }
+        </div>`.on("click", (e) => handleInteraction(e.target)).on("keyup", (e) => {
+    if (e.key === "Enter") {
+      handleInteraction(e.target);
     }
-  });
+  }).done();
   return visibility;
 };
 
@@ -462,17 +480,22 @@ var ToolbarButtons = (container, editor, settings) => {
 
 // src/components/PreviewController.ts
 import cf4 from "campfire.js";
+import { message } from "cf-alert";
 var PreviewController = (root, parse) => {
   const contents = cf4.store({ value: "" });
   const visibility = cf4.store({ value: false });
   visibility.on("change", (event) => {
     root.classList.toggle("hidden", !event.value);
   });
-  contents.on("change", async (event) => {
-    const parsed = await parse(event.value);
-    cf4.extend(root, {
-      contents: cf4.html`<div class='ink-preview-wrapper'>${cf4.r(parsed)}</div>`,
-      raw: true
+  const onEditorChange = (str) => cf4.callbackify(() => {
+    const parsed = parse(str);
+    return typeof parsed === "string" ? Promise.resolve(parsed) : parsed;
+  });
+  contents.on("change", (event) => {
+    onEditorChange(event.value)((err, res) => {
+      if (err)
+        return message(`Error loading preview: ${err}`);
+      return cf4.nu(root).html`<div class='ink-preview-wrapper'>${cf4.r(res)}</div>`.done();
     });
   });
   return { contents, visibility };
@@ -497,21 +520,19 @@ var InkEditor = class {
     this.parent = getRootElt(root);
     this.parent.classList.add("ink-root");
     this.isCompact = this.parent.classList.contains("compact");
-    const [_, snippets, ctrls, preview, cmRoot, editorWrapper] = cf5.extend(this.parent, {
-      raw: true,
-      gimme: [".ink-snippets", ".ink-ctrl-btns", ".ink-preview", ".ink-editor", ".ink-editor-wrapper"],
-      contents: cf5.html`
+    const [_, snippets, ctrls, preview, cmRoot] = cf5.nu(this.parent).gimme(
+      ".ink-snippets",
+      ".ink-ctrl-btns",
+      ".ink-preview",
+      ".ink-editor"
+    ).html`
             <div class=ink-editor-wrapper>
                 <div class="ink-ctrl-btns"></div>
                 <div class="ink-preview"></div>
                 <div class="ink-snippets"></div>
                 <div class="ink-editor"></div>
-            </div>`,
-      style: {
-        width: this.options.width,
-        height: this.options.height
-      }
-    });
+            </div>
+            `.style("width", this.options.width).style("height", this.options.height).done();
     __privateSet(this, _cmRoot, cmRoot);
     this.preview = PreviewController(preview, this.options.makePreview);
     __privateSet(this, _actions, /* @__PURE__ */ new Map());
@@ -521,15 +542,24 @@ var InkEditor = class {
       __privateSet(this, _toolbar, ToolbarButtons(ctrls, this, this.options.toolbar));
     if (!this.options.enableSnippets)
       snippets.remove();
-    else
-      this.snippetsOpen = SnippetView(snippets, this, this.options.snippets);
-    if (this.options.enableDefaultActions)
+    else {
+      this.snippetsOpen = SnippetView(
+        snippets,
+        this,
+        this.options.snippets
+      );
+    }
+    if (this.options.enableDefaultActions) {
       Object.entries(EDITOR_DEFAULT_ACTIONS).forEach(
         ([k, v]) => this.registerAction(k, v)
       );
+    }
     const { view, setReadOnly } = createCmEditor({
       placeholder: this.options.placeholder,
-      onAutosave: debounce(this.options.onAutosave, this.options.autosaveDelayMs),
+      onAutosave: debounce(
+        this.options.onAutosave,
+        this.options.autosaveDelayMs
+      ),
       parent: cmRoot,
       fontFamily: this.options.fontFamily
     });
@@ -640,7 +670,11 @@ var InkEditor = class {
    */
   setContents(contents) {
     this.editor.dispatch({
-      changes: { from: 0, to: this.editor.state.doc.length, insert: contents }
+      changes: {
+        from: 0,
+        to: this.editor.state.doc.length,
+        insert: contents
+      }
     });
   }
   /**
@@ -655,7 +689,7 @@ var InkEditor = class {
    * @param {number} target - Index of button to keep enabled
    */
   disableButtonsExcept(target) {
-    __privateGet(this, _toolbar)?.value.forEach((btn, idx) => {
+    __privateGet(this, _toolbar)?.forEach((btn, idx) => {
       if (idx === target)
         return;
       __privateGet(this, _toolbar)?.set(idx, { ...btn, disabled: true });
@@ -665,7 +699,7 @@ var InkEditor = class {
    * Enables all toolbar buttons
    */
   enableButtons() {
-    __privateGet(this, _toolbar)?.value.forEach((btn, idx) => {
+    __privateGet(this, _toolbar)?.forEach((btn, idx) => {
       __privateGet(this, _toolbar)?.set(idx, { ...btn, disabled: false });
     });
   }
