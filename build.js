@@ -4,7 +4,7 @@ import * as path from "https://deno.land/std@0.185.0/path/mod.ts";
 import { minify } from 'npm:csso@5.0.5';
 
 const die = (message, code = 1) => {
-    const log = code === 0 ? console.log : console.error;
+    const log = code === 0 ? console.info : console.error;
     log(message);
     Deno.exit(code);
 };
@@ -51,7 +51,7 @@ if (import.meta.main) {
         die('Error: Input CSS argument should be a directory.');
     }
 
-    console.log("Minifying CSS...");
+    console.info("Minifying CSS...");
     const builtCss = info.isDirectory ? await buildCss(input) : await processCssFile(input);
     await Deno.writeTextFile(outfile, builtCss.join('\n'));
 
@@ -68,11 +68,11 @@ if (import.meta.main) {
     }
 
     if (args.npm) {
-        console.log("Running npm build step...");
+        console.info("Running npm build step...");
         const { code, stderr } = await run('npm', 'run', 'build-js');
 
         if (code === 0) {
-            console.log('npm build complete.');
+            console.info('npm build complete.');
         } else {
             die(`npm build failed with code ${code}: ${stderr}`);
         }

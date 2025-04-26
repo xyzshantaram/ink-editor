@@ -11,9 +11,9 @@ await esbuild.build({
     treeShaking: true,
     sourcemap: true
 }).then(result => {
-    console.log('Build result:', result)
+    console.info('Build result:', result)
 }).catch(error => {
-    console.log('Build error:', error)
+    console.info('Build error:', error)
 })
 
 await esbuild.build({
@@ -28,7 +28,7 @@ await esbuild.build({
     plugins: [nodeExternalsPlugin()],
     outExtension: { '.js': '.js' }
 }).then(result => {
-    console.log('Build result:', result)
+    console.info('Build result:', result)
 }).catch(error => {
-    console.log('Build error:', error)
+    console.info('Build error:', error)
 })

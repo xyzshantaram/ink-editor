@@ -12,7 +12,7 @@ export const DEFAULT_ARGS: InkOptions = {
     snippets: [],
     onAutosave: (contents) => {
         localStorage.setItem("ink-contents", contents);
-        console.log("autosaving...");
+        console.debug("autosaving...");
     },
     onDone: (_) => {},
     onExit: (_) => {},
