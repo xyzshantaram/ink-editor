@@ -10,12 +10,10 @@ export const SnippetView = (
     const visibility = cf.store({ value: false });
 
     visibility.on("update", (event) => {
-        console.log(event);
         parent.classList.toggle("hidden", !event.value);
     });
 
     const handleInteraction = (target: HTMLElement) => {
-        console.log(target.closest(".snippets-close"));
         if (target.classList.contains("snippet-item")) {
             editor.insert.withNewline(target.innerHTML);
         } else if (target.closest(".snippets-close")) {

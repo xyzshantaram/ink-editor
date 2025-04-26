@@ -13,4 +13,4 @@ export interface ButtonArgs {
     disabled?: boolean;
 }
 export type ButtonSpec = Omit<ButtonArgs, 'editor' | 'showLabel' | 'idx'>;
-export declare const EditorButton: ({ modal, toggle, editor, iconName, action, description, label, showLabel, idx, disabled }: ButtonArgs) => HTMLButtonElement[];
+export declare const EditorButton: ({ modal, toggle, editor, iconName, action, description, label, showLabel, idx, disabled }: ButtonArgs) => HTMLElement[];

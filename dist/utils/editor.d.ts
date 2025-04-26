@@ -19,7 +19,7 @@ export declare const insertAround: (editor: EditorView, cursor: number, start: s
 export declare const insertWithNewline: (editor: EditorView, text: string) => void;
 interface CmEditorOptions {
     placeholder: string;
-    onAutosave: InkOptions['onAutosave'];
+    onAutosave: InkOptions["onAutosave"];
     fontFamily: string;
     parent: HTMLElement;
 }

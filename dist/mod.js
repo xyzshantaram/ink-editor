@@ -81,6 +81,399 @@ function debounce(func, delay) {
 // src/InkEditor.ts
 import cf5 from "campfire.js";
 
+// src/KeybindString.ts
+var KEYBOARD_EVENT_KEYS = [
+  "Unidentified",
+  "Alt",
+  "AltGraph",
+  "CapsLock",
+  "Control",
+  "Fn",
+  "FnLock",
+  "Hyper",
+  "Meta",
+  "NumLock",
+  "ScrollLock",
+  "Shift",
+  "Super",
+  "Symbol",
+  "SymbolLock",
+  "Enter",
+  "Tab",
+  " ",
+  "ArrowDown",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowUp",
+  "End",
+  "Home",
+  "PageDown",
+  "PageUp",
+  "Backspace",
+  "Clear",
+  "Copy",
+  "CrSel",
+  "Cut",
+  "Delete",
+  "EraseEof",
+  "ExSel",
+  "Insert",
+  "Paste",
+  "Redo",
+  "Undo",
+  "Accept",
+  "Again",
+  "Attn",
+  "Cancel",
+  "ContextMenu",
+  "Escape",
+  "Execute",
+  "Find",
+  "Finish",
+  "Help",
+  "Pause",
+  "Play",
+  "Props",
+  "Select",
+  "ZoomIn",
+  "ZoomOut",
+  "BrightnessDown",
+  "BrightnessUp",
+  "Eject",
+  "LogOff",
+  "Power",
+  "PowerOff",
+  "PrintScreen",
+  "Hibernate",
+  "Standby",
+  "WakeUp",
+  "AllCandidates",
+  "Alphanumeric",
+  "CodeInput",
+  "Compose",
+  "Convert",
+  "Dead",
+  "FinalMode",
+  "GroupFirst",
+  "GroupLast",
+  "GroupNext",
+  "GroupPrevious",
+  "ModeChange",
+  "NextCandidate",
+  "NonConvert",
+  "PreviousCandidate",
+  "Process",
+  "SingleCandidate",
+  "HangulMode",
+  "HanjaMode",
+  "JunjaMode",
+  "Eisu",
+  "Hankaku",
+  "Hiragana",
+  "HiraganaKatakana",
+  "KanaMode",
+  "KanjiMode",
+  "Katakana",
+  "Romaji",
+  "Zenkaku",
+  "ZenkakuHankaku",
+  "F1",
+  "F2",
+  "F3",
+  "F4",
+  "F5",
+  "F6",
+  "F7",
+  "F8",
+  "F9",
+  "F10",
+  "F11",
+  "F12",
+  "F13",
+  "F14",
+  "F15",
+  "F16",
+  "F17",
+  "F18",
+  "F19",
+  "F20",
+  "Soft1",
+  "Soft2",
+  "Soft3",
+  "Soft4",
+  "AppSwitch",
+  "Call",
+  "Camera",
+  "CameraFocus",
+  "EndCall",
+  "GoBack",
+  "GoHome",
+  "HeadsetHook",
+  "LastNumberRedial",
+  "Notification",
+  "MannerMode",
+  "VoiceDial",
+  "ChannelDown",
+  "ChannelUp",
+  "MediaFastForward",
+  "MediaPause",
+  "MediaPlay",
+  "MediaPlayPause",
+  "MediaRecord",
+  "MediaRewind",
+  "MediaStop",
+  "MediaTrackNext",
+  "MediaTrackPrevious",
+  "AudioBalanceLeft",
+  "AudioBalanceRight",
+  "AudioBassDown",
+  "AudioBassBoostDown",
+  "AudioBassBoostToggle",
+  "AudioBassBoostUp",
+  "AudioBassUp",
+  "AudioFaderFront",
+  "AudioFaderRear",
+  "AudioSurroundModeNext",
+  "AudioTrebleDown",
+  "AudioTrebleUp",
+  "AudioVolumeDown [1]",
+  "AudioVolumeMute [1]",
+  "AudioVolumeUp [1]",
+  "MicrophoneToggle",
+  "MicrophoneVolumeDown",
+  "MicrophoneVolumeMute",
+  "MicrophoneVolumeUp",
+  "TV",
+  "TV3DMode",
+  "TVAntennaCable",
+  "TVAudioDescription",
+  "TVAudioDescriptionMixDown",
+  "TVAudioDescriptionMixUp",
+  "TVContentsMenu",
+  "TVDataService",
+  "TVInput",
+  "TVInputComponent1",
+  "TVInputComponent2",
+  "TVInputComposite1",
+  "TVInputComposite2",
+  "TVInputHDMI1",
+  "TVInputHDMI2",
+  "TVInputHDMI3",
+  "TVInputHDMI4",
+  "TVInputVGA1",
+  "TVMediaContext",
+  "TVNetwork",
+  "TVNumberEntry",
+  "TVPower",
+  "TVRadioService",
+  "TVSatellite",
+  "TVSatelliteBS",
+  "TVSatelliteCS",
+  "TVSatelliteToggle",
+  "TVTerrestrialAnalog",
+  "TVTerrestrialDigital",
+  "TVTimer",
+  "AVRInput",
+  "AVRPower",
+  "ColorF0Red",
+  "ColorF1Green",
+  "ColorF2Yellow",
+  "ColorF3Blue",
+  "ColorF4Grey",
+  "ColorF5Brown",
+  "ClosedCaptionToggle",
+  "Dimmer",
+  "DisplaySwap",
+  "DVR",
+  "Exit",
+  "FavoriteClear0",
+  "FavoriteClear1",
+  "FavoriteClear2",
+  "FavoriteClear3",
+  "FavoriteRecall0",
+  "FavoriteRecall1",
+  "FavoriteRecall2",
+  "FavoriteRecall3",
+  "FavoriteStore0",
+  "FavoriteStore1",
+  "FavoriteStore2",
+  "FavoriteStore3",
+  "Guide",
+  "GuideNextDay",
+  "GuidePreviousDay",
+  "Info",
+  "InstantReplay",
+  "Link",
+  "ListProgram",
+  "LiveContent",
+  "Lock",
+  "MediaApps",
+  "MediaAudioTrack",
+  "MediaLast",
+  "MediaSkipBackward",
+  "MediaSkipForward",
+  "MediaStepBackward",
+  "MediaStepForward",
+  "MediaTopMenu",
+  "NavigateIn",
+  "NavigateNext",
+  "NavigateOut",
+  "NavigatePrevious",
+  "NextFavoriteChannel",
+  "NextUserProfile",
+  "OnDemand",
+  "Pairing",
+  "PinPDown",
+  "PinPMove",
+  "PinPToggle",
+  "PinPUp",
+  "PlaySpeedDown",
+  "PlaySpeedReset",
+  "PlaySpeedUp",
+  "RandomToggle",
+  "RcLowBattery",
+  "RecordSpeedNext",
+  "RfBypass",
+  "ScanChannelsToggle",
+  "ScreenModeNext",
+  "Settings",
+  "SplitScreenToggle",
+  "STBInput",
+  "STBPower",
+  "Subtitle",
+  "Teletext",
+  "VideoModeNext",
+  "Wink",
+  "ZoomToggle",
+  "SpeechCorrectionList",
+  "SpeechInputToggle",
+  "Close",
+  "New",
+  "Open",
+  "Print",
+  "Save",
+  "SpellCheck",
+  "MailForward",
+  "MailReply",
+  "MailSend",
+  "LaunchCalculator",
+  "LaunchCalendar",
+  "LaunchContacts",
+  "LaunchMail",
+  "LaunchMediaPlayer",
+  "LaunchMusicPlayer",
+  "LaunchMyComputer",
+  "LaunchPhone",
+  "LaunchScreenSaver",
+  "LaunchSpreadsheet",
+  "LaunchWebBrowser",
+  "LaunchWebCam",
+  "LaunchWordProcessor",
+  "LaunchApplication1",
+  "LaunchApplication2",
+  "LaunchApplication3",
+  "LaunchApplication4",
+  "LaunchApplication5",
+  "LaunchApplication6",
+  "LaunchApplication7",
+  "LaunchApplication8",
+  "LaunchApplication9",
+  "LaunchApplication10",
+  "LaunchApplication11",
+  "LaunchApplication12",
+  "LaunchApplication13",
+  "LaunchApplication14",
+  "LaunchApplication15",
+  "LaunchApplication16",
+  "BrowserBack",
+  "BrowserFavorites",
+  "BrowserForward",
+  "BrowserHome",
+  "BrowserRefresh",
+  "BrowserSearch",
+  "BrowserStop",
+  "Decimal",
+  "Key11",
+  "Key12",
+  "Multiply",
+  "Add",
+  "Clear",
+  "Divide",
+  "Subtract",
+  "Separator",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z"
+];
+var VALID_KEYBIND_MODIFIERS = [
+  "C",
+  "S",
+  "A",
+  "AS",
+  "CS",
+  "CA",
+  "CSA"
+];
+
 // src/utils/editor.ts
 import { EditorView, keymap, placeholder } from "@codemirror/view";
 import {
@@ -196,8 +589,7 @@ var headingStyles = HighlightStyle.define([
     tag: tags.heading1,
     color: "black",
     fontSize: "1.75rem",
-    fontWeight: "700",
-    textDecoration: "none"
+    fontWeight: "700"
   },
   {
     tag: tags.heading2,
@@ -229,7 +621,7 @@ var headingStyles = HighlightStyle.define([
     fontSize: "1.1rem",
     fontWeight: "700"
   }
-]);
+].map((itm) => ({ ...itm, textDecoration: "none !important" })));
 var getExtensions = (ph, autosave, fontFamily) => [
   history(),
   keymap.of([
@@ -280,7 +672,7 @@ var DEFAULT_ARGS = {
   snippets: [],
   onAutosave: (contents) => {
     localStorage.setItem("ink-contents", contents);
-    console.log("autosaving...");
+    console.debug("autosaving...");
   },
   onDone: (_) => {
   },
@@ -503,7 +895,7 @@ var PreviewController = (root, parse) => {
 
 // src/InkEditor.ts
 var _toolbar, _actions, _cmRoot;
-var InkEditor = class {
+var _InkEditor = class {
   /**
    * Creates a new InkEditor instance
    * @param {HTMLElement | string} root - Container element or selector for the editor
@@ -516,6 +908,7 @@ var InkEditor = class {
     __privateAdd(this, _actions, void 0);
     /** Root element for CodeMirror editor */
     __privateAdd(this, _cmRoot, void 0);
+    this.keybinds = /* @__PURE__ */ new Map();
     this.options = Object.assign({}, DEFAULT_ARGS, userOptions);
     this.parent = getRootElt(root);
     this.parent.classList.add("ink-root");
@@ -554,6 +947,13 @@ var InkEditor = class {
         ([k, v]) => this.registerAction(k, v)
       );
     }
+    if (this.options.keybinds) {
+      console.log(this.options.keybinds);
+      Object.entries(this.options.keybinds || {}).forEach(([binding, action]) => {
+        this.registerKeybind(binding, action);
+      });
+      this.setupKeybindListener();
+    }
     const { view, setReadOnly } = createCmEditor({
       placeholder: this.options.placeholder,
       onAutosave: debounce(
@@ -578,6 +978,46 @@ var InkEditor = class {
     } else {
       this.setContents(this.options.defaultContents);
     }
+  }
+  static isMacOS() {
+    if (typeof navigator !== "undefined") {
+      if (navigator.maxTouchPoints && navigator.maxTouchPoints > 1)
+        return false;
+      const uaPlatform = navigator.userAgentData && navigator.userAgentData.platform || navigator.platform || "";
+      return uaPlatform.toLowerCase().includes("mac");
+    }
+    if (typeof process !== "undefined" && process.platform) {
+      return process.platform === "darwin";
+    }
+    return false;
+  }
+  static isCtrlDown(e) {
+    return _InkEditor.isMacOS() ? e.metaKey : e.ctrlKey;
+  }
+  setupKeybindListener() {
+    globalThis.addEventListener("keydown", (e) => {
+      const binding = [];
+      if (_InkEditor.isCtrlDown(e))
+        binding.push("C");
+      if (e.altKey)
+        binding.push("A");
+      if (e.shiftKey)
+        binding.push("S");
+      binding.push("+");
+      binding.push(e.key);
+      const built = binding.join("");
+      console.log(built);
+      if (!_InkEditor.isKeybindString(built)) {
+        return console.warn(
+          `Built a bad keybind string ${built}. Please report this to https://github.com/xyzshantaram/ink-editor`
+        );
+      }
+      e.preventDefault();
+      const action = this.keybinds.get(built);
+      console.log(action);
+      if (action)
+        return this.action(action);
+    });
   }
   /**
    * Executes a registered editor action by name
@@ -684,6 +1124,33 @@ var InkEditor = class {
   setEditorVisibility(state) {
     __privateGet(this, _cmRoot).classList.toggle("hidden", !state);
   }
+  static isKeybindString(binding) {
+    const [mod, key] = binding.split("+");
+    console.log(mod, key);
+    if (!mod || !key)
+      return false;
+    console.log({
+      mod,
+      key,
+      includesMod: VALID_KEYBIND_MODIFIERS.includes(mod),
+      includesKey: KEYBOARD_EVENT_KEYS.includes(key)
+    });
+    return VALID_KEYBIND_MODIFIERS.includes(mod) && KEYBOARD_EVENT_KEYS.includes(key);
+  }
+  registerKeybind(binding, action) {
+    const err = (s) => console.warn(s);
+    if (!_InkEditor.isKeybindString(binding)) {
+      return err(
+        `Tried to register invalid keybind "${binding}", dropping...`
+      );
+    }
+    if (!__privateGet(this, _actions).has(action)) {
+      return err(
+        `Tried to register invalid action "${action}", dropping...`
+      );
+    }
+    this.keybinds.set(binding, action);
+  }
   /**
    * Disables all toolbar buttons except one
    * @param {number} target - Index of button to keep enabled
@@ -704,9 +1171,11 @@ var InkEditor = class {
     });
   }
 };
+var InkEditor = _InkEditor;
 _toolbar = new WeakMap();
 _actions = new WeakMap();
 _cmRoot = new WeakMap();
+InkEditor.KEYBIND_RE = /(C)?(S)?(A)?\+(\w+)/;
 
 // src/mod.ts
 var mod_default = { InkEditor };
