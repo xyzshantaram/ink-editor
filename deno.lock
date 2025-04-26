@@ -43,7 +43,7 @@
         "npm:@types/feather-icons@^4.29.4",
         "npm:@types/marked@^4.3.0",
         "npm:@types/node@^16.18.26",
-        "npm:campfire.js@4.0.0-rc13",
+        "npm:campfire.js@4.0.0-rc17",
         "npm:cf-alert@0.4",
         "npm:csso@^5.0.5",
         "npm:esbuild-node-externals@^1.18.0",
@@ -51,7 +51,8 @@
         "npm:lucide@0.311",
         "npm:marked@5",
         "npm:style-mod@^4.1.2",
-        "npm:typescript@^5.3.3"
+        "npm:typescript@^5.3.3",
+        "npm:user-agent-data-types@~0.4.2"
       ]
     }
   }
