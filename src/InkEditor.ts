@@ -7,6 +7,11 @@ import { EditorView } from "@codemirror/view";
 import { debounce, getRootElt } from "./utils/misc.ts";
 import cf, { ListStore, Store } from "campfire.js";
 import {
+    KeybindString,
+    KEYBOARD_EVENT_KEYS,
+    VALID_KEYBIND_MODIFIERS,
+} from "./KeybindString.ts";
+import {
     createCmEditor,
     getDocAndCursor,
     insertAround,
@@ -120,6 +125,13 @@ export interface InkOptions {
      * @type {number}
      */
     autosaveDelayMs: number;
+
+    /**
+     * Key bindings to set up. Keybinds must be strings matching
+     * `/C?S?A?\+KeyboardEvent['key']`. The editor warns if any
+     * invalid bindings or key names are passed.
+     */
+    keybinds?: Record<KeybindString, string>;
 }
 
 /**
@@ -166,6 +178,8 @@ export class InkEditor {
 
     /** Editor configuration options */
     options: InkOptions;
+
+    keybinds = new Map<KeybindString, string>();
 
     /** Preview state and controls */
     preview: {
@@ -228,6 +242,16 @@ export class InkEditor {
             );
         }
 
+        if (this.options.keybinds) {
+            console.log(this.options.keybinds);
+            Object.entries(this.options.keybinds || {})
+                .forEach(([binding, action]: [KeybindString, string]) => {
+                    this.registerKeybind(binding, action);
+                });
+
+            this.setupKeybindListener();
+        }
+
         const { view, setReadOnly } = createCmEditor({
             placeholder: this.options.placeholder,
             onAutosave: debounce(
@@ -248,13 +272,68 @@ export class InkEditor {
      * Initializes the editor with saved or default content
      * @returns {Promise<void>}
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         const saved = await this.options.retrieveSaved();
         if (saved) {
             this.setContents(saved);
         } else {
             this.setContents(this.options.defaultContents);
         }
+    }
+
+    static isMacOS(): boolean {
+        // 1. Browser frontend
+        if (typeof navigator !== "undefined") {
+            if (
+                navigator.maxTouchPoints &&
+                navigator.maxTouchPoints > 1
+            ) return false;
+
+            const uaPlatform =
+                (navigator.userAgentData && navigator.userAgentData.platform) ||
+                navigator.platform || "";
+
+            return uaPlatform.toLowerCase().includes("mac");
+        }
+
+        // @ts-ignore this is fine
+        if (typeof process !== "undefined" && process.platform) {
+            // @ts-ignore this is fine
+            return process.platform === "darwin";
+        }
+
+        // 3. Unknown or sandboxed — default to false
+        return false;
+    }
+
+    static isCtrlDown(e: KeyboardEvent) {
+        return InkEditor.isMacOS() ? e.metaKey : e.ctrlKey;
+    }
+
+    static KEYBIND_RE = /(C)?(S)?(A)?\+(\w+)/;
+
+    setupKeybindListener() {
+        globalThis.addEventListener("keydown", (e) => {
+            const binding = [];
+            if (InkEditor.isCtrlDown(e)) binding.push("C");
+            if (e.altKey) binding.push("A");
+            if (e.shiftKey) binding.push("S");
+            binding.push("+");
+            binding.push(e.key);
+            const built = binding.join("");
+            console.log(built);
+            if (!InkEditor.isKeybindString(built)) {
+                return console.warn(
+                    `Built a bad keybind string ${built}. Please report this to ` +
+                        `https://github.com/xyzshantaram/ink-editor`,
+                );
+            }
+
+            e.preventDefault();
+            const action = this.keybinds.get(built);
+            console.log(action);
+            if (action) return this.action(action);
+        });
     }
 
     /**
@@ -306,7 +385,10 @@ export class InkEditor {
              * @param {string} insertion - Text to insert
              * @param {number} [cursorOffset=insertion.length] - Where to place cursor after insertion
              */
-            before: (insertion: string, cursorOffset = insertion.length) => {
+            before: (
+                insertion: string,
+                cursorOffset: number = insertion.length,
+            ) => {
                 const { cursor } = getDocAndCursor(this.editor);
                 insertBefore(this.editor, cursor!, insertion, cursorOffset);
             },
@@ -316,7 +398,7 @@ export class InkEditor {
              * @param {string} start - Text to insert before selection
              * @param {string} [end=start] - Text to insert after selection (defaults to start)
              */
-            around: (start: string, end = start) => {
+            around: (start: string, end: string = start) => {
                 const { cursor } = getDocAndCursor(this.editor);
                 insertAround(this.editor, cursor!, start, end);
             },
@@ -348,7 +430,7 @@ export class InkEditor {
      * Gets the current editor contents as a string
      * @returns {string} Current editor contents
      */
-    getContents() {
+    getContents(): string {
         return this.editor.state.doc.toString();
     }
 
@@ -372,6 +454,39 @@ export class InkEditor {
      */
     setEditorVisibility(state: boolean) {
         this.#cmRoot.classList.toggle("hidden", !state);
+    }
+
+    static isKeybindString(binding: string): binding is KeybindString {
+        const [mod, key] = binding.split("+");
+        console.log(mod, key);
+        if (!mod || !key) return false;
+        console.log({
+            mod,
+            key,
+            includesMod: VALID_KEYBIND_MODIFIERS.includes(mod as any),
+            includesKey: KEYBOARD_EVENT_KEYS.includes(key as any),
+        });
+
+        return VALID_KEYBIND_MODIFIERS.includes(mod as any) &&
+            KEYBOARD_EVENT_KEYS.includes(key as any);
+    }
+
+    registerKeybind(binding: KeybindString, action: string) {
+        const err = (s: string) => console.warn(s);
+
+        if (!InkEditor.isKeybindString(binding)) {
+            return err(
+                `Tried to register invalid keybind "${binding}", dropping...`,
+            );
+        }
+
+        if (!this.#actions.has(action)) {
+            return err(
+                `Tried to register invalid action "${action}", dropping...`,
+            );
+        }
+
+        this.keybinds.set(binding, action);
     }
 
     /**
