@@ -790,11 +790,9 @@ import cf from "campfire.js";
 var SnippetView = (parent, editor, snippets) => {
   const visibility = cf.store({ value: false });
   visibility.on("update", (event) => {
-    console.log(event);
     parent.classList.toggle("hidden", !event.value);
   });
   const handleInteraction = (target) => {
-    console.log(target.closest(".snippets-close"));
     if (target.classList.contains("snippet-item")) {
       editor.insert.withNewline(target.innerHTML);
     } else if (target.closest(".snippets-close")) {
