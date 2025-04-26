@@ -12,5 +12,10 @@ const editor = new InkEditor('#root', {
         '## Subtitle',
         "```\nSome code\n```"
     ],
-    makePreview: (contents) => marked.parse(contents)
+    makePreview: (contents) => marked.parse(contents),
+    keybinds: {
+        "CA+i": "italic",
+    }
 });
+
+window.editor = editor;
