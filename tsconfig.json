@@ -8,7 +8,10 @@
         "lib": [
             "DOM",
             "ESNext",
-            "ESNext.Array",
+            "ESNext.Array"
+        ],
+        "types": [
+            "./node_modules/user-agent-data-types"
         ],
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
