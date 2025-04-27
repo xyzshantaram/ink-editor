@@ -179,6 +179,10 @@ const headingStyles = HighlightStyle.define([
         fontSize: "1.1rem",
         fontWeight: "700",
     },
+    {
+        tag: tags.meta,
+        color: "#aaa !important",
+    },
 ].map((itm) => ({ ...itm, textDecoration: "none !important" })));
 
 export const getExtensions = (

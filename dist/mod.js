@@ -620,6 +620,10 @@ var headingStyles = HighlightStyle.define([
     color: "black",
     fontSize: "1.1rem",
     fontWeight: "700"
+  },
+  {
+    tag: tags.meta,
+    color: "#aaa !important"
   }
 ].map((itm) => ({ ...itm, textDecoration: "none !important" })));
 var getExtensions = (ph, autosave, fontFamily) => [
@@ -1004,15 +1008,15 @@ var _InkEditor = class {
       binding.push("+");
       binding.push(e.key);
       const built = binding.join("");
-      console.log(built);
-      if (!_InkEditor.isKeybindString(built)) {
-        return console.warn(
-          `Built a bad keybind string ${built}. Please report this to https://github.com/xyzshantaram/ink-editor`
-        );
+      if (["Control", "Meta", "Alt", "Option"].includes(e.key))
+        return;
+      if (!(_InkEditor.isKeybindString(built) && this.keybinds.has(built))) {
+        console.log("not preventing default");
+        return;
       }
+      console.log(330, { binding, built, e });
       e.preventDefault();
       const action = this.keybinds.get(built);
-      console.log(action);
       if (action)
         return this.action(action);
     });
@@ -1124,15 +1128,8 @@ var _InkEditor = class {
   }
   static isKeybindString(binding) {
     const [mod, key] = binding.split("+");
-    console.log(mod, key);
     if (!mod || !key)
       return false;
-    console.log({
-      mod,
-      key,
-      includesMod: VALID_KEYBIND_MODIFIERS.includes(mod),
-      includesKey: KEYBOARD_EVENT_KEYS.includes(key)
-    });
     return VALID_KEYBIND_MODIFIERS.includes(mod) && KEYBOARD_EVENT_KEYS.includes(key);
   }
   registerKeybind(binding, action) {

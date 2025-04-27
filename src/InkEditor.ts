@@ -243,7 +243,6 @@ export class InkEditor {
         }
 
         if (this.options.keybinds) {
-            console.log(this.options.keybinds);
             Object.entries(this.options.keybinds || {})
                 .forEach(([binding, action]: [KeybindString, string]) => {
                     this.registerKeybind(binding, action);
@@ -321,17 +320,17 @@ export class InkEditor {
             binding.push("+");
             binding.push(e.key);
             const built = binding.join("");
-            console.log(built);
-            if (!InkEditor.isKeybindString(built)) {
-                return console.warn(
-                    `Built a bad keybind string ${built}. Please report this to ` +
-                        `https://github.com/xyzshantaram/ink-editor`,
-                );
+
+            if (["Control", "Meta", "Alt", "Option"].includes(e.key)) return;
+
+            if (
+                !(InkEditor.isKeybindString(built) && this.keybinds.has(built))
+            ) {
+                return;
             }
 
             e.preventDefault();
             const action = this.keybinds.get(built);
-            console.log(action);
             if (action) return this.action(action);
         });
     }
@@ -458,14 +457,7 @@ export class InkEditor {
 
     static isKeybindString(binding: string): binding is KeybindString {
         const [mod, key] = binding.split("+");
-        console.log(mod, key);
         if (!mod || !key) return false;
-        console.log({
-            mod,
-            key,
-            includesMod: VALID_KEYBIND_MODIFIERS.includes(mod as any),
-            includesKey: KEYBOARD_EVENT_KEYS.includes(key as any),
-        });
 
         return VALID_KEYBIND_MODIFIERS.includes(mod as any) &&
             KEYBOARD_EVENT_KEYS.includes(key as any);
