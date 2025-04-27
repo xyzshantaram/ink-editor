@@ -98,7 +98,7 @@ export interface InkOptions {
      * `/C?S?A?\+KeyboardEvent['key']`. The editor warns if any
      * invalid bindings or key names are passed.
      */
-    keybinds?: Record<KeybindString, string>;
+    keybinds?: Partial<Record<KeybindString, string>>;
 }
 /**
  * Arguments passed to editor action functions
